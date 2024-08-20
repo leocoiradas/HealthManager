@@ -1,7 +1,15 @@
+using HealthManager.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<HealthManagerContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("HealthManager"));
+});
 
 var app = builder.Build();
 
