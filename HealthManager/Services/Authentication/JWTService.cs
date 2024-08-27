@@ -1,5 +1,6 @@
 ﻿using HealthManager.Models;
 using HealthManager.Models.DTO;
+using HealthManager.Services.Authentication;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -9,7 +10,7 @@ using System.Text;
 
 namespace HealthManager.Services.JWTService
 {
-    public class JWTService
+    public class JWTService: IJWTService
     {
         private readonly HealthManagerContext _dbcontext;
         private IConfiguration _configuration;
