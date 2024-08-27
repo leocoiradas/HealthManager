@@ -1,4 +1,6 @@
 using HealthManager.Models;
+using HealthManager.Services.Authentication;
+using HealthManager.Services.JWTService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -13,6 +15,10 @@ builder.Services.AddDbContext<HealthManagerContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("HealthManager"));
 });
+
+//Añadir dependencias
+
+builder.Services.AddScoped<IJWTService, JWTService>();
 
 //Configuración de autenticación
 
