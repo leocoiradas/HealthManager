@@ -1,0 +1,94 @@
+﻿@model HealthManager.Models.DTO.PatientViewModel;
+@{
+    ViewData["Title"] = "Register";
+<style>
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Para Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+</style>
+}
+
+<section class="w-100 d-flex flex-column justify-content-center align-items-center gap-2">
+   <form method="post" asp-controller="Authorize" asp-action="Register" class="w-50 d-flex flex-column justify-content-center align-items-center gap-2">
+        <h2>Register</h2>
+
+        <!--Name-->
+        <fieldset class="w-75 d-flex flex-column gap-1">
+            <div class="w-100 d-flex">
+                <label asp-for="Name" class="flex-grow-1"></label>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <input type="text" asp-for="Name" class="form-control" />
+        </fieldset>
+
+        <!--Surname-->
+        <fieldset class="w-75 d-flex flex-column gap-1">
+            <div class="w-100 d-flex">
+                <label asp-for="Surname" class="flex-grow-1"></label>
+                <span asp-validation-for="Surname" class="text-danger"></span>
+            </div>
+            <input type="text" asp-for="Surname" class="form-control" />
+        </fieldset>
+
+        <!--DNI-->
+        <fieldset class="w-75 d-flex flex-column gap-1">
+            <div class="w-100 d-flex">
+                <label asp-for="Dni" class="flex-grow-1">DNI</label>
+                <span asp-validation-for="Dni" class="text-danger"></span>
+            </div>
+            <input type="number" asp-for="Dni" class="form-control" />
+        </fieldset>
+
+        <!--Birthdate-->
+        <fieldset class="w-75 d-flex flex-column gap-1">
+            <div class="w-100 d-flex">
+                <label asp-for="Birthdate" class="flex-grow-1">Birth Date</label>
+                <span asp-validation-for="Birthdate" class="text-danger"></span>
+            </div>
+            <input type="date" asp-for="Birthdate" class="form-control" />
+        </fieldset>
+
+        <!--Email-->
+        <fieldset class="w-75 d-flex flex-column gap-1">
+            <div class="w-100 d-flex">
+                <label asp-for="Email" class="flex-grow-1"></label>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <input type="email" asp-for="Email" class="form-control" />
+        </fieldset>
+
+        <!--Password-->
+        <fieldset class="w-75 d-flex flex-column gap-1">
+            <div class="w-100 d-flex">
+                <label asp-for="Password" class="flex-grow-1"></label>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <input type="password" asp-for="Password" class="form-control" />
+        </fieldset>
+
+        <!--ConfirmPassword-->
+        <fieldset class="w-75 d-flex flex-column gap-1">
+            <div class="w-100 d-flex">
+                <label asp-for="ConfirmPassword" class="flex-grow-1">Confirm Password</label>
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <input type="password" asp-for="ConfirmPassword" class="form-control" />
+        </fieldset>
+
+        <!--Submit-->
+        <fieldset class="w-75 d-flex align-items-baseline gap-2">
+            <div class="w-25 d-flex flex-grow-1">
+                <button type="submit" class=" btn btn-primary">Submit</button>
+            </div>
+            <p>You already have an account? Login <a asp-controller="Authorize" asp-action="Login">here</a></p>
+        </fieldset>
+   </form>
+    
+</section>
