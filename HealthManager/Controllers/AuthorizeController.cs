@@ -71,15 +71,24 @@ namespace HealthManager.Controllers
         }
 
         [HttpPost]
-        public async Task <IActionResult> Register(Patient patientData)
+        [ValidateAntiForgeryToken]
+        public async Task <IActionResult> Register(PatientViewModel patientData)
         {
             if (ModelState.IsValid) 
             {
-                Patient checkPatientExists = await _dbcontext.Patients.FindAsync(patientData);
+                Patient checkPatientExists = await _dbcontext.Patients.FindAsync(patientData.Email);
                 if (checkPatientExists == null)
                 {
-                    patientData.Password = BCrypt.Net.BCrypt.HashPassword(patientData.Password);
-                    await _dbcontext.Patients.AddAsync(patientData);
+                    Patient newPatient = new Patient
+                    {
+                        Name= patientData.Name,
+                        Surname= patientData.Surname,
+                        Birthdate = patientData.Birthdate,
+                        Email = patientData.Email,
+                        Password = BCrypt.Net.BCrypt.HashPassword(patientData.Password),
+                        Dni = patientData.Dni,
+                    };
+                    await _dbcontext.Patients.AddAsync(newPatient);
                     await _dbcontext.SaveChangesAsync();
                     return RedirectToAction("Login");
 
