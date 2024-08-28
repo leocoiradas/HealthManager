@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Views\Authorize\Register.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.8" />
@@ -32,10 +28,6 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Views\Authorize\Register.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Views\Authorize\Register.cshtml" />
   </ItemGroup>
 
 </Project>
