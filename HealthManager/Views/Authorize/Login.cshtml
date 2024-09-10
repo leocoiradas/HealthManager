@@ -20,8 +20,9 @@
             </div>
             <input asp-for="password" id="password" type="password" class="form-control" />
         </fieldset>
-        <fieldset class="w-50 d-flex flex-column gap-2">
+        <fieldset class="d-flex flex-column gap-2">
             <button type="submit" class="btn btn-primary">Submit</button>
+            <p class="flex-grow-1">You don't have an account? Register <a asp-controller="Authorize" asp-action="Register">here</a></p>
         </fieldset>
     </form>
 
