@@ -6,6 +6,7 @@ namespace HealthManager.Models;
 
 public partial class Doctor
 {
+    [Key]
     public int DoctorId { get; set; }
 
     [Required, MaxLength(100), MinLength(2)]
