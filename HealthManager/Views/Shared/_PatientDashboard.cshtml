@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - HealthManager</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/HealthManager.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="d-flex content">
+        <nav class="d-flex flex-column justify-content-end gap-3 w-25 mh-100 bg-info bg-gradient shadow-sm p-3">
+            <ul class="navbar-nav p-3 fs-5 gap-2">
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="Appointments" asp-action="ReserveAppointments">Reserve Appointments</a>
+                </li>
+                <li><hr class="hr" /></li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="PatientDashboard" asp-action="MyAppointments">My Appointments</a>
+                </li>
+                <li><hr class="hr" /></li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="PatientDashboard" asp-action="MedicalRegisters">Medical Registers</a>
+                </li>
+                <li><hr class="hr" /></li>
+                <li class="nav-item logout">
+                    <a class="nav-link" asp-area="" asp-controller="Authorize" asp-action="Logout">Logout</a>
+                </li>
+            </ul>
+        </nav>
+        <main role="main" class="pb-3 w-100">
+            <header class="header">
+            </header>
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 - HealthManager - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <p>Alan Coiradas</p>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+<style>
+   
+    li>a{
+        padding-left: 1rem !important;
+        color: black !important;
+    }
+    li>a:hover{
+        background-color: aquamarine
+    }
+
+    .logout>a:hover {
+        color: white !important;
+        background-color: red !important;
+    }
+    
+    .divider:hover{
+        background-color: none !important;
+    }
+
+    .header{
+        min-height: 10dvh;
+        background-color: aqua;
+    }
+    .footer{
+        min-height: auto;
+    }
+    .content{
+        min-height: 80dvh !important;
+    }
+</style>
