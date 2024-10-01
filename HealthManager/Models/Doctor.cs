@@ -8,19 +8,14 @@ public partial class Doctor
 {
     [Key]
     public int DoctorId { get; set; }
-
     [Required, MaxLength(100), MinLength(2)]
     public string Name { get; set; } = null!;
-
     [Required, MaxLength(100), MinLength(2)]
     public string? Surname { get; set; }
-
     [Required]
-    public string? Spectialty { get; set; }
-
+    public string? Specialty { get; set; }
     [Required, EmailAddress]
     public string? Email { get; set; }
-
     [Required, RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{12,}$")]
     public string? Password { get; set; }
 
