@@ -8,7 +8,6 @@ namespace HealthManager.Models;
 public partial class Appointment
 {
     [Key]
-    
     public Guid AppointmentId { get; set; }
     [Required]
     public DateOnly AppointmentDate { get; set; }
