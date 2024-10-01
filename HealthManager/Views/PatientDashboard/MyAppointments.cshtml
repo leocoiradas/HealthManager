@@ -1,0 +1,58 @@
+﻿@model IEnumerable<HealthManager.Models.Appointment>
+@{
+    ViewData["Title"] = "My Appointments";
+    Layout = "_PatientDashboard";
+
+}
+
+
+
+    <section class="d-flex w-100 h-auto justify-content-center align-items-center">
+        @if (Model == null || !Model.Any())
+        {
+            <article class="w-100 p-4">
+                <h4 class="text-center">You don't have any appointments</h4>
+            </article>
+        }
+    else 
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>Specialty</th>
+                    <th>Doctor</th>
+                    <th>Day</th>
+                    <th>Hour</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var appointment in Model)
+                {
+                   <tr>
+                       <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                   </tr> 
+                
+                }
+            </tbody>
+            </table>
+            @foreach (var appointment in Model)
+            {
+                <article class="d-flex flex-column gap-2">
+                    <h6>@appointment.Doctor.Specialty</h6>
+                    <p><b>Doctor: </b>@appointment.Doctor.Name</p>
+                    <p><b>Date: </b>@appointment.AppointmentDate @appointment.AppointmentHour</p>
+                    <p><b>Patient: </b>@appointment.Patient.Name</p>
+                    <div>
+                        <button></button>
+                        <button></button>
+                    </div>
+                </article>
+
+            }
+        }     
+    </section>
+
