@@ -19,8 +19,6 @@ public partial class AppointmentInfo
     public TimeOnly ConsultationDuration { get; set; }
 
     public int? WorkingDaysId { get; set; }
-
-    
     public virtual Doctor Doctor { get; set; } = null!;
 
     public virtual WorkingDay? WorkingDays { get; set; }
