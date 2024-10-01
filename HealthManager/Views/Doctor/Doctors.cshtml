@@ -1,0 +1,31 @@
+﻿@model IEnumerable<HealthManager.Models.Doctor>
+@{
+    ViewData["Title"] = "Doctors";
+    Layout = "_AdminDashboard";
+}
+
+<section class="d-flex justify-content-center align-items-center p-2">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>DoctorID</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Speciality</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(Doctor doctor in Model)
+            {
+                <tr>
+                    <td>@doctor.DoctorId</td>
+                    <td>@doctor.Name</td>
+                    <td>@doctor.Surname</td>
+                    <td>@doctor.Specialty</td>
+                    <td>@doctor.Email</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>
