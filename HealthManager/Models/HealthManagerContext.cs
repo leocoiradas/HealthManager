@@ -27,8 +27,7 @@ public partial class HealthManagerContext : DbContext
 
     public virtual DbSet<WorkingDay> WorkingDays { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    { }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -86,7 +85,7 @@ public partial class HealthManagerContext : DbContext
             entity.Property(e => e.Password)
                 .HasMaxLength(200)
                 .IsUnicode(false);
-            entity.Property(e => e.Spectialty)
+            entity.Property(e => e.Specialty)
                 .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.Surname)
