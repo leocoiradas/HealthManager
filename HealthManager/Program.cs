@@ -1,4 +1,5 @@
 using HealthManager.Models;
+using HealthManager.Services.Appointments;
 using HealthManager.Services.Authentication;
 using HealthManager.Services.JWTService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -19,6 +20,7 @@ builder.Services.AddDbContext<HealthManagerContext>(options =>
 //Añadir dependencias
 
 builder.Services.AddScoped<IJWTService, JWTService>();
+builder.Services.AddScoped<IAppointments, AppointmentsService>();
 
 //Configuración de autenticación
 
