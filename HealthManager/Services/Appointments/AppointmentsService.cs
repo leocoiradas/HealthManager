@@ -3,6 +3,7 @@ using HealthManager.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Globalization;
 using System.Numerics;
 using System.Reflection;
 
@@ -18,9 +19,8 @@ namespace HealthManager.Services.Appointments
         }
 
         public async Task<MethodResponse> CreateAppointments()
-        {
-            using var databaseContext = new HealthManagerContext();
-            using var transaction = await databaseContext.Database.BeginTransactionAsync();
+        { 
+            using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
                 int currentYear = DateTime.Now.Year;
@@ -42,7 +42,7 @@ namespace HealthManager.Services.Appointments
 
                 var doctorsList = await query.ToListAsync();
 
-                Type workingDayType = typeof(HealthManager.Models.WorkingDay);
+                /*Type workingDayType = typeof(HealthManager.Models.WorkingDay);
 
                 PropertyInfo[] properties = workingDayType.GetProperties();
 
@@ -50,7 +50,9 @@ namespace HealthManager.Services.Appointments
                     prop.Name == "Monday" || prop.Name == "Tuesday" || prop.Name == "Wednesday" ||
                     prop.Name == "Thursday" || prop.Name == "Friday" || prop.Name == "Saturday" ||
                     prop.Name == "Sunday"
-                );
+                );*/
+
+                List<string> daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
                 foreach (var doctor in doctorsList)
                 {
@@ -62,10 +64,10 @@ namespace HealthManager.Services.Appointments
                     for (int i = 1; i <= daysInMonth; i++)
                     {
                         int currentDay = i;
-                        foreach (var day in dayProperties)
+                        foreach (var day in daysOfWeek)
                         {
                             DateTime auxiDay = new DateTime(currentYear, currentMonth, i);
-                            string dayName = auxiDay.ToString("dddd");
+                            string dayName = auxiDay.ToString("dddd", new CultureInfo("en-US"));
                             if (dayName.Equals(day))
                             {
                                 var doctorConsultationStart = doctor.AppointmentStart;
@@ -90,7 +92,7 @@ namespace HealthManager.Services.Appointments
 
                                     };
                                     await _context.Appointments.AddAsync(newAppointment);
-                                    await databaseContext.SaveChangesAsync();
+                                    await _context.SaveChangesAsync();
 
                                     hourCount = hourCount.AddMinutes(durationAuxi);
                                 }
@@ -101,11 +103,11 @@ namespace HealthManager.Services.Appointments
                 await transaction.CommitAsync();
                 return new MethodResponse { Success = true, Message = "Appointments created successfully" };
             }
-            catch (Exception)
+            catch (Exception error)
             {
 
                 await transaction.RollbackAsync();
-                return new MethodResponse { Success = false, Message = "Appointments could not be created" };
+                return new MethodResponse { Success = false, Message = error.ToString() };
             }
              
         }
