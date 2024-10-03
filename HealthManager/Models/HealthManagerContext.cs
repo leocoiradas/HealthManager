@@ -48,7 +48,6 @@ public partial class HealthManagerContext : DbContext
 
             entity.HasOne(d => d.Patient).WithMany(p => p.Appointments)
                 .HasForeignKey(d => d.PatientId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Appointme__Patie__4F7CD00D");
         });
 
