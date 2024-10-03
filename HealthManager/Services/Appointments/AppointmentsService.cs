@@ -74,8 +74,8 @@ namespace HealthManager.Services.Appointments
                                 var doctorConsultationEnd = doctor.AppointmentEnd;
                                 var doctorConsultDuration = doctor.ConsultDuration;
 
-                                var hourCount = Convert.ToDateTime(doctorConsultationStart);
-                                var limitHourAuxi = Convert.ToDateTime(doctorConsultationEnd);
+                                var hourCount = auxiDay.Add(doctorConsultationStart.ToTimeSpan());
+                                var limitHourAuxi = auxiDay.Add(doctorConsultationEnd.ToTimeSpan());
 
                                 var durationAuxi = doctorConsultDuration.Minute + doctorConsultDuration.Hour * 60;
 
@@ -87,7 +87,7 @@ namespace HealthManager.Services.Appointments
                                         AppointmentDate = new DateOnly(currentYear, currentMonth, currentDay),
                                         AppointmentHour = TimeOnly.FromDateTime(hourCount),
                                         Status = "Available",
-                                        PatientId = 0,
+                                        
                                         DoctorId = doctor.DoctorId,
 
                                     };
