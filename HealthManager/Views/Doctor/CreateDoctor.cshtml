@@ -1,0 +1,59 @@
+﻿@model HealthManager.Models.DTO.DoctorRegistrationViewModel
+@{
+    ViewData["Title"] = "Doctor Registration";
+}
+
+<section class="w-100 d-flex justify-content-center align-items-center">
+    <form method="post" asp-controller="Doctor" asp-action="CreateDoctor" class="w-50 d-flex flex-column gap-1">
+        <div class="row">
+                <fieldset class="form-group col">
+                    <label asp-for="Name">Name</label>
+                    <input type="text" asp-for="Name" class="form-control" />
+            </fieldset>
+            <fieldset class="form-group col">
+                <label asp-for="Surname">Surname</label>
+                <input type="text" asp-for="Surname" class="form-control" />
+            </fieldset>
+        </div>
+        <fieldset class="form-group">
+            <label asp-for="Specialty">Specialty</label>
+            <input type="text" asp-for="Specialty" class="form-control" />
+        </fieldset>
+        <fieldset class="form-group">
+            <label asp-for="Email">Email</label>
+            <input type="email" asp-for="Email" name="email" class="form-control" />
+        </fieldset>
+        <div class="row">
+                <fieldset class="form-group col">
+                    <label asp-for="Password">Password</label>
+                    <input type="password" asp-for="Password" class="form-control" />
+            </fieldset>
+            <fieldset class="form-group col">
+                <label asp-for="ConfirmPassword">Confirm password</label>
+                <input type="password" asp-for="ConfirmPassword" class="form-control" />
+            </fieldset>
+        </div>
+        <fieldset class="row p-3">
+            <label class="p-0 d-block mb-2">Working days</label>
+            <div class="col-6 d-flex flex-column form-check">
+                <label class="form-check-label"><input type="checkbox" asp-for="Monday" class="form-check-input" />Monday</label>
+                <label class="form-check-label"><input type="checkbox" asp-for="Tuesday" class="form-check-input" />Tuesday</label>
+                <label class="form-check-label"><input type="checkbox" asp-for="Wednesday" class="form-check-input" />Wednesday</label>
+                <label class="form-check-label"><input type="checkbox" asp-for="Thursday" class="form-check-input" />Thurdsday</label>
+            </div>
+            <div class="col-6 d-flex flex-column form-check">
+                <label class="form-check-label"><input type="checkbox" asp-for="Friday" class="form-check-input" />Friday</label>
+                <label class="form-check-label"><input type="checkbox" asp-for="Saturday" class="form-check-input"  />Saturday</label>
+                <label class="form-check-label"><input type="checkbox" asp-for="Sunday" class="form-check-input" />Sunday</label>
+            </div>
+        </fieldset>
+        <fieldset class="d-flex flex-column gap-2 form-group">
+            <label >Consult Start<input type="time" asp-for="WorkingHoursStart" class="form-control" /></label>
+            <label >Consult End<input type="time" asp-for="WorkingHoursEnd" class="form-control" /></label>
+            <label >Consult Duration<input type="time" asp-for="ConsultationDuration" class="form-control" /></label>
+        </fieldset>
+        <fieldset class="form-group">
+            <input type="submit" value="Create Doctor" class="btn btn-primary mb-3" />
+        </fieldset>
+    </form>
+</section>

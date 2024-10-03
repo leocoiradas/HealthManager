@@ -1,0 +1,96 @@
+﻿
+@{
+    ViewData["Title"] = "Appointments Manager";
+    Layout = "_AdminDashboard";
+    string currentMonth = DateTime.Now.ToString("MMMM");
+}
+
+<section class="w-100 sectionContainer d-flex justify-content-center align-items-center">
+    <article class=" w-25 h-25 d-flex flex-column justify-content-center align-items-center gap-2 p-3 border border-secondary rounded">
+        <h3>Create Appointments</h3>
+        <p class="text-center">Create the corresponding appointments for the present month.</p>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmModal">
+            Launch demo modal
+        </button>
+        <!--Confirmation Modal-->
+        <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to create Appointments for the month of <b>@currentMonth</b></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="confirmButton">Generate Appointments</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Result Modal-->
+
+        <div class="modal" tabindex="-1" id="resultModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="operationStatus"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="operationMessage"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </article>
+</section>
+
+
+
+<style>
+    .sectionContainer {
+        min-height: 50%;
+        
+    }
+</style>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#confirmButton").click(function () {
+
+                $("#confirmModal").modal("hide");
+
+                $.ajax({
+                    url: '@Url.Action("CreateAppointmentRegisters", "Admin")',
+                    data: {},
+                    type: "GET",
+                    success: function(response){
+                        if (response.success) {
+                            $("#operationStatus").text("Operation excecuted successfully");
+                            $("#operationMessage").text(response.message);
+                        }
+                        else {
+                            $("#operationStatus").text("Existing registers in the database");
+                            $("#operationMessage").text(response.message);
+                        }
+                        $('#resultModal').modal('show');
+                    },
+                    error: function(){
+                        $('#operationStatus').text('An error occurred while creating appointments. Please try again.');
+                        $("#operationMessage").text(response.message);
+                        $('#resultModal').modal('show');
+                    }
+                })
+            })
+        })
+    </script>
+}

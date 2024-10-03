@@ -1,0 +1,146 @@
+﻿@model HealthManager.Models.Appointment;
+@{
+    ViewData["Title"] = "Reserve Appointment";
+    Layout = "_PatientDashboard";
+}
+
+<section class="w-100 d-flex justify-content-center align-items-center mt-5">
+    <form asp-controller="Appointments" asp-action="ReserveAppointment" class="w-50 d-flex flex-column gap-3">
+        <fieldset class="form-group">
+            <label>Specialty</label>
+            <select id="specialty" class="form-control">
+                <option>Select a Specialty</option>
+            </select>
+        </fieldset>
+        <fieldset class="form-group">
+            <label for="doctorSelect">Seleccionar Médico</label>
+            <select id="doctorSelect" class="form-control" asp-items="ViewBag.Doctors"></select>
+        </fieldset>
+
+        <div class="d-flex align-items-center justify-content-between">
+            <fieldset class="form-group">
+                <label for="appointmentSelect">Date</label>
+                <select id="appointmentSelectDate" class="form-control">
+                    <option value="">Select a Date</option>
+                </select>
+            </fieldset>
+            <fieldset class="form-group">
+                <label for="appointmentSelect">Hour</label>
+                <select id="appointmentSelectHour" class="form-control">
+                    <option value="">Select an Hour</option>
+                </select>
+            </fieldset>
+
+        </div>
+        <!-- Otros campos del formulario -->
+
+        <button type="submit" class="btn btn-primary">Crear Turno</button>
+    </form>
+</section>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('#doctorSelect').change(function() {
+                var doctorId = $(this).val();
+
+                // Realizar una petición AJAX para obtener los turnos disponibles
+                $.ajax({
+                    url: '@Url.Action("GetAvailableAppointments", "Appointments")',
+                    data: { doctorId: doctorId },
+                    success: function(data) {
+                        var appointmentSelect = $('#appointmentSelect');
+                        appointmentSelect.empty();
+
+                        // Añadir los nuevos turnos disponibles al select
+                        $.each(data, function(index, appointment) {
+                            appointmentSelect.append($('<option>', {
+                                value: appointment.AppointmentId,
+                                text: appointment.AppointmentDate + ' - ' + appointment.AppointmentHour
+                            }));
+                        });
+                    }
+                });
+            });
+
+                $("#specialty").change(function(){
+                    var specialtyDoctor = $(this).val();
+                    getDoctorsBySpecialty(specialtyDoctor);
+                });
+                $("#doctorSelect").change(function(){
+                    var doctor = $(this).val();
+                    getAppointmentsDates(doctor);
+                })
+
+                function getDoctorsBySpecialty(specialtyDoctor){
+                        $.ajax({
+                            url: '@Url.Action("GetDoctorsBySpecialty", "Doctor")',
+                            data: {specialty: specialtyDoctor},
+                            success: function(response){
+                                var doctorSelect = $("#doctorSelect");
+                                doctorSelect.empty();
+                                if(response.length > 0){
+                                    $.each(response, function(index, doctor){
+                                    doctorSelect.append($('<option>', {
+                                        value: doctor.doctorId,
+                                        text: doctor.Name
+                                    }))
+                                    })
+                                    cleanOptions("#appointmentSelectDate", "#appointmentSelectHour")
+                                } else {
+                                        doctorSelect.append('<option>No doctors available</option>')
+                                }
+                                
+                            }
+                        })
+                }
+                function getAppointmentsDates(doctor){
+                    $.ajax({
+                        url: '@Url.Action("GetAppointmentsDates", "Appointments")',
+                        data: {doctorId: doctor},
+                        success: function(response){
+                            var selectDate = $("#appointmentSelectDate");
+                            selectDate.empty();
+                            if (response.length > 0){
+                                $.each(response, function(index, date){
+                                    selectDate.append($('<option>', {
+                                        value: date,
+                                        text: date
+                                    }))
+                                })
+                                    cleanOptions("#appointmentSelectHour")
+                            }
+                        }
+                    })
+                }
+
+                function getAppointmentsHours(day){
+                    $.ajax({
+                        url: '@Url.Action("GetAppointmentsHours", "Appointments")',
+                        data: { day: day },
+                        success: function(response){
+                            var selectHour = $("#appointmentSelectHour");
+                            selectHour.empty();
+                            if (response.length > 0){
+                                $.each(response, function (index, hour){
+                                selectHour.append($('<option>', {
+                                    value: hour,
+                                    text: hour
+                                })
+                                })
+
+                            }
+                        }
+                    })
+                }
+
+                function cleanOptions(){
+                    for (let i = 0; i < arguments.length; i++){
+                    $(arguments[i]).empty();
+                    }
+                    
+                }
+        });
+    </script>
+}
