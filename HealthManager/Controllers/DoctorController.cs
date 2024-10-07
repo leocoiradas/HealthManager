@@ -1,6 +1,7 @@
 ﻿using HealthManager.Models;
 using HealthManager.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HealthManager.Controllers
 {
@@ -77,5 +78,19 @@ namespace HealthManager.Controllers
             
             return View();
         }
+
+        public async Task<JsonResult> GetDoctorsBySpecialty(string specialty)
+        {
+            var doctorsBySpecialty = await _dbcontext.Doctors.Where(d => d.Specialty == specialty)
+                .Select(a => new
+                {
+                    DoctorId = a.DoctorId,
+                    Name = a.Name + " " + a.Surname,
+                })
+                .ToListAsync();
+            return Json(doctorsBySpecialty);
+        }
+
     }
+
 }
