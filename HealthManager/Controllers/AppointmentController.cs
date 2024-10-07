@@ -32,6 +32,9 @@ namespace HealthManager.Controllers
                 })
                 .ToListAsync();
             ViewData["AppointmentsAvailable"] = new SelectList(appointmentsList, "AppointmentId", "AppointmentTime");
+
+            var specialties = await _dbcontext.Doctors.Select(d => d.Specialty).Distinct().ToListAsync();
+            ViewData["Specialties"] = new SelectList(specialties, specialties);
             return View();
         }
         [HttpPut]
@@ -54,20 +57,15 @@ namespace HealthManager.Controllers
             return View(appointmentRequest);
         }
 
-        public async Task <JsonResult> GetDoctorsBySpecialty(string specialty)
-        {
-            var doctorsBySpecialty = await _dbcontext.Doctors.Where(d => d.Specialty == specialty)
-                .Select(a => a.Name + " " + a.Surname)
-                .ToListAsync();
-            return Json(doctorsBySpecialty);
-        }
-
+        
         public async Task <JsonResult> GetAppointmentDates(int doctorId)
         {
             var currentMonth = DateTime.Now.Month;
+            var currentDay = DateTime.Now.Day;
             var availableAppointments = await _dbcontext.Appointments
-                .Where(a => a.DoctorId == doctorId && a.AppointmentDate.Month == currentMonth && a.Status == "Available")
+                .Where(a => a.DoctorId == doctorId && a.AppointmentDate.Month == currentMonth && a.AppointmentDate.Day > currentDay && a.Status == "Available")
                 .Select(a => a.AppointmentDate.ToString("dd-MM-yyyy"))
+                .Distinct()
                 .ToListAsync();
             return Json(availableAppointments);
         }
