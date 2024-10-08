@@ -55,7 +55,8 @@
             });
             $("#appointmentSelectDate").change(function(){
                 var selectedDate = $(this).val();
-                getAppointmentsHours(selectedDate);
+                var doctorId = $("#doctorSelect").val()
+                getAppointmentsHours(selectedDate, doctorId)
             })
 
 
@@ -103,15 +104,16 @@
                                 }))
                             })
                             cleanOptions("#appointmentSelectHour")
+
                         }
                     }
                 })
             }
 
-            function getAppointmentsHours(day){
+            function getAppointmentsHours(day, doctorId){
                 $.ajax({
                     url: '@Url.Action("GetAppointmentHours", "Appointment")',
-                    data: { day: day, doctorId: $("#doctorSelect").val() },
+                    data: { day: day, doctorId: doctorId },
                     success: function (response) {
                         var selectHour = $("#appointmentSelectHour");
                         selectHour.empty();
