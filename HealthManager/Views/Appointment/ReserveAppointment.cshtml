@@ -43,27 +43,6 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            /*$('#doctorSelect').change(function () {
-                var doctorId = $(this).val();
-
-                // Realizar una petición AJAX para obtener los turnos disponibles
-                $.ajax({
-                    url: 'Url.Action("GetAvailableAppointments", "Appointments")',
-                    data: { doctorId: doctorId },
-                    success: function (data) {
-                        var appointmentSelect = $('#appointmentSelect');
-                        appointmentSelect.empty();
-
-                        // Añadir los nuevos turnos disponibles al select
-                        $.each(data, function (index, appointment) {
-                            appointmentSelect.append($('<option>', {
-                                value: appointment.AppointmentId,
-                                text: appointment.AppointmentDate + ' - ' + appointment.AppointmentHour
-                            }));
-                        });
-                    }
-                });
-            });*/
 
             $("#specialty").change(function () {
                 var specialtyDoctor = $(this).val();
