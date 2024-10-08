@@ -82,14 +82,26 @@
                     success: function (response) {
                         var doctorSelect = $("#doctorSelect");
                         doctorSelect.empty();
-                        if (response.length > 0) {
+                        if(response.length == 1){
                             $.each(response, function (index, doctor) {
                                 doctorSelect.append($('<option>', {
                                     value: doctor.doctorId,
                                     text: doctor.name
                                 }));
                             });
-                            cleanOptions("#appointmentSelectDate", "#appointmentSelectHour");
+                            cleanOptions("#appointmentSelectDate", "#appointmentSelectHour")
+                            var doctor = doctorSelect.val();
+                            getAppointmentsDates(doctor);
+                        }
+                        if (response.length > 1) {
+                            $.each(response, function (index, doctor) {
+                                doctorSelect.append($('<option>', {
+                                    value: doctor.doctorId,
+                                    text: doctor.name
+                                }));
+                            });
+                            //cleanOptions("#appointmentSelectDate", "#appointmentSelectHour");
+
                         } else {
                             doctorSelect.append('<option>No doctors available</option>');
                         }
@@ -102,7 +114,7 @@
 
             function getAppointmentsDates(doctor) {
                 $.ajax({
-                    url: '@Url.Action("GetAppointmentsDates", "Appointments")',
+                    url: '@Url.Action("GetAppointmentDates", "Appointment")',
                     data: { doctorId: doctor },
                     success: function (response) {
                         var selectDate = $("#appointmentSelectDate");
