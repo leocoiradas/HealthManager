@@ -25,6 +25,7 @@
                     <option value="">Select a Date</option>
                 </select>
             </fieldset>
+
             <fieldset class="form-group">
                 <label for="appointmentSelect">Hour</label>
                 <select id="appointmentSelectHour" class="form-control">
@@ -52,6 +53,10 @@
                 var doctor = $(this).val();
                 getAppointmentsDates(doctor);
             });
+            $("#appointmentSelectDate").change(function(){
+                var selectedDate = $(this).val();
+                getAppointmentsHours(selectedDate);
+            })
 
 
             function getDoctorsBySpecialty(specialtyDoctor) {
@@ -105,8 +110,8 @@
 
             function getAppointmentsHours(day){
                 $.ajax({
-                    url: '@Url.Action("GetAppointmentsHours", "Appointments")',
-                    data: { day: day },
+                    url: '@Url.Action("GetAppointmentHours", "Appointment")',
+                    data: { day: day, doctorId: $("#doctorSelect").val() },
                     success: function (response) {
                         var selectHour = $("#appointmentSelectHour");
                         selectHour.empty();
