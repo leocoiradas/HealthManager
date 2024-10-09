@@ -77,7 +77,6 @@ namespace HealthManager.Controllers
             var appointmentHours = await _dbcontext.Appointments
                 .Where(a => a.DoctorId == doctorId && a.AppointmentDate.Equals(onlyDateFromDateTime) && a.Status == "Available" )
                 .OrderBy(a => a.AppointmentHour)
-                .Distinct()
                 .Select(a => a.AppointmentHour)
                 .ToListAsync();
             return Json(appointmentHours);
