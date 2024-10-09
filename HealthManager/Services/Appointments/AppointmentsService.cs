@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Globalization;
 using System.Numerics;
 using System.Reflection;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace HealthManager.Services.Appointments
 {
@@ -24,6 +26,8 @@ namespace HealthManager.Services.Appointments
             try
             {
                 int currentYear = DateTime.Now.Year;
+                int currentMonth = DateTime.Now.Month;
+                int daysInMonth = DateTime.DaysInMonth(currentYear, currentMonth);
 
                 var query = from Doctor in _context.Doctors
                             join AppointmentInfo in _context.AppointmentInfos
@@ -42,62 +46,48 @@ namespace HealthManager.Services.Appointments
 
                 var doctorsList = await query.ToListAsync();
 
-                /*Type workingDayType = typeof(HealthManager.Models.WorkingDay);
-
-                PropertyInfo[] properties = workingDayType.GetProperties();
-
-                var dayProperties = properties.Where(prop =>
-                    prop.Name == "Monday" || prop.Name == "Tuesday" || prop.Name == "Wednesday" ||
-                    prop.Name == "Thursday" || prop.Name == "Friday" || prop.Name == "Saturday" ||
-                    prop.Name == "Sunday"
-                );*/
-
-                List<string> daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+                
 
                 foreach (var doctor in doctorsList)
                 {
-                    int currentMonth = DateTime.Now.Month;
-                    int daysInMonth = System.DateTime.DaysInMonth(currentYear, currentMonth);
-
-
                     var doctorWorkingDays = doctor.workingDay;
                     for (int i = 1; i <= daysInMonth; i++)
                     {
                         int currentDay = i;
-                        foreach (var day in daysOfWeek)
+                        DateTime auxiDay = new DateTime(currentYear, currentMonth, currentDay);
+                        string dayName = auxiDay.ToString("dddd", new CultureInfo("en-US"));
+                        bool? isWorkingDay = (bool?)doctorWorkingDays.GetType().GetProperty(dayName)?.GetValue(doctorWorkingDays);
+              
+                        if (isWorkingDay.Equals(true))
                         {
-                            DateTime auxiDay = new DateTime(currentYear, currentMonth, i);
-                            string dayName = auxiDay.ToString("dddd", new CultureInfo("en-US"));
-                            if (dayName.Equals(day))
+                            var doctorConsultationStart = doctor.AppointmentStart;
+                            var doctorConsultationEnd = doctor.AppointmentEnd;
+                            var doctorConsultDuration = doctor.ConsultDuration;
+
+                            var hourCount = auxiDay.Add(doctorConsultationStart.ToTimeSpan());
+                            var limitHourAuxi = auxiDay.Add(doctorConsultationEnd.ToTimeSpan());
+
+                            var durationAuxi = doctorConsultDuration.Minute + doctorConsultDuration.Hour * 60;
+
+                            while (hourCount < limitHourAuxi)
                             {
-                                var doctorConsultationStart = doctor.AppointmentStart;
-                                var doctorConsultationEnd = doctor.AppointmentEnd;
-                                var doctorConsultDuration = doctor.ConsultDuration;
-
-                                var hourCount = auxiDay.Add(doctorConsultationStart.ToTimeSpan());
-                                var limitHourAuxi = auxiDay.Add(doctorConsultationEnd.ToTimeSpan());
-
-                                var durationAuxi = doctorConsultDuration.Minute + doctorConsultDuration.Hour * 60;
-
-                                while (hourCount < limitHourAuxi)
+                                Appointment newAppointment = new Appointment
                                 {
-                                    Appointment newAppointment = new Appointment
-                                    {
-                                        AppointmentId = new Guid(),
-                                        AppointmentDate = new DateOnly(currentYear, currentMonth, currentDay),
-                                        AppointmentHour = TimeOnly.FromDateTime(hourCount),
-                                        Status = "Available",
+                                    AppointmentId = new Guid(),
+                                    AppointmentDate = new DateOnly(currentYear, currentMonth, currentDay),
+                                    AppointmentHour = TimeOnly.FromDateTime(hourCount),
+                                    Status = "Available",
                                         
-                                        DoctorId = doctor.DoctorId,
+                                    DoctorId = doctor.DoctorId,
 
-                                    };
-                                    await _context.Appointments.AddAsync(newAppointment);
-                                    await _context.SaveChangesAsync();
+                                };
+                                await _context.Appointments.AddAsync(newAppointment);
+                                await _context.SaveChangesAsync();
 
-                                    hourCount = hourCount.AddMinutes(durationAuxi);
-                                }
+                                hourCount = hourCount.AddMinutes(durationAuxi);
                             }
                         }
+                        
                     }
                 }
                 await transaction.CommitAsync();
