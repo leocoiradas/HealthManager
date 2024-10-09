@@ -70,11 +70,14 @@ namespace HealthManager.Controllers
             return Json(availableAppointments);
         }
 
-        public async Task <JsonResult> GetAppointmentHours(DateOnly day, int doctorId)
+        public async Task <JsonResult> GetAppointmentHours(string day, int doctorId)
         {
+            var dateFromString = DateTime.Parse(day);
+            var onlyDateFromDateTime = DateOnly.FromDateTime(dateFromString);
             var appointmentHours = await _dbcontext.Appointments
-                .Where(a => a.DoctorId == doctorId && a.AppointmentDate == day && a.Status == "Available" )
+                .Where(a => a.DoctorId == doctorId && a.AppointmentDate.Equals(onlyDateFromDateTime) && a.Status == "Available" )
                 .OrderBy(a => a.AppointmentHour)
+                .Distinct()
                 .Select(a => a.AppointmentHour)
                 .ToListAsync();
             return Json(appointmentHours);
