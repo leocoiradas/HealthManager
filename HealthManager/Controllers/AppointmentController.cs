@@ -64,7 +64,7 @@ namespace HealthManager.Controllers
             var currentDay = DateTime.Now.Day;
             var availableAppointments = await _dbcontext.Appointments
                 .Where(a => a.DoctorId == doctorId && a.AppointmentDate.Month == currentMonth && a.AppointmentDate.Day > currentDay && a.Status == "Available")
-                .Select(a => a.AppointmentDate.ToString("dd-MM-yyyy"))
+                .Select(a => a.AppointmentDate.ToString("dd/MM/yyyy"))
                 .Distinct()
                 .ToListAsync();
             return Json(availableAppointments);
@@ -77,7 +77,7 @@ namespace HealthManager.Controllers
             var appointmentHours = await _dbcontext.Appointments
                 .Where(a => a.DoctorId == doctorId && a.AppointmentDate.Equals(onlyDateFromDateTime) && a.Status == "Available" )
                 .OrderBy(a => a.AppointmentHour)
-                .Select(a => a.AppointmentHour)
+                .Select(a => a.AppointmentHour.ToString("HH:mm"))
                 .ToListAsync();
             return Json(appointmentHours);
         }
