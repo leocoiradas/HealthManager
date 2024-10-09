@@ -60,7 +60,7 @@
             })
 
 
-            function getDoctorsBySpecialty(specialtyDoctor) {
+            function getDoctorsBySpecialty(specialtyDoctor){
                 $.ajax({
                     url: '@Url.Action("GetDoctorsBySpecialty", "Doctor")',
                     data: { specialty: specialtyDoctor },
@@ -103,8 +103,9 @@
                                     text: date
                                 }))
                             })
-                            cleanOptions("#appointmentSelectHour")
-
+                            cleanOptions("#appointmentSelectHour");
+                            var firstDateInCollection = selectDate.val();
+                            getAppointmentsHours(firstDateInCollection, doctor);
                         }
                     }
                 })
