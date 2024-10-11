@@ -2,6 +2,7 @@ using HealthManager.Models;
 using HealthManager.Services.Appointments;
 using HealthManager.Services.Authentication;
 using HealthManager.Services.JWTService;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -24,7 +25,7 @@ builder.Services.AddScoped<IAppointments, AppointmentsService>();
 
 //Configuración de autenticación
 
-var tokenKey = builder.Configuration.GetSection("JWT").GetSection("secret-key").ToString();
+/*var tokenKey = builder.Configuration.GetSection("JWT").GetSection("secret-key").ToString();
 
 builder.Services.AddAuthentication(x =>
 {
@@ -56,6 +57,13 @@ builder.Services.AddAuthentication(x =>
             return Task.CompletedTask;
         }
     };
+});*/
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+.AddCookie(option =>
+{
+    option.LoginPath = "/Authorize/Login";
+    option.ExpireTimeSpan = TimeSpan.FromDays(7);
 });
 
 var app = builder.Build();
