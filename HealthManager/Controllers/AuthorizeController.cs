@@ -1,9 +1,12 @@
 ﻿using HealthManager.Models;
 using HealthManager.Models.DTO;
 using HealthManager.Services.Authentication;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
+using System.Security.Claims;
 
 namespace HealthManager.Controllers
 {
@@ -19,19 +22,23 @@ namespace HealthManager.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            var existingCookie = ControllerContext.HttpContext.Request.Cookies["Token"];
+            /*var existingCookie = ControllerContext.HttpContext.Request.Cookies["Token"];
             if (existingCookie != null)
             {
-                return RedirectToAction("Appointment", "Index");
+                return RedirectToAction("ReserveAppointment", "Appointment");
+            }*/
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("ReserveAppointment", "Appointment");
             }
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(AuthorizeRequest request)
+        public async IActionResult Login(AuthorizeRequest request)
         {
-            if (ModelState.IsValid)
+           /* if (ModelState.IsValid)
             {
                 Patient patientSearch = _dbcontext.Patients.FirstOrDefault(p => p.Email == request.email);
                 if (patientSearch == null || !BCrypt.Net.BCrypt.Verify(request.password, patientSearch.Password))
@@ -52,8 +59,37 @@ namespace HealthManager.Controllers
                     });
                 return RedirectToAction("Appointments", "Index");
             }
-                return View(request);
+                return View(request);*/
                 
+            if (ModelState.IsValid)
+            {
+                Patient patientAccount = await  _dbcontext.FindAsync<Patient>(request.email);
+
+                if (patientAccount == null)
+                {
+
+                }
+                if (!BCrypt.Net.BCrypt.Verify(request.password, patientAccount.Password))
+                {
+
+                }
+                List <Claim> claims = new List<Claim>()
+                {
+                    new Claim(ClaimTypes.NameIdentifier, patientAccount.PatientId.ToString()),
+                    new Claim(ClaimTypes.Name, patientAccount.Name),
+                    new Claim(ClaimTypes.Surname, patientAccount.Surname),
+                    new Claim(ClaimTypes.Email, patientAccount.Email)
+                };
+                ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                AuthenticationProperties properties = new AuthenticationProperties()
+                {
+                    AllowRefresh = true,
+                    IsPersistent = true,
+
+                };
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity), properties);
+                return RedirectToAction("MyAppointments", "Appointment");
+            }
 
             
             
@@ -62,10 +98,14 @@ namespace HealthManager.Controllers
         [HttpGet]
         public IActionResult Register() 
         {
-            var existingCookie = ControllerContext.HttpContext.Request.Cookies["Token"];
+            /*var existingCookie = ControllerContext.HttpContext.Request.Cookies["Token"];
             if (existingCookie != null)
             {
                 return RedirectToAction("Appointment", "Index");
+            }*/
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("ReserveAppointment", "Appointment");
             }
             return View();
         }
@@ -102,6 +142,11 @@ namespace HealthManager.Controllers
             }
             ModelState.AddModelError(string.Empty, "An error occurred while processing your request. Please try again.");
             return View(patientData);
+        }
+        public async Task <IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login");
         }
     }
 }
