@@ -1,9 +1,11 @@
 ﻿using HealthManager.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace HealthManager.Controllers
 {
+    [Authorize(Roles = "Patient")]
     public class PatientDashboardController : Controller
     {
         private readonly HealthManagerContext _dbcontext;
