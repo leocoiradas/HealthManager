@@ -63,14 +63,16 @@ namespace HealthManager.Controllers
                 
             if (ModelState.IsValid)
             {
-                Patient patientAccount = await  _dbcontext.FindAsync<Patient>(request.email);
+                Patient patientAccount = _dbcontext.Patients.FirstOrDefault(x => x.Email == request.email);
 
                 if (patientAccount == null)
                 {
+                    ViewData["AuthorizeResult"] = "Apparently there's no account associated to the email provided.";
                     return View(request);
                 }
                 if (!BCrypt.Net.BCrypt.Verify(request.password, patientAccount.Password))
                 {
+                    ViewData["AuthorizeResult"] = "Invalid credentials.";
                     return View(request);
                 }
                 List <Claim> claims = new List<Claim>()
@@ -89,10 +91,11 @@ namespace HealthManager.Controllers
 
                 };
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity), properties);
-                return RedirectToAction("MyAppointments", "Appointment");
+                return RedirectToAction("MyAppointments", "PatientDashboard");
             }
             else
             {
+                ViewData["AuthorizeResult"] = "There was an error during the process of authentication. We suggest you try again later.";
                 return View(request);
             }
 
