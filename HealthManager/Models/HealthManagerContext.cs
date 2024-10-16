@@ -84,6 +84,10 @@ public partial class HealthManagerContext : DbContext
             entity.Property(e => e.Password)
                 .HasMaxLength(200)
                 .IsUnicode(false);
+            entity.Property(e => e.Role)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasDefaultValue("Doctor");
             entity.Property(e => e.Specialty)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -130,6 +134,10 @@ public partial class HealthManagerContext : DbContext
             entity.Property(e => e.Password)
                 .HasMaxLength(200)
                 .IsUnicode(false);
+            entity.Property(e => e.Role)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasDefaultValue("Patient");
             entity.Property(e => e.Surname)
                 .HasMaxLength(50)
                 .IsUnicode(false);
