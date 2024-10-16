@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace HealthManager.Models;
@@ -18,6 +19,8 @@ public partial class Doctor
     public string? Email { get; set; }
     [Required, RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{12,}$")]
     public string? Password { get; set; }
+    [Required, DefaultValue("Doctor"), AllowedValues("Doctor")]
+    public string Role { get; set; } = null!;
 
     public virtual ICollection<AppointmentInfo> AppointmentInfos { get; set; } = new List<AppointmentInfo>();
 
