@@ -10,6 +10,10 @@
             <div class="d-flex w-100">
                 <label asp-for="email" class="flex-grow-1">Email</label>
                 <span asp-validation-for="email" class="text-danger"></span>
+                @if (ViewBag.AuthorizeResult != null)
+                {
+                    <span class="text-danger">@ViewBag.AuthorizeResult</span>
+                }
             </div>
             <input asp-for="email" id="email" type="email" class="form-control" />
         </fieldset>
