@@ -36,7 +36,7 @@ namespace HealthManager.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async IActionResult Login(AuthorizeRequest request)
+        public async Task <IActionResult> Login(AuthorizeRequest request)
         {
            /* if (ModelState.IsValid)
             {
@@ -67,18 +67,19 @@ namespace HealthManager.Controllers
 
                 if (patientAccount == null)
                 {
-
+                    return View(request);
                 }
                 if (!BCrypt.Net.BCrypt.Verify(request.password, patientAccount.Password))
                 {
-
+                    return View(request);
                 }
                 List <Claim> claims = new List<Claim>()
                 {
                     new Claim(ClaimTypes.NameIdentifier, patientAccount.PatientId.ToString()),
                     new Claim(ClaimTypes.Name, patientAccount.Name),
                     new Claim(ClaimTypes.Surname, patientAccount.Surname),
-                    new Claim(ClaimTypes.Email, patientAccount.Email)
+                    new Claim(ClaimTypes.Email, patientAccount.Email),
+                    new Claim(ClaimTypes.Role, patientAccount.Role)
                 };
                 ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 AuthenticationProperties properties = new AuthenticationProperties()
@@ -89,6 +90,10 @@ namespace HealthManager.Controllers
                 };
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity), properties);
                 return RedirectToAction("MyAppointments", "Appointment");
+            }
+            else
+            {
+                return View(request);
             }
 
             
@@ -114,34 +119,44 @@ namespace HealthManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task <IActionResult> Register(PatientViewModel patientData)
         {
-            if (ModelState.IsValid) 
+            try
             {
-                Patient checkPatientExists = await _dbcontext.Patients.FindAsync(patientData.Email);
-                if (checkPatientExists == null)
+                if (ModelState.IsValid)
                 {
-                    Patient newPatient = new Patient
+                    Patient checkPatientExists = _dbcontext.Patients.FirstOrDefault(x => x.Email == patientData.Email);
+                    if (checkPatientExists == null)
                     {
-                        Name= patientData.Name,
-                        Surname= patientData.Surname,
-                        Birthdate = patientData.Birthdate,
-                        Email = patientData.Email,
-                        Password = BCrypt.Net.BCrypt.HashPassword(patientData.Password),
-                        Dni = patientData.Dni,
-                    };
-                    await _dbcontext.Patients.AddAsync(newPatient);
-                    await _dbcontext.SaveChangesAsync();
-                    return RedirectToAction("Login");
+                        Patient newPatient = new Patient
+                        {
+                            Name = patientData.Name,
+                            Surname = patientData.Surname,
+                            Birthdate = patientData.Birthdate,
+                            Email = patientData.Email,
+                            Password = BCrypt.Net.BCrypt.HashPassword(patientData.Password),
+                            Dni = patientData.Dni,
+                        };
+                        await _dbcontext.Patients.AddAsync(newPatient);
+                        await _dbcontext.SaveChangesAsync();
+                        return RedirectToAction("Login");
+
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Email", "A patient with this email already exists.");
+                        return View(patientData);
+                    }
 
                 }
-                else 
-                {
-                    ModelState.AddModelError("Email", "A patient with this email already exists.");
-                    return View(patientData);
-                }
-
+                
+                return View(patientData);
             }
-            ModelState.AddModelError(string.Empty, "An error occurred while processing your request. Please try again.");
-            return View(patientData);
+            catch (Exception error)
+            {
+
+                ModelState.AddModelError(string.Empty, "An error occurred while processing your request. Please try again.");
+                Console.WriteLine(error);
+                return View(patientData);
+            }
         }
         public async Task <IActionResult> Logout()
         {
