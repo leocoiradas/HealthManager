@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace HealthManager.Models;
@@ -23,6 +24,8 @@ public partial class Patient
     public string Password { get; set; } = null!;
     [Required]
     public int Dni { get; set; }
+    [DefaultValue("Patient"), AllowedValues("Patient")]
+    public string Role { get; set; } = null!;
 
     public virtual ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
 
