@@ -67,12 +67,12 @@ namespace HealthManager.Controllers
 
                 if (patientAccount == null)
                 {
-                    ViewData["AuthorizeResult"] = "Apparently there's no account associated to the email provided.";
+                    ViewData["AuthorizeResult"] = "* There's no account associated to the provided email.";
                     return View(request);
                 }
                 if (!BCrypt.Net.BCrypt.Verify(request.password, patientAccount.Password))
                 {
-                    ViewData["AuthorizeResult"] = "Invalid credentials.";
+                    ViewData["AuthorizeResult"] = "* Invalid credentials.";
                     return View(request);
                 }
                 List <Claim> claims = new List<Claim>()
@@ -95,7 +95,7 @@ namespace HealthManager.Controllers
             }
             else
             {
-                ViewData["AuthorizeResult"] = "There was an error during the process of authentication. We suggest you try again later.";
+                ViewData["AuthorizeResult"] = "* There was an error during the process of authentication. We suggest you try again later.";
                 return View(request);
             }
 
@@ -145,7 +145,7 @@ namespace HealthManager.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("Email", "A patient with this email already exists.");
+                        ModelState.AddModelError("Email", "* The provided email is already in use.");
                         return View(patientData);
                     }
 
@@ -156,7 +156,7 @@ namespace HealthManager.Controllers
             catch (Exception error)
             {
 
-                ModelState.AddModelError(string.Empty, "An error occurred while processing your request. Please try again.");
+                ModelState.AddModelError(string.Empty, "* An error occurred while processing your request. Please try again.");
                 Console.WriteLine(error);
                 return View(patientData);
             }
