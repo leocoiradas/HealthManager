@@ -166,5 +166,55 @@ namespace HealthManager.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login");
         }
+        [HttpPost]
+        public async Task<IActionResult> AdminLogin(AuthorizeRequest request)
+        {
+            var employee = _dbcontext.Doctors.Where(d => d.Email == request.email).FirstOrDefault(); 
+            var admin = _dbcontext.Doctors.Where(d => d.Email == "hola123").FirstOrDefault();
+            
+           if (employee == null && admin != null)
+            {
+                if (BCrypt.Net.BCrypt.Verify(request.password, admin.Password))
+                {
+                    string adminToken = _jwtservice.GenerateToken(employee.Name, admin.Email);
+                    HttpContext.Response.Cookies.Append("Token", adminToken,
+                        new CookieOptions
+                        {
+                            Path = "/",
+                            Expires = DateTime.UtcNow.AddDays(1),
+                            HttpOnly = true,
+                            Secure = true,
+                            IsEssential = true,
+                            SameSite = SameSiteMode.None,
+                        });
+                    return RedirectToAction("Admin", "AppointmentsManager");
+                    
+                }
+            } else if (employee != null && admin == null)
+            {
+                if (BCrypt.Net.BCrypt.Verify(request.password, employee.Password))
+                {
+                    string employeeToken = _jwtservice.GenerateToken(employee.Name, admin.Email);
+                    HttpContext.Response.Cookies.Append("Token", employeeToken,
+                        new CookieOptions
+                        {
+                            Path = "/",
+                            Expires = DateTime.UtcNow.AddDays(1),
+                            HttpOnly = true,
+                            Secure = true,
+                            IsEssential = true,
+                            SameSite = SameSiteMode.None,
+                        });
+                    return RedirectToAction("Doctor", "Index");
+                }
+            }
+            
+            ModelState.AddModelError("Credentials", "The credentials are invalid. Please try again.");
+            return View(request);
+            
+           
+           
+            
+        }
     }
 }
