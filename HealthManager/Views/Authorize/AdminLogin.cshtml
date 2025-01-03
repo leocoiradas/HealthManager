@@ -1,0 +1,27 @@
+@model HealthManager.Models.DTO.AuthorizeRequest;
+@{
+    ViewBag.Title = "Admin Login";
+}
+
+<main>
+    <section>
+        <form method="post" asp-controller="Authorize" asp-action="AdminLogin">
+            <h2>Admin Login</h2>
+            <fieldset>
+                <div class="d-flex w-100">
+                    <label asp-for="email" class="flex-grow-1">Email</label>
+                    <span asp-validation-for="email" class="text-danger"></span>
+                </div>
+                <input asp-for="email" id="email" type="email" class="form-control" />
+            </fieldset>
+            <fieldset>
+                <div class="d-flex w-100">
+                    <label asp-for="password" class="flex-grow-1">Password</label>
+                    <span asp-validation-for="password" class="text-danger"></span>
+                </div>
+                <input asp-for="password" id="password" type="password" class="form-control" />
+            </fieldset>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </section>
+</main>
