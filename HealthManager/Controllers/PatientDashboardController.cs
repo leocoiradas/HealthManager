@@ -38,9 +38,32 @@ namespace HealthManager.Controllers
                  .ToListAsync();*/
             var patientAppointments = await _dbcontext.Appointments
                  .Where(p => p.Status == "Reserved")
+                 .Where(p => p.PatientId == 123)
                  .ToListAsync();
 
             return View(patientAppointments);
+        }
+        
+        [HttpPut]
+        public async Task <IActionResult> CancelAppointment(Appointment appointment)
+        {
+            var databaseAppointment = await _dbcontext.Appointments
+                .Where(p => p.AppointmentId == appointment.AppointmentId)
+                .FirstOrDefaultAsync();
+            var requestDate = DateOnly.FromDateTime(DateTime.Now);
+            if (databaseAppointment.AppointmentDate.CompareTo(requestDate) < 0)
+            {
+                databaseAppointment.Status = "Available";
+                databaseAppointment.PatientId = null;
+                _dbcontext.Appointments.Update(databaseAppointment);
+                await _dbcontext.SaveChangesAsync();
+                return RedirectToAction("MyAppointments" , "PatientDashboard");
+            }
+            else
+            {
+                ModelState.AddModelError("CancelError", "The appoinment has to be cancelled before the appointment date.");
+                return RedirectToAction("MyAppointments" , "PatientDashboard");
+            }
         }
 
         public async Task <IActionResult> MedicalRegisters()
