@@ -9,7 +9,7 @@ namespace HealthManager.Models.DTO
         [Required, MaxLength(100), MinLength(2)]
         public string? Surname { get; set; }
         [Required, MaxLength(100), MinLength(2)]
-        public string Specialty { get; set; }
+        public int Specialty { get; set; }
         [Required, EmailAddress]
         public string Email { get; set; }
         [Required]
