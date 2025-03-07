@@ -133,7 +133,7 @@ namespace HealthManager.Controllers
                         {
                             Name = patientData.Name,
                             Surname = patientData.Surname,
-                            Birthdate = patientData.Birthdate,
+                            BirthDate = patientData.Birthdate,
                             Email = patientData.Email,
                             Password = BCrypt.Net.BCrypt.HashPassword(patientData.Password),
                             Dni = patientData.Dni,
