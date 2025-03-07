@@ -42,6 +42,21 @@ namespace HealthManager.Controllers
         {
             if (ModelState.IsValid)
             {
+                var existingAppointment = await _dbcontext.Appointments
+                    .Where(x => x.PatientId == appointmentRequest.PatientId 
+                                && x.DoctorId == appointmentRequest.DoctorId 
+                                && x.AppointmentDate.Month == appointmentRequest.AppointmentDate.Month)
+                    .FirstOrDefaultAsync();
+
+                if (existingAppointment != null && existingAppointment.AppointmentDate.CompareTo(appointmentRequest.AppointmentDate) < 28)
+                {
+                    ViewData.ModelState
+                        .AddModelError("Appointment",
+                            "There's already an existing appointment for this patient. " +
+                            "If you want to set another appointment, please cancel the existing one first");
+                    return View(appointmentRequest);
+                }
+                
                 Appointment reserveAppointment = await _dbcontext.Appointments.FindAsync(appointmentRequest.AppointmentId);
                 if (reserveAppointment != null)
                 {
