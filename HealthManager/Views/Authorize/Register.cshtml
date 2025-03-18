@@ -15,8 +15,8 @@
 </style>
 }
 
-<section class="w-100 d-flex flex-column justify-content-center align-items-center gap-2">
-   <form method="post" asp-controller="Authorize" asp-action="Register" class="w-50 d-flex flex-column justify-content-center align-items-center gap-2">
+<section class="w-100 h-100 d-flex flex-column justify-content-center align-items-center gap-2">
+   <form method="post" asp-controller="Authorize" asp-action="Register" class="w-50 d-flex flex-column justify-content-center align-items-center gap-2 p-3">
         <h2>Register</h2>
 
         <!--Name-->
@@ -80,6 +80,36 @@
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
             <input type="password" asp-for="ConfirmPassword" class="form-control" />
+        </fieldset>
+
+        <fieldset class="w-75 d-flex flex-column gap-1">
+            <div class="w-100 d-flex">
+                <label asp-for="Gender" class="flex-grow-1">Confirm Password</label>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+            <select asp-for="Gender" class="form-control">
+                <option name="F" value="F">F</option>
+                <option name="m" value="M">M</option>
+            </select>
+        </fieldset>
+
+        <fieldset class="w-75 d-flex flex-column gap-1">
+            <div class="w-100 d-flex">
+                <label asp-for="Sex" class="flex-grow-1">Confirm Password</label>
+                <span asp-validation-for="Sex" class="text-danger"></span>
+            </div>
+            <select asp-for="Sex" class="form-control">
+                <option name="F" value="F">F</option>
+                <option name="m" value="M">M</option>
+            </select>
+        </fieldset>
+
+        <fieldset class="w-75 d-flex flex-column gap-1">
+            <div class="w-100 d-flex">
+                <label asp-for="PhoneNumber" class="flex-grow-1"></label>
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <input type="number" asp-for="PhoneNumber" class="form-control" />
         </fieldset>
 
         <!--Submit-->
