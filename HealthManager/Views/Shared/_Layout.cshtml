@@ -9,53 +9,44 @@
     <link rel="stylesheet" href="~/HealthManager.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">HealthManager</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+<body class="d-flex flex-column vh-100 mb-0">
+    <header class="shadow d-flex flex-column justify-content-center">
+        
+        @if ((string)@ViewData["Title"] == "Home")
+        {
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light">
+                <div class="container-fluid d-flex justify-content-between align-items-baseline">
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">HealthManager</a>
+                    <div>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Authorize" asp-action="Login">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Authorize" asp-action="Register">Register</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Doctor" asp-action="CreateDoctor">Create Doctor</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="PatientDashboard" asp-action="MyAppointments">MyAppointments</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Doctor" asp-action="Doctors">Doctors</a>
-                        </li>
-                        
-                    </ul>
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                            <ul class="navbar-nav flex-grow-1 d-flex gap-2">
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark border border-2 rounded px-3 register shadow-sm text-center" asp-area="" asp-controller="Authorize" asp-action="Register">Register</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark border border-2 rounded px-3 login shadow-sm text-center" asp-area="" asp-controller="Authorize" asp-action="Login">Login</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
+        }
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+    <div class="flex-grow-1 d-flex justify-content-center align-items-center">
+        <main role="main" class="pb-3 h-75 w-75">
             @RenderBody()
         </main>
     </div>
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            
+            <p>Developed by Alan Coiradas</p>
+            <p>All rights reserved.</p>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -64,3 +55,28 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+<style>
+    header{
+        background-color: #51E6E2;
+        min-height: 10dvh;
+    }
+    footer{
+        background-color: #51E6CB;
+        position: static !important;
+    }
+    .login{
+        background-color: #37DBA0;
+        border-style: solid;
+        border-color: #37DBA0 !important;
+    }
+    .register{
+        border-style: solid;
+        border-color: #37ABDB !important;
+    }
+    .register:hover, .login:hover{
+            background-color: #37ABDB;
+            border-color: #37ABDB !important;
+    }
+    
+</style>
