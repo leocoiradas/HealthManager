@@ -11,21 +11,21 @@
 </head>
 <body>
     <div class="d-flex content">
-        <nav class="d-flex flex-column justify-content-end gap-3 w-25 mh-100 bg-info bg-gradient shadow-sm p-3">
+        <nav class="d-flex flex-column justify-content-end gap-3 rounded-end mh-100 bg-info bg-gradient shadow p-3">
             <ul class="navbar-nav p-3 fs-5 gap-1">
-                <li class="nav-item item">
+                <li class="nav-item item rounded-2">
                     <a class="nav-link" asp-area="" asp-controller="Appointment" asp-action="ReserveAppointment">Reserve Appointments</a>
                 </li>
                 <li><hr class="hr" /></li>
-                <li class="nav-item item">
+                <li class="nav-item item rounded-2">
                     <a class="nav-link" asp-area="" asp-controller="PatientDashboard" asp-action="MyAppointments">My Appointments</a>
                 </li>
                 <li><hr class="hr" /></li>
-                <li class="nav-item item">
+                <li class="nav-item item rounded-2">
                     <a class="nav-link" asp-area="" asp-controller="PatientDashboard" asp-action="MedicalRegisters">Medical Registers</a>
                 </li>
                 <li><hr class="hr" /></li>
-                <li class="nav-item logout">
+                <li class="nav-item logout rounded-2">
                     <a class="nav-link" asp-area="" asp-controller="Authorize" asp-action="Logout">Logout</a>
                 </li>
             </ul>
@@ -75,10 +75,13 @@
         height: 100vh !important;
 
     }
+    nav{
+        width: 20vw;
+    }
 
     html, body {
         margin: 0;
         padding: 0;
-        overflow-x: hidden; /* Evita el scroll horizontal si ocurre */
+        overflow-x: hidden;
     }
 </style>
