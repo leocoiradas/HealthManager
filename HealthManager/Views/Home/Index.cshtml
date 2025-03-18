@@ -1,8 +1,29 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="w-100 h-100 d-flex justify-content-center align-items-center p-4">
+    <div class="w-75 d-flex flex-column justify-content-center align-items-start">
+        <h2 class="mb-4">The platform that helps you to organize your medical appointments.</h2>
+        <p>
+            Welcome to Healthmanager, the digital platform that puts health at your fingertips. With our solution, managing and booking medical appointments becomes a fast, simple, and secure experience. Designed with your well-being in mind, our intuitive interface guides you step by step to connect with trusted health professionals, adapting to your lifestyle.
+        </p>
+        <p>
+            At Healthmanager, we believe that healthcare should never be complicated. Our commitment is to facilitate access to quality health services, allowing you to focus on what truly matters: your health and that of your family.
+        </p>
+        <p>
+            Discover a new way to manage your appointments and experience the future of healthcare in a modern and user-friendly environment.
+        </p>
+       
+    </div>
+    <div class="image-container rounded-circle shadow-sm">
+        <img src="~/Media/Images/reserve-appointment.jpg" class="w-100 h-100 object-fit-cover rounded-circle" />
+    </div>
+</section>
+
+<style>
+    .image-container{
+        width: 350px;
+        height: 350px;
+    }
+</style>
