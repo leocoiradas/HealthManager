@@ -1,0 +1,33 @@
+@model System.Collections.Generic.List<HealthManager.Models.Appointment>
+
+@{
+    ViewBag.Title = "Appointments for today";
+    Layout = "_Layout";
+}
+
+<main>
+    <section>
+        <h2>Patients for @{ DateOnly.FromDateTime(DateTime.Now); }</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Hour</th>
+                <th>Patient Name</th>
+                <th>Age</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach(var appointment in Model)
+            {
+                <tr>
+                    <td>@appointment.AppointmentHour</td>
+                    <td>{@appointment.Patient.Name + @appointment.Patient.Surname}</td>
+                    <td>{@appointment.Patient.BirthDate.Year - @DateTime.Now.Year}</td>
+                    <td><a>Medical Record</a></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </section>
+</main>

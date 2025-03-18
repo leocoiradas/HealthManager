@@ -1,20 +1,21 @@
-﻿@model HealthManager.Models.Appointment;
+﻿@model HealthManager.Models.DTO.AppointmentViewModel;
 @{
     ViewData["Title"] = "Reserve Appointment";
     Layout = "_PatientDashboard";
 }
 
 <section class="w-100 d-flex justify-content-center align-items-center mt-5">
-    <form asp-controller="Appointments" asp-action="ReserveAppointment" class="w-50 d-flex flex-column gap-3">
+    <form method="post" asp-controller="Appointment" asp-action="ReserveAppointment" class="w-50 d-flex flex-column gap-3">
         <fieldset class="form-group">
             <label>Specialty</label>
-            <select id="specialty" class="form-control">
+            <select id="specialty" class="form-control" asp-items="ViewBag.Specialties">
                 <option>Select a Specialty</option>
             </select>
         </fieldset>
+
         <fieldset class="form-group">
             <label for="doctorSelect">Seleccionar Médico</label>
-            <select id="doctorSelect" class="form-control" asp-items="ViewBag.Doctors"></select>
+            <select id="doctorSelect" class="form-control"></select>
         </fieldset>
 
         <div class="d-flex align-items-center justify-content-between">
@@ -24,6 +25,7 @@
                     <option value="">Select a Date</option>
                 </select>
             </fieldset>
+
             <fieldset class="form-group">
                 <label for="appointmentSelect">Hour</label>
                 <select id="appointmentSelectHour" class="form-control">
@@ -41,99 +43,92 @@
 
 @section Scripts {
     <script>
-        $(document).ready(function() {
-            $('#doctorSelect').change(function() {
-                var doctorId = $(this).val();
+        $(document).ready(function () {
 
-                // Realizar una petición AJAX para obtener los turnos disponibles
+            $("#specialty").change(function () {
+                var specialtyDoctor = $(this).val();
+                getDoctorsBySpecialty(specialtyDoctor);
+            });
+            $("#doctorSelect").change(function () {
+                var doctor = $(this).val();
+                getAppointmentsDates(doctor);
+            });
+            $("#appointmentSelectDate").change(function(){
+                var selectedDate = $(this).val();
+                var doctorId = $("#doctorSelect").val()
+                getAppointmentsHours(selectedDate, doctorId)
+            })
+
+
+            function getDoctorsBySpecialty(specialtyDoctor){
                 $.ajax({
-                    url: '@Url.Action("GetAvailableAppointments", "Appointments")',
-                    data: { doctorId: doctorId },
-                    success: function(data) {
-                        var appointmentSelect = $('#appointmentSelect');
-                        appointmentSelect.empty();
-
-                        // Añadir los nuevos turnos disponibles al select
-                        $.each(data, function(index, appointment) {
-                            appointmentSelect.append($('<option>', {
-                                value: appointment.AppointmentId,
-                                text: appointment.AppointmentDate + ' - ' + appointment.AppointmentHour
-                            }));
-                        });
+                    url: '@Url.Action("GetDoctorsBySpecialty", "Doctor")',
+                    data: { specialty: specialtyDoctor },
+                    success: function (response) {
+                        var doctorSelect = $("#doctorSelect");
+                        doctorSelect.empty();
+                        if(response){
+                            $.each(response, function (index, doctor) {
+                                doctorSelect.append($('<option>', {
+                                    value: doctor.doctorId,
+                                    text: doctor.name
+                                }));
+                            });
+                            if (response.length == 1){
+                                cleanOptions("#appointmentSelectDate", "#appointmentSelectHour")
+                                var doctor = doctorSelect.val();
+                                getAppointmentsDates(doctor);
+                            }
+                        } else {
+                            doctorSelect.append('<option>No doctors available</option>');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('AJAX Error:', status, error);
                     }
                 });
-            });
+            }
 
-                $("#specialty").change(function(){
-                    var specialtyDoctor = $(this).val();
-                    getDoctorsBySpecialty(specialtyDoctor);
-                });
-                $("#doctorSelect").change(function(){
-                    var doctor = $(this).val();
-                    getAppointmentsDates(doctor);
-                })
-
-                function getDoctorsBySpecialty(specialtyDoctor){
-                        $.ajax({
-                            url: '@Url.Action("GetDoctorsBySpecialty", "Doctor")',
-                            data: {specialty: specialtyDoctor},
-                            success: function(response){
-                                var doctorSelect = $("#doctorSelect");
-                                doctorSelect.empty();
-                                if(response.length > 0){
-                                    $.each(response, function(index, doctor){
-                                    doctorSelect.append($('<option>', {
-                                        value: doctor.doctorId,
-                                        text: doctor.Name
-                                    }))
-                                    })
-                                    cleanOptions("#appointmentSelectDate", "#appointmentSelectHour")
-                                } else {
-                                        doctorSelect.append('<option>No doctors available</option>')
-                                }
-                                
-                            }
-                        })
-                }
-                function getAppointmentsDates(doctor){
-                    $.ajax({
-                        url: '@Url.Action("GetAppointmentsDates", "Appointments")',
-                        data: {doctorId: doctor},
-                        success: function(response){
-                            var selectDate = $("#appointmentSelectDate");
-                            selectDate.empty();
-                            if (response.length > 0){
-                                $.each(response, function(index, date){
-                                    selectDate.append($('<option>', {
-                                        value: date,
-                                        text: date
-                                    }))
-                                })
-                                    cleanOptions("#appointmentSelectHour")
-                            }
+            function getAppointmentsDates(doctor) {
+                $.ajax({
+                    url: '@Url.Action("GetAppointmentDates", "Appointment")',
+                    data: { doctorId: doctor },
+                    success: function (response) {
+                        var selectDate = $("#appointmentSelectDate");
+                        selectDate.empty();
+                        if (response.length > 0) {
+                            $.each(response, function (index, date) {
+                                selectDate.append($('<option>', {
+                                    value: date,
+                                    text: date
+                                }))
+                            })
+                            cleanOptions("#appointmentSelectHour");
+                            var firstDateInCollection = selectDate.val();
+                            getAppointmentsHours(firstDateInCollection, doctor);
                         }
-                    })
-                }
+                    }
+                })
+            }
 
-                function getAppointmentsHours(day){
-                    $.ajax({
-                        url: '@Url.Action("GetAppointmentsHours", "Appointments")',
-                        data: { day: day },
-                        success: function(response){
-                            var selectHour = $("#appointmentSelectHour");
-                            selectHour.empty();
-                            if (response.length > 0){
-                                $.each(response, function (index, hour){
+            function getAppointmentsHours(day, doctorId){
+                $.ajax({
+                    url: '@Url.Action("GetAppointmentHours", "Appointment")',
+                    data: { day: day, doctorId: doctorId },
+                    success: function (response) {
+                        var selectHour = $("#appointmentSelectHour");
+                        selectHour.empty();
+                        if (response.length > 0){
+                            $.each(response, function (index, hour) {
                                 selectHour.append($('<option>', {
                                     value: hour,
                                     text: hour
-                                })
-                                })
-
-                            }
-                        }
-                    })
-                }
+                                }));
+                            })
+                        };
+                    }
+                });
+            }
 
                 function cleanOptions(){
                     for (let i = 0; i < arguments.length; i++){

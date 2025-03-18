@@ -32,13 +32,31 @@ namespace HealthManager.Controllers
                 })
                 .ToListAsync();
             ViewData["AppointmentsAvailable"] = new SelectList(appointmentsList, "AppointmentId", "AppointmentTime");
+
+            var specialties = await _dbcontext.Doctors.Select(d => d.Specialty).Distinct().ToListAsync();
+            ViewData["Specialties"] = new SelectList(specialties, specialties);
             return View();
         }
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> ReserveAppointment(AppointmentViewModel appointmentRequest)
         {
             if (ModelState.IsValid)
             {
+                var existingAppointment = await _dbcontext.Appointments
+                    .Where(x => x.PatientId == appointmentRequest.PatientId 
+                                && x.DoctorId == appointmentRequest.DoctorId 
+                                && x.AppointmentDate.Month == appointmentRequest.AppointmentDate.Month)
+                    .FirstOrDefaultAsync();
+
+                if (existingAppointment != null && existingAppointment.AppointmentDate.CompareTo(appointmentRequest.AppointmentDate) < 28)
+                {
+                    ViewData.ModelState
+                        .AddModelError("Appointment",
+                            "There's already an existing appointment for this patient. " +
+                            "If you want to set another appointment, please cancel the existing one first");
+                    return View(appointmentRequest);
+                }
+                
                 Appointment reserveAppointment = await _dbcontext.Appointments.FindAsync(appointmentRequest.AppointmentId);
                 if (reserveAppointment != null)
                 {
@@ -54,29 +72,27 @@ namespace HealthManager.Controllers
             return View(appointmentRequest);
         }
 
-        public async Task <JsonResult> GetDoctorsBySpecialty(string specialty)
-        {
-            var doctorsBySpecialty = await _dbcontext.Doctors.Where(d => d.Specialty == specialty)
-                .Select(a => a.Name + " " + a.Surname)
-                .ToListAsync();
-            return Json(doctorsBySpecialty);
-        }
-
+        
         public async Task <JsonResult> GetAppointmentDates(int doctorId)
         {
             var currentMonth = DateTime.Now.Month;
+            var currentDay = DateTime.Now.Day;
             var availableAppointments = await _dbcontext.Appointments
-                .Where(a => a.DoctorId == doctorId && a.AppointmentDate.Month == currentMonth && a.Status == "Available")
-                .Select(a => a.AppointmentDate.ToString("dd-MM-yyyy"))
+                .Where(a => a.DoctorId == doctorId && a.AppointmentDate.Month == currentMonth && a.AppointmentDate.Day > currentDay && a.Status == "Available")
+                .Select(a => a.AppointmentDate.ToString("dd/MM/yyyy"))
+                .Distinct()
                 .ToListAsync();
             return Json(availableAppointments);
         }
 
-        public async Task <JsonResult> GetAppointmentHours(DateOnly day, int doctorId)
+        public async Task <JsonResult> GetAppointmentHours(string day, int doctorId)
         {
+            var dateFromString = DateTime.Parse(day);
+            var onlyDateFromDateTime = DateOnly.FromDateTime(dateFromString);
             var appointmentHours = await _dbcontext.Appointments
-                .Where(a => a.DoctorId == doctorId && a.AppointmentDate == day && a.Status == "Available" )
-                .Select(a => a.AppointmentHour)
+                .Where(a => a.DoctorId == doctorId && a.AppointmentDate.Equals(onlyDateFromDateTime) && a.Status == "Available" )
+                .OrderBy(a => a.AppointmentHour)
+                .Select(a => a.AppointmentHour.ToString("HH:mm"))
                 .ToListAsync();
             return Json(appointmentHours);
         }
