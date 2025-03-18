@@ -1,0 +1,34 @@
+﻿@model HealthManager.Models.DTO.MedicalRecordViewModel
+@{
+    Layout = null;
+    ViewData["Title"] = "Create Record";
+}
+
+<section class="w-100 d-flex justify-content-center align-items-center">
+    <form method="post" asp-asp-controller="MedicalRecord" asp-action="CreateRecord" class="w-50, border-1 d-flex flex-column justify-content-center align-items-center">
+        <h3></h3>
+        <fieldset class="form-group">
+            <label asp-for="DoctorName">Doctor</label>
+            <input asp-for="DoctorName" value=@Model.DoctorName type="text" readonly />
+        </fieldset>
+        <fieldset class="form-group">
+            <label asp-for="PatientName">Patient</label>
+            <input asp-for="PatientName" value=@Model.PatientName type="text" readonly />
+        </fieldset>
+        <fieldset class="form-group">
+            <label asp-for="Diagnosis"></label>
+            <input asp-for="Diagnosis" type="text" />
+        </fieldset>
+        <fieldset class="form-group">
+            <label asp-for="Observations"></label>
+            <textarea asp-for="Observations" />
+        </fieldset>
+        <fieldset class="form-group">
+            <label asp-for="Treatment"></label>
+            <textarea asp-for="Treatment" />
+        </fieldset>
+        <fieldset class="form-group">
+            <input type="submit" value="Create Medical Record" class="btn btn-primary" />
+        </fieldset>
+    </form>
+</section>
