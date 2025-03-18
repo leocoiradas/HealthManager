@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using System.Security.Claims;
 
@@ -63,14 +64,14 @@ namespace HealthManager.Controllers
                 
             if (ModelState.IsValid)
             {
-                Patient patientAccount = _dbcontext.Patients.FirstOrDefault(x => x.Email == request.email);
+                Patient patientAccount = await _dbcontext.Patients.FirstOrDefaultAsync(x => x.Email.Equals(request.Email));
 
                 if (patientAccount == null)
                 {
                     ViewData["AuthorizeResult"] = "* There's no account associated to the provided email.";
                     return View(request);
                 }
-                if (!BCrypt.Net.BCrypt.Verify(request.password, patientAccount.Password))
+                if (!BCrypt.Net.BCrypt.Verify(request.Password, patientAccount.Password))
                 {
                     ViewData["AuthorizeResult"] = "* Invalid credentials.";
                     return View(request);
@@ -137,6 +138,9 @@ namespace HealthManager.Controllers
                             Email = patientData.Email,
                             Password = BCrypt.Net.BCrypt.HashPassword(patientData.Password),
                             Dni = patientData.Dni,
+                            PhoneNumber = patientData.PhoneNumber,
+                            Gender = patientData.Gender,
+                            Sex = patientData.Sex,
                         };
                         await _dbcontext.Patients.AddAsync(newPatient);
                         await _dbcontext.SaveChangesAsync();
@@ -169,12 +173,12 @@ namespace HealthManager.Controllers
         [HttpPost]
         public async Task<IActionResult> AdminLogin(AuthorizeRequest request)
         {
-            var employee = _dbcontext.Doctors.Where(d => d.Email == request.email).FirstOrDefault(); 
+            var employee = _dbcontext.Doctors.Where(d => d.Email == request.Email).FirstOrDefault(); 
             var admin = _dbcontext.Doctors.Where(d => d.Email == "hola123").FirstOrDefault();
             
            if (employee == null && admin != null)
             {
-                if (BCrypt.Net.BCrypt.Verify(request.password, admin.Password))
+                if (BCrypt.Net.BCrypt.Verify(request.Password, admin.Password))
                 {
                     string adminToken = _jwtservice.GenerateToken(employee.Name, admin.Email);
                     HttpContext.Response.Cookies.Append("Token", adminToken,
@@ -192,7 +196,7 @@ namespace HealthManager.Controllers
                 }
             } else if (employee != null && admin == null)
             {
-                if (BCrypt.Net.BCrypt.Verify(request.password, employee.Password))
+                if (BCrypt.Net.BCrypt.Verify(request.Password, employee.Password))
                 {
                     string employeeToken = _jwtservice.GenerateToken(employee.Name, admin.Email);
                     HttpContext.Response.Cookies.Append("Token", employeeToken,
