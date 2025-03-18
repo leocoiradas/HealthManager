@@ -30,17 +30,17 @@ namespace HealthManager.Services.Appointments
                 int daysInMonth = DateTime.DaysInMonth(currentYear, currentMonth);
 
                 var query = from Doctor in _context.Doctors
-                            join AppointmentInfo in _context.AppointmentInfos
-                            on Doctor.DoctorId equals AppointmentInfo.DoctorId
+                            join DoctorShift in _context.DoctorShifts
+                            on Doctor.DoctorId equals DoctorShift.DoctorId
                             join workingDay in _context.WorkingDays
                             on Doctor.DoctorId equals workingDay.DoctorId
                             select new
                             {
                                 Doctor.DoctorId,
                                 DoctorName = Doctor.Name,
-                                AppointmentStart = AppointmentInfo.WorkingHoursStart,
-                                AppointmentEnd = AppointmentInfo.WorkingHoursEnd,
-                                ConsultDuration = AppointmentInfo.ConsultationDuration,
+                                ShiftStart = DoctorShift.ShiftStart,
+                                ShiftEnd = DoctorShift.ShiftEnd,
+                                ConsultDuration = DoctorShift.ConsultDuration,
                                 workingDay
                             };
 
@@ -60,8 +60,8 @@ namespace HealthManager.Services.Appointments
               
                         if (isWorkingDay.Equals(true))
                         {
-                            var doctorConsultationStart = doctor.AppointmentStart;
-                            var doctorConsultationEnd = doctor.AppointmentEnd;
+                            var doctorConsultationStart = doctor.ShiftStart;
+                            var doctorConsultationEnd = doctor.ShiftEnd;
                             var doctorConsultDuration = doctor.ConsultDuration;
 
                             var hourCount = auxiDay.Add(doctorConsultationStart.ToTimeSpan());
@@ -82,7 +82,7 @@ namespace HealthManager.Services.Appointments
 
                                 };
                                 await _context.Appointments.AddAsync(newAppointment);
-                                await _context.SaveChangesAsync();
+                               
 
                                 hourCount = hourCount.AddMinutes(durationAuxi);
                             }
@@ -90,13 +90,24 @@ namespace HealthManager.Services.Appointments
                         
                     }
                 }
+                await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
+                Console.WriteLine("--------------------------------");
+                Console.WriteLine();
+                Console.WriteLine("Appointments created successfully.");
+                Console.WriteLine();
+                Console.WriteLine("--------------------------------");
                 return new MethodResponse { Success = true, Message = "Appointments created successfully" };
             }
             catch (Exception error)
             {
 
                 await transaction.RollbackAsync();
+                Console.WriteLine("--------------------------------");
+                Console.WriteLine();
+                Console.WriteLine("Error while creating the appointments.");
+                Console.WriteLine();
+                Console.WriteLine("--------------------------------");
                 return new MethodResponse { Success = false, Message = error.ToString() };
             }
              
@@ -116,6 +127,31 @@ namespace HealthManager.Services.Appointments
             }
         }
 
+        public async Task<MethodResponse> CheckAndCreateAppointments()
+        {
+            try
+            {
+                var existingRegisters = await CheckForExistingRegisters();
 
+                if (existingRegisters.Success.Equals(true))
+                {
+                    return new MethodResponse { Success = false, Message = "There are already appointments for this month" };
+                }
+                else
+                {
+                    await CreateAppointments();
+                    return new MethodResponse { Success = true, Message = "Appointments were successfully created." };
+                }
+
+
+            }
+            catch (Exception error)
+            {
+                return new MethodResponse { Success = false, Message = error.ToString() };
+                
+
+            }
+
+        }
     }
 }
