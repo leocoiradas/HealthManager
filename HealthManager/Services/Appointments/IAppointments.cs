@@ -10,5 +10,7 @@ namespace HealthManager.Services.Appointments
 
         public Task<MethodResponse> CreateAppointments();
 
+        public Task<MethodResponse> CheckAndCreateAppointments();
+
     }
 }
