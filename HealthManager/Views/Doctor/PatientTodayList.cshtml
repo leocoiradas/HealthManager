@@ -1,7 +1,7 @@
 @model System.Collections.Generic.List<HealthManager.Models.Appointment>
 
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = "Appointments for today";
     Layout = "_Layout";
 }
 
@@ -24,7 +24,7 @@
                     <td>@appointment.AppointmentHour</td>
                     <td>{@appointment.Patient.Name + @appointment.Patient.Surname}</td>
                     <td>{@appointment.Patient.BirthDate.Year - @DateTime.Now.Year}</td>
-                    <td><a>Medical Register</a></td>
+                    <td><a>Medical Record</a></td>
                 </tr>
             }
             </tbody>
