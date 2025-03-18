@@ -19,5 +19,13 @@ namespace HealthManager.Models.DTO
         public int Dni { get; set; }
         [Required, Compare("Password"), MinLength(12), RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{12,}$")]
         public string ConfirmPassword { get; set; } = null!;
+        [Required]
+        public int? PhoneNumber { get; set; }
+        [Required]
+        [MaxLength(1)]
+        public string? Gender { get; set; }
+        [Required]
+        [MaxLength(1)]
+        public string? Sex { get; set; }
     }
 }
