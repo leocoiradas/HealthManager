@@ -23,8 +23,6 @@ public partial class HealthManagerContext : DbContext
 
     public virtual DbSet<MedicalRecord> MedicalRecords { get; set; }
 
-    public virtual DbSet<MedicalRegister> MedicalRegisters { get; set; }
-
     public virtual DbSet<Patient> Patients { get; set; }
 
     public virtual DbSet<Specialty> Specialties { get; set; }
@@ -123,26 +121,6 @@ public partial class HealthManagerContext : DbContext
                 .HasForeignKey(d => d.PatientId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__MedicalRe__Patie__1CBC4616");
-        });
-
-        modelBuilder.Entity<MedicalRegister>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__MedicalR__3214EC0764201A23");
-
-            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
-            entity.Property(e => e.Date)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
-
-            entity.HasOne(d => d.Doctor).WithMany(p => p.MedicalRegisters)
-                .HasForeignKey(d => d.DoctorId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__MedicalRe__Docto__151B244E");
-
-            entity.HasOne(d => d.Patient).WithMany(p => p.MedicalRegisters)
-                .HasForeignKey(d => d.PatientId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__MedicalRe__Patie__160F4887");
         });
 
         modelBuilder.Entity<Patient>(entity =>
