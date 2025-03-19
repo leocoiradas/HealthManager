@@ -30,7 +30,7 @@ public partial class Patient
     [MinLength(12)]
     [RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{12,}$")]
     public string Password { get; set; } = null!;
-    [Required]
+    
     public int? PhoneNumber { get; set; }
 
     public string? Role { get; set; } = "Patient";
@@ -39,5 +39,4 @@ public partial class Patient
 
     public virtual ICollection<MedicalRecord> MedicalRecords { get; set; } = new List<MedicalRecord>();
 
-    public virtual ICollection<MedicalRegister> MedicalRegisters { get; set; } = new List<MedicalRegister>();
 }
