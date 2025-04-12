@@ -17,7 +17,12 @@ namespace HealthManager.Controllers
         }
 
         public async Task <JsonResult> CreateAppointmentRegisters()
+        [HttpGet]
+        public IActionResult CreateDoctor()
         {
+            return View();
+        }
+
             try
             {
                 var existingRegisters = await _appointmentsService.CheckForExistingRegisters();
