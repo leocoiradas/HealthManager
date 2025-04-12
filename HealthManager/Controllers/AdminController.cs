@@ -1,5 +1,8 @@
 ﻿using HealthManager.Services.Appointments;
+﻿using HealthManager.Models.DTO;
+using HealthManager.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HealthManager.Controllers
 {
