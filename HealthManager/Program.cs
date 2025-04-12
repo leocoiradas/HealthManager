@@ -10,7 +10,18 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+
 // Add services to the container.
+
+builder.Services.AddHostedService<AppointmentsBackgroundTask>();
+builder.Services.AddHostedService<AppointmentsLifeCicle>();
+builder.Services.Configure<HostOptions>(options =>
+{
+    options.ServicesStartConcurrently = true;
+    options.ServicesStopConcurrently = true;
+});
+
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<HealthManagerContext>(options =>

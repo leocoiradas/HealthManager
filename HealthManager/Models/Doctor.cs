@@ -36,8 +36,6 @@ public partial class Doctor
 
     public virtual ICollection<MedicalRecord> MedicalRecords { get; set; } = new List<MedicalRecord>();
 
-    public virtual ICollection<MedicalRegister> MedicalRegisters { get; set; } = new List<MedicalRegister>();
-
     public virtual Specialty SpecialtyNavigation { get; set; } = null!;
 
     public virtual ICollection<WorkingDay> WorkingDays { get; set; } = new List<WorkingDay>();
