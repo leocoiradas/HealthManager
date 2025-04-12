@@ -1,4 +1,3 @@
-﻿using HealthManager.Services.Appointments;
 ﻿using HealthManager.Models.DTO;
 using HealthManager.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +10,6 @@ namespace HealthManager.Controllers
         private readonly IAppointments _appointmentsService;
         private readonly HealthManagerContext _dbcontext;
 
-        public AdminController(IAppointments appointmentsService)
         public AdminController(HealthManagerContext context, IAppointments appointmentsService)
         {
             _dbcontext = context;
@@ -22,7 +20,6 @@ namespace HealthManager.Controllers
             return View();
         }
 
-        public async Task <JsonResult> CreateAppointmentRegisters()
         [HttpGet]
         public IActionResult CreateDoctor()
         {
@@ -36,7 +33,6 @@ namespace HealthManager.Controllers
             using var transaction = await _dbcontext.Database.BeginTransactionAsync();
             try
             {
-                var existingRegisters = await _appointmentsService.CheckForExistingRegisters();
                 Specialty newDoctorSpecialty = (Specialty)_dbcontext.Specialties.Where(x => x.SpecialtyId == doctorRequest.Specialty);
                 Doctor newDoctor = new Doctor
                 {
@@ -49,12 +45,8 @@ namespace HealthManager.Controllers
                 await _dbcontext.Doctors.AddAsync(newDoctor);
                 await _dbcontext.SaveChangesAsync();
 
-                if (existingRegisters.Success.Equals(true))
                 WorkingDay newDoctorSchedule = new WorkingDay
                 {
-                    return Json(new {success = false, message="There are already appointments for this month" });
-                }
-                else
                     DoctorId = newDoctor.DoctorId,
                     Monday = doctorRequest.Monday,
                     Tuesday = doctorRequest.Tuesday,
@@ -69,11 +61,6 @@ namespace HealthManager.Controllers
 
                 DoctorShift newAppointmentInfo = new DoctorShift
                 {
-                    await _appointmentsService.CreateAppointments();
-                    return Json(new { success = true, message = "Appointments were successfully created." });
-                }
-                
-                
                     DoctorId = newDoctor.DoctorId,
                     ShiftStart = doctorRequest.WorkingHoursStart,
                     ShiftEnd = doctorRequest.WorkingHoursEnd,
@@ -86,10 +73,8 @@ namespace HealthManager.Controllers
                 await transaction.CommitAsync();
                 return View();
             }
-            catch (Exception error)
             catch (Exception)
             {
-                return Json(new {success= false, message = error });
                 await transaction.RollbackAsync();
                 return View(doctorRequest);
             }
