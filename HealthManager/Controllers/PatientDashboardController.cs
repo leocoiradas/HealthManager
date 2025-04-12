@@ -65,11 +65,5 @@ namespace HealthManager.Controllers
                 return RedirectToAction("MyAppointments" , "PatientDashboard");
             }
         }
-
-        public async Task <IActionResult> MedicalRegisters()
-        {
-            var medicalRegisters = await _dbcontext.MedicalRegisters.ToListAsync();
-            return View(medicalRegisters);
-        }
     }
 }
