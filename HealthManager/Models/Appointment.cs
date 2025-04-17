@@ -10,8 +10,7 @@ public partial class Appointment
     public Guid AppointmentId { get; set; }
 
     public int? PatientId { get; set; }
-
-    public int? DoctorId { get; set; }
+    public int DoctorId { get; set; }
     [Required]
     public DateOnly AppointmentDate { get; set; }
     [Required]
@@ -19,7 +18,9 @@ public partial class Appointment
     [Required]
     public string? Status { get; set; }
 
-    public virtual Doctor? Doctor { get; set; }
+    public bool? Attended { get; set; }
+
+    public virtual Doctor Doctor { get; set; } = null!;
 
     public virtual ICollection<MedicalRecord> MedicalRecords { get; set; } = new List<MedicalRecord>();
 
