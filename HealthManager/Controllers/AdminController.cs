@@ -108,7 +108,7 @@ namespace HealthManager.Controllers
                         };
                         await _dbcontext.Admins.AddAsync(newAdmin);
                         await _dbcontext.SaveChangesAsync();
-                        return RedirectToAction("Index");
+                        return RedirectToAction("CreateAdmin");
                     }
                     else
                     {
