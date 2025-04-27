@@ -80,5 +80,12 @@ namespace HealthManager.Controllers
                 return View(doctorRequest);
             }
         }
+
+        [HttpGet]
+        public IActionResult CreateAdmin()
+        {
+            return View();
+        }
+
     }
 }
