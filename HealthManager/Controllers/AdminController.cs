@@ -17,7 +17,7 @@ namespace HealthManager.Controllers
         }
 
         [HttpGet]
-        public IActionResult CreateDoctor()
+        public async Task<IActionResult> CreateDoctor()
         {
             return View();
         }
