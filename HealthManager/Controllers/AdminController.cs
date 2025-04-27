@@ -20,6 +20,10 @@ namespace HealthManager.Controllers
         [HttpGet]
         public async Task<IActionResult> CreateDoctor()
         {
+            List<Specialty> specialtyList = await _dbcontext.Specialties.ToListAsync();
+            
+            var specialtyOrderList = specialtyList.OrderBy(x => x.SpecialtyName);
+            ViewData["Specialties"] = new SelectList(specialtyOrderList, "SpecialtyId", "SpecialtyName");
             return View();
         }
 
