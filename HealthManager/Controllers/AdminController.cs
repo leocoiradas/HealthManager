@@ -13,9 +13,7 @@ namespace HealthManager.Controllers
         {
             _dbcontext = context;
         }
-        public IActionResult AppointmentsManager()
         {
-            return View();
         }
 
         [HttpGet]
