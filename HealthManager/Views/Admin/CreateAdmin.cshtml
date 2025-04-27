@@ -1,0 +1,52 @@
+﻿@model HealthManager.Models.DTO.AdminRegisterViewModel;
+@{
+    ViewData["Title"] = "Create Admin";
+    Layout = "_AdminDashboard";
+}
+
+<section class="w-100 h-100 d-flex justify-content-center align-items-center">
+    <form method="post" asp-controller="Admin" asp-action="CreateAdmin" class="w-50 d-flex flex-column mt-4 gap-1">
+        <div class="row">
+            <fieldset class="form-group col">
+                <div class="row">
+                    <label asp-for="FirstName">Name</label>
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <input type="text" asp-for="FirstName" class="form-control" />
+            </fieldset>
+            <fieldset class="form-group col">
+                <div class="row">
+                    <label asp-for="LastName">Surname</label>
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+                <input type="text" asp-for="LastName" class="form-control" />
+            </fieldset>
+        </div>
+        <fieldset class="form-group">
+            <div class="row">
+                <label asp-for="Email">Email</label>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <input type="email" asp-for="Email" name="email" class="form-control" />
+        </fieldset>
+        <div class="row">
+            <fieldset class="form-group col">
+                <div class="row">
+                    <label asp-for="Password">Password</label>
+                    <span asp-validation-for="Password"></span>
+                </div>
+                <input type="password" asp-for="Password" class="form-control" />
+            </fieldset>
+            <fieldset class="form-group col">
+                <div class="row">
+                    <label asp-for="ConfirmPassword">Confirm password</label>
+                    <span asp-validation-for="ConfirmPassword"></span>
+                </div>
+                <input type="password" asp-for="ConfirmPassword" class="form-control" />
+            </fieldset>
+        </div>
+        <fieldset class="form-group">
+            <input type="submit" value="Create Admin" class="btn btn-primary mb-3" />
+        </fieldset>
+    </form>
+</section>
