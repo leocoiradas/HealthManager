@@ -104,7 +104,6 @@ namespace HealthManager.Controllers
                             Surname = adminModel.LastName,
                             Email = adminModel.Email,
                             Password = adminModel.Password,
-                            PhoneNumber = adminModel.PhoneNumber,
 
                         };
                         await _dbcontext.Admins.AddAsync(newAdmin);
