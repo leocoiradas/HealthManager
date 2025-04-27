@@ -87,5 +87,45 @@ namespace HealthManager.Controllers
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateAdmin(AdminRegisterViewModel adminModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Admin adminSearch = await _dbcontext.Admins.Where(x => x.Email == adminModel.Email).FirstOrDefaultAsync();
+
+                    if (adminModel == null)
+                    {
+                        Admin newAdmin = new Admin
+                        {
+                            Name = adminModel.FirstName,
+                            Surname = adminModel.LastName,
+                            Email = adminModel.Email,
+                            Password = adminModel.Password,
+                            PhoneNumber = adminModel.PhoneNumber,
+
+                        };
+                        await _dbcontext.Admins.AddAsync(newAdmin);
+                        await _dbcontext.SaveChangesAsync();
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        return View(adminModel);
+                    }
+                }
+                else
+                {
+                    return View(adminModel);
+                }
+            }
+            catch (Exception)
+            {
+
+                return View(adminModel);
+            }
+        }
     }
 }
