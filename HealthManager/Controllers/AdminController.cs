@@ -96,7 +96,7 @@ namespace HealthManager.Controllers
                 {
                     Admin adminSearch = await _dbcontext.Admins.Where(x => x.Email == adminModel.Email).FirstOrDefaultAsync();
 
-                    if (adminModel == null)
+                    if (adminSearch == null)
                     {
                         Admin newAdmin = new Admin
                         {
