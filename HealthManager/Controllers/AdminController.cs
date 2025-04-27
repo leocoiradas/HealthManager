@@ -80,5 +80,51 @@ namespace HealthManager.Controllers
                 return View(doctorRequest);
             }
         }
+
+        [HttpGet]
+        public IActionResult CreateAdmin()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateAdmin(AdminRegisterViewModel adminModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Admin adminSearch = await _dbcontext.Admins.Where(x => x.Email == adminModel.Email).FirstOrDefaultAsync();
+
+                    if (adminSearch == null)
+                    {
+                        Admin newAdmin = new Admin
+                        {
+                            Name = adminModel.FirstName,
+                            Surname = adminModel.LastName,
+                            Email = adminModel.Email,
+                            Password = BCrypt.Net.BCrypt.HashPassword(adminModel.Password),
+
+                        };
+                        await _dbcontext.Admins.AddAsync(newAdmin);
+                        await _dbcontext.SaveChangesAsync();
+                        return RedirectToAction("CreateAdmin");
+                    }
+                    else
+                    {
+                        return View(adminModel);
+                    }
+                }
+                else
+                {
+                    return View(adminModel);
+                }
+            }
+            catch (Exception)
+            {
+
+                return View(adminModel);
+            }
+        }
     }
 }
