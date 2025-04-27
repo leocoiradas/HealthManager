@@ -103,7 +103,7 @@ namespace HealthManager.Controllers
                             Name = adminModel.FirstName,
                             Surname = adminModel.LastName,
                             Email = adminModel.Email,
-                            Password = adminModel.Password,
+                            Password = BCrypt.Net.BCrypt.HashPassword(adminModel.Password),
 
                         };
                         await _dbcontext.Admins.AddAsync(newAdmin);
