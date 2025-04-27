@@ -2,6 +2,7 @@
 using HealthManager.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HealthManager.Controllers
 {
