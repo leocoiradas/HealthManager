@@ -7,17 +7,13 @@ namespace HealthManager.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly IAppointments _appointmentsService;
         private readonly HealthManagerContext _dbcontext;
 
-        public AdminController(HealthManagerContext context, IAppointments appointmentsService)
+        public AdminController(HealthManagerContext context)
         {
             _dbcontext = context;
-            _appointmentsService = appointmentsService;
         }
-        public IActionResult AppointmentsManager()
         {
-            return View();
         }
 
         [HttpGet]
