@@ -18,7 +18,7 @@
         </div>
         <fieldset class="form-group">
             <label asp-for="Specialty">Specialty</label>
-            <input type="text" asp-for="Specialty" class="form-control" />
+            <select asp-for="Specialty" asp-items="ViewBag.Specialties" class="form-control"></select>
         </fieldset>
         <fieldset class="form-group">
             <label asp-for="Email">Email</label>
