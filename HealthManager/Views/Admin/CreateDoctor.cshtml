@@ -48,11 +48,17 @@
                 <label class="form-check-label"><input type="checkbox" asp-for="Sunday" class="form-check-input" />Sunday</label>
             </div>
         </fieldset>
-        <fieldset class="d-flex flex-column gap-2 form-group">
-            <label >Consult Start<input type="time" asp-for="WorkingHoursStart" class="form-control" /></label>
-            <label >Consult End<input type="time" asp-for="WorkingHoursEnd" class="form-control" /></label>
-        </fieldset>
+        <div class="d-flex gap-3">
+            <fieldset class="d-flex flex-column gap-2 form-group">
+                <label>Consult Start<input type="time" asp-for="WorkingHoursStart" class="form-control" /></label>
+            </fieldset>
+            <fieldset class="d-flex flex-column gap-2 form-group">
+                <label>Consult End<input type="time" asp-for="WorkingHoursEnd" class="form-control" /></label>
+            </fieldset>
+            <fieldset class="d-flex flex-column gap-2 form-group">
                 <label>Consult Duration<input type="number" asp-for="ConsultDuration" min="1" max="60" class="form-control" /></label>
+            </fieldset>
+        </div>
         <fieldset class="form-group">
             <input type="submit" value="Create Doctor" class="btn btn-primary mb-3" />
         </fieldset>
