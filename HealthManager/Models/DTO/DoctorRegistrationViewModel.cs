@@ -21,7 +21,7 @@ namespace HealthManager.Models.DTO
         [Required]
         public TimeOnly WorkingHoursEnd { get; set; }
         [Required]
-        public TimeOnly ConsultationDuration { get; set; }
+        public int ConsultDuration { get; set; }
         [Required]
         public bool Monday { get; set; }
 
