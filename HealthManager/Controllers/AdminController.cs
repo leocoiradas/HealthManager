@@ -36,6 +36,7 @@ namespace HealthManager.Controllers
             try
             {
                 Specialty newDoctorSpecialty = await _dbcontext.Specialties.Where(x => x.SpecialtyId == doctorRequest.Specialty).FirstOrDefaultAsync();
+                TimeOnly consultDuration = new TimeOnly().AddMinutes(doctorRequest.ConsultDuration);
                 Doctor newDoctor = new Doctor
                 {
                     Name = doctorRequest.Name,
