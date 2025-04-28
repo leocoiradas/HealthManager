@@ -8,7 +8,7 @@ namespace HealthManager.Models.DTO
         public string Name { get; set; }
         [Required, MaxLength(100), MinLength(2)]
         public string? Surname { get; set; }
-        [Required, MaxLength(100), MinLength(2)]
+        [Required]
         public int Specialty { get; set; }
         [Required, EmailAddress]
         public string Email { get; set; }
@@ -21,7 +21,7 @@ namespace HealthManager.Models.DTO
         [Required]
         public TimeOnly WorkingHoursEnd { get; set; }
         [Required]
-        public TimeOnly ConsultationDuration { get; set; }
+        public int ConsultDuration { get; set; }
         [Required]
         public bool Monday { get; set; }
 

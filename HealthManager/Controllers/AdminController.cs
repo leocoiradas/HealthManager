@@ -35,12 +35,13 @@ namespace HealthManager.Controllers
             using var transaction = await _dbcontext.Database.BeginTransactionAsync();
             try
             {
-                Specialty newDoctorSpecialty = (Specialty)_dbcontext.Specialties.Where(x => x.SpecialtyId == doctorRequest.Specialty);
+                Specialty newDoctorSpecialty = await _dbcontext.Specialties.Where(x => x.SpecialtyId == doctorRequest.Specialty).FirstOrDefaultAsync();
+                TimeOnly consultDuration = new TimeOnly().AddMinutes(doctorRequest.ConsultDuration);
                 Doctor newDoctor = new Doctor
                 {
                     Name = doctorRequest.Name,
                     Surname = doctorRequest.Surname,
-                    Specialty = doctorRequest.Specialty,
+                    Specialty = newDoctorSpecialty.SpecialtyId,
                     Email = doctorRequest.Email,
                     Password = BCrypt.Net.BCrypt.HashPassword(doctorRequest.Password),
                 };
@@ -66,7 +67,7 @@ namespace HealthManager.Controllers
                     DoctorId = newDoctor.DoctorId,
                     ShiftStart = doctorRequest.WorkingHoursStart,
                     ShiftEnd = doctorRequest.WorkingHoursEnd,
-                    ConsultDuration = doctorRequest.ConsultationDuration,
+                    ConsultDuration = consultDuration,
                 };
 
                 await _dbcontext.DoctorShifts.AddAsync(newAppointmentInfo);
