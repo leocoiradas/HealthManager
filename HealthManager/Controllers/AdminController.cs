@@ -35,7 +35,7 @@ namespace HealthManager.Controllers
             using var transaction = await _dbcontext.Database.BeginTransactionAsync();
             try
             {
-                Specialty newDoctorSpecialty = (Specialty)_dbcontext.Specialties.Where(x => x.SpecialtyId == doctorRequest.Specialty);
+                Specialty newDoctorSpecialty = await _dbcontext.Specialties.Where(x => x.SpecialtyId == doctorRequest.Specialty).FirstOrDefaultAsync();
                 Doctor newDoctor = new Doctor
                 {
                     Name = doctorRequest.Name,
