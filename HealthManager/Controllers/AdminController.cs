@@ -40,7 +40,7 @@ namespace HealthManager.Controllers
                 {
                     Name = doctorRequest.Name,
                     Surname = doctorRequest.Surname,
-                    Specialty = doctorRequest.Specialty,
+                    Specialty = newDoctorSpecialty.SpecialtyId,
                     Email = doctorRequest.Email,
                     Password = BCrypt.Net.BCrypt.HashPassword(doctorRequest.Password),
                 };
