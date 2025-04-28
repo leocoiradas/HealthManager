@@ -67,7 +67,7 @@ namespace HealthManager.Controllers
                     DoctorId = newDoctor.DoctorId,
                     ShiftStart = doctorRequest.WorkingHoursStart,
                     ShiftEnd = doctorRequest.WorkingHoursEnd,
-                    ConsultDuration = doctorRequest.ConsultationDuration,
+                    ConsultDuration = consultDuration,
                 };
 
                 await _dbcontext.DoctorShifts.AddAsync(newAppointmentInfo);
