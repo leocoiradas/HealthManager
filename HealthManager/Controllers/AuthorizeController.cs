@@ -183,8 +183,8 @@ namespace HealthManager.Controllers
         [HttpPost]
         public async Task<IActionResult> AdminLogin(AuthorizeRequest request)
         {
-            var employee = _dbcontext.Doctors.Where(d => d.Email == request.Email).FirstOrDefault(); 
             var admin = _dbcontext.Doctors.Where(d => d.Email == "hola123").FirstOrDefault();
+            Doctor employee = await _dbcontext.Doctors.Where(d => d.Email == request.Email).FirstOrDefaultAsync(); 
             
            if (employee == null && admin != null)
             {
