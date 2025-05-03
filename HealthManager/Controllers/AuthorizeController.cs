@@ -190,7 +190,7 @@ namespace HealthManager.Controllers
             {
                 if (BCrypt.Net.BCrypt.Verify(request.Password, admin.Password))
                 {
-                    string adminToken = _jwtservice.GenerateToken(employee.Name, admin.Email);
+                    string adminToken = _jwtservice.GenerateToken(admin.Name, admin.Email, admin.Role);
                     HttpContext.Response.Cookies.Append("Token", adminToken,
                         new CookieOptions
                         {
@@ -208,7 +208,7 @@ namespace HealthManager.Controllers
             {
                 if (BCrypt.Net.BCrypt.Verify(request.Password, employee.Password))
                 {
-                    string employeeToken = _jwtservice.GenerateToken(employee.Name, admin.Email);
+                    string employeeToken = _jwtservice.GenerateToken(employee.Name, employee.Email, employee.Role);
                     HttpContext.Response.Cookies.Append("Token", employeeToken,
                         new CookieOptions
                         {
