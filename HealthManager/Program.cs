@@ -59,6 +59,8 @@ builder.Services.AddAuthentication(x =>
         ValidateAudience = false,
         ValidateLifetime = true,
         ClockSkew = TimeSpan.Zero,
+        RoleClaimType = ClaimTypes.Role,
+        NameClaimType = ClaimTypes.NameIdentifier,
     };
     config.Events = new JwtBearerEvents
     {
