@@ -21,7 +21,7 @@ namespace HealthManager.Services.JWTService
             _configuration = configuration;
 
         }
-        public string GenerateToken(string username, string email)
+        public string GenerateToken(string username, string email, string role)
         {
             var secret = _configuration.GetSection("JWT").GetSection("secret-key").ToString();
             var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret));
@@ -31,6 +31,7 @@ namespace HealthManager.Services.JWTService
             [
                 new Claim(ClaimTypes.Name, username),
                 new Claim(ClaimTypes.Email, email),
+                new Claim(ClaimTypes.Role, role)
             ]);
 
             var tokenDescriptor = new SecurityTokenDescriptor
