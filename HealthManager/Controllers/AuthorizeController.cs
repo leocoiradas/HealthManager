@@ -3,6 +3,7 @@ using HealthManager.Models.DTO;
 using HealthManager.Services.Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ namespace HealthManager.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login()
         {
             /*var existingCookie = ControllerContext.HttpContext.Request.Cookies["Token"];
@@ -105,6 +107,7 @@ namespace HealthManager.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register() 
         {
             /*var existingCookie = ControllerContext.HttpContext.Request.Cookies["Token"];
@@ -170,11 +173,18 @@ namespace HealthManager.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login");
         }
+
+        [AllowAnonymous]
+        public IActionResult AdminLogin()
+        {
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> AdminLogin(AuthorizeRequest request)
         {
-            var employee = _dbcontext.Doctors.Where(d => d.Email == request.Email).FirstOrDefault(); 
-            var admin = _dbcontext.Doctors.Where(d => d.Email == "hola123").FirstOrDefault();
+            Doctor employee = await _dbcontext.Doctors.Where(d => d.Email == request.Email).FirstOrDefaultAsync(); 
+            Admin admin = await _dbcontext.Admins.Where(d => d.Email == request.Email).FirstOrDefaultAsync();
             
            if (employee == null && admin != null)
             {
@@ -191,7 +201,7 @@ namespace HealthManager.Controllers
                             IsEssential = true,
                             SameSite = SameSiteMode.None,
                         });
-                    return RedirectToAction("Admin", "AppointmentsManager");
+                    return RedirectToAction("CreateAdmin", "Admin");
                     
                 }
             } else if (employee != null && admin == null)
@@ -209,7 +219,7 @@ namespace HealthManager.Controllers
                             IsEssential = true,
                             SameSite = SameSiteMode.None,
                         });
-                    return RedirectToAction("Doctor", "Index");
+                    return RedirectToAction("PatientTodayList", "Doctor");
                 }
             }
             
