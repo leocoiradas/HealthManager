@@ -22,6 +22,7 @@ namespace HealthManager.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login()
         {
             /*var existingCookie = ControllerContext.HttpContext.Request.Cookies["Token"];
@@ -106,6 +107,7 @@ namespace HealthManager.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register() 
         {
             /*var existingCookie = ControllerContext.HttpContext.Request.Cookies["Token"];
