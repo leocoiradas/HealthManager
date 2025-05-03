@@ -219,7 +219,7 @@ namespace HealthManager.Controllers
                             IsEssential = true,
                             SameSite = SameSiteMode.None,
                         });
-                    return RedirectToAction("Doctor", "Index");
+                    return RedirectToAction("PatientTodayList", "Doctor");
                 }
             }
             
