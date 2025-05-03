@@ -201,7 +201,7 @@ namespace HealthManager.Controllers
                             IsEssential = true,
                             SameSite = SameSiteMode.None,
                         });
-                    return RedirectToAction("Admin", "AppointmentsManager");
+                    return RedirectToAction("CreateAdmin", "Admin");
                     
                 }
             } else if (employee != null && admin == null)
