@@ -173,6 +173,13 @@ namespace HealthManager.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login");
         }
+
+        [AllowAnonymous]
+        public IActionResult AdminLogin()
+        {
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> AdminLogin(AuthorizeRequest request)
         {
