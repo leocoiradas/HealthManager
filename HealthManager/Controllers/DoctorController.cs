@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HealthManager.Controllers
 {
-    //[Authorize(Roles = "Doctor")]
+    [Authorize(Roles = "Doctor")]
     
     public class DoctorController : Controller
     {
@@ -25,8 +25,10 @@ namespace HealthManager.Controllers
         [HttpGet]
         public async Task<IActionResult> PatientTodayList()
         {
+            var today = DateOnly.FromDateTime(DateTime.Now);
             List<Appointment> patientList = await _dbcontext.Appointments
-                .Where(x => x.AppointmentDate == DateOnly.FromDateTime(DateTime.Now))
+                .Where(x => x.AppointmentDate == today && x.Status == "Reserved")
+                .Include(a => a.Patient)
                 .ToListAsync();
             return View(patientList);
         }
