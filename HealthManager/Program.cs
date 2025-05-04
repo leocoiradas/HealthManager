@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,7 +37,7 @@ builder.Services.AddScoped<IAppointments, AppointmentsService>();
 
 //Configuración de autenticación
 
-/*var tokenKey = builder.Configuration.GetSection("JWT").GetSection("secret-key").ToString();
+var tokenKey = builder.Configuration.GetSection("JWT").GetSection("secret-key").ToString();
 
 builder.Services.AddAuthentication(x =>
 {
@@ -59,6 +60,8 @@ builder.Services.AddAuthentication(x =>
         ValidateAudience = false,
         ValidateLifetime = true,
         ClockSkew = TimeSpan.Zero,
+        RoleClaimType = ClaimTypes.Role,
+        NameClaimType = ClaimTypes.NameIdentifier,
     };
     config.Events = new JwtBearerEvents
     {
@@ -68,15 +71,15 @@ builder.Services.AddAuthentication(x =>
             return Task.CompletedTask;
         }
     };
-});*/
+});
 
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+/*builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 .AddCookie(option =>
 {
     option.LoginPath = "/Authorize/Login";
     option.ExpireTimeSpan = TimeSpan.FromDays(7);
     option.AccessDeniedPath = "/Authorize/Login";
-});
+});*/
 
 var app = builder.Build();
 
@@ -93,7 +96,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
+app.UseAuthentication();
 
 app.UseAuthorization();
 
