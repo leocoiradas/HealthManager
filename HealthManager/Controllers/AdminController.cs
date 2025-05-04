@@ -15,7 +15,18 @@ namespace HealthManager.Controllers
         {
             _dbcontext = context;
         }
+        public async Task <IActionResult> EmployeeList()
         {
+            List<Admin> adminList = await _dbcontext.Admins.ToListAsync();
+            List<Doctor> doctorList = await _dbcontext.Doctors.ToListAsync();
+
+            EmployeeViewModel employeeViewModel = new EmployeeViewModel
+            {
+                AdminList = adminList,
+                DoctorList = doctorList,
+            };
+            /*Esta vista devolverá la lista de empleados de la db con su rol, y organizados por este*/
+            return View(employeeViewModel);
         }
 
         [HttpGet]
