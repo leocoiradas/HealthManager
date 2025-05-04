@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - HealthManager</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/HealthManager.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+    <div class="d-flex content w-100">
+        <nav class="d-flex flex-column justify-content-end gap-3 mh-100 bg-gradient  shadow-sm p-3">
+            <ul class="navbar-nav w-100 p-3 fs-5 gap-1">
+                <li class="nav-item item">
+                    <a class="nav-link" asp-area="" asp-controller="Doctor" asp-action="PatientTodayList">Patient list</a>
+                </li>
+                <li><hr class="hr" /></li>
+                <li class="nav-item item">
+                    <a class="nav-link" asp-area="" asp-controller="Doctor" asp-action="MedicalRecords">Medical records</a>
+                </li>
+                <li><hr class="hr" /></li>
+                <li class="nav-item logout">
+                    <a class="nav-link" asp-area="" asp-controller="Authorize" asp-action="Logout">Logout</a>
+                </li>
+            </ul>
+        </nav>
+        <main role="main" class="min-vw-100 flex-grow-1">
+            <header class="header d-flex justify-content-center align-items-center">
+                <p class="text-white fw-bold fs-5">@ViewData["Title"]</p>
+            </header>
+            @RenderBody()
+        </main>
+    </div>
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+<style>
+
+    li > a {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+        color: black !important;
+    }
+
+    .item:hover {
+        background-color: lightgreen;
+    }
+
+    .logout > :hover {
+        color: black !important;
+        background-color: lightcoral !important;
+    }
+
+    .divider:hover {
+        background-color: none !important;
+    }
+
+    .header {
+        min-height: 10dvh;
+        background-color: deepskyblue;
+    }
+
+    .footer {
+        height: auto;
+    }
+
+    .content {
+        height: 100vh !important;
+    }
+
+    html, body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+
+    nav{
+        background-color: deepskyblue;
+        min-width: 16vw;
+    }
+    main {
+        height: 90dvh;
+    }
+</style>
