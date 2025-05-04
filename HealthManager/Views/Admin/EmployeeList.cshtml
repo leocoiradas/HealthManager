@@ -1,0 +1,76 @@
+﻿@model HealthManager.Models.DTO.EmployeeViewModel;
+@{
+    ViewData["Title"] = "Employee List";
+    Layout = "_AdminDashboard";
+}
+
+
+<section class="d-flex flex-column w-100 h-auto justify-content-center align-items-center">
+    @if (!Model.DoctorList.Any())
+    {
+        <article class="w-100 p-4">
+            <h4 class="text-center">You don't have any appointments</h4>
+        </article>
+    }
+    else
+    {
+        <p class="text-center">Admin Employees</p>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var admin in Model.AdminList)
+                {
+                    <tr>
+                        <td>@admin.Id</td>
+                        <td>@admin.Name</td>
+                        <td>@admin.Surname</td>
+                        <td>@admin.Email</td>
+                        <td>@admin.PhoneNumber</td>
+                        <td></td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+
+        <p class="text-center">Doctor Employees</p>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>License Number</th>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Specialty</th>
+                    <th>Email</th>
+                    <th>Phone number</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var doctor in Model.DoctorList)
+                {
+                    <tr>
+                        <td>@doctor.LicenseNumber</td>
+                        <td>@doctor.Name</td>
+                        <td>@doctor.Surname</td>
+                        <td>@doctor.Specialty</td>
+                        <td>@doctor.PhoneNumber</td>
+                        <td></td> 
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+
+       
+    }
+</section>
