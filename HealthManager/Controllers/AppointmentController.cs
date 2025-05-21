@@ -71,7 +71,7 @@ namespace HealthManager.Controllers
                 if (reserveAppointment != null)
                 {
                     reserveAppointment.Status = "Reserved";
-                    reserveAppointment.PatientId = appointmentRequest.PatientId;
+                    reserveAppointment.PatientId = userIdInt;
                     _dbcontext.Appointments.Update(reserveAppointment);
                     await _dbcontext.SaveChangesAsync();
 
