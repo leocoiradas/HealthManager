@@ -49,9 +49,10 @@ namespace HealthManager.Controllers
                 var userId = User.FindFirst("Id")?.Value;
                 int.TryParse(userId, out int userIdInt); 
                 var existingAppointment = await _dbcontext.Appointments
-                    .Where(x => x.PatientId == appointmentRequest.PatientId 
-                                && x.DoctorId == appointmentRequest.DoctorId 
-                                && x.AppointmentDate.Month == appointmentRequest.AppointmentDate.Month)
+                    .Where(x =>  x.DoctorId == appointmentRequest.DoctorId 
+                                && x.AppointmentDate.Month == appointmentRequest.AppointmentDate.Month
+                                && x.AppointmentHour == appointmentRequest.AppointmentHour
+                                && x.Status == "Reserved")
                     .FirstOrDefaultAsync();
 
                 if (existingAppointment != null && existingAppointment.AppointmentDate.CompareTo(appointmentRequest.AppointmentDate) < 28)
