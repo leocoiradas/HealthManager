@@ -21,14 +21,17 @@ namespace HealthManager.Services.JWTService
             _configuration = configuration;
 
         }
-        public string GenerateToken(string username, string email, string role)
+        public string GenerateToken(string username, string email, string role, int id)
         {
             var secret = _configuration.GetSection("JWT").GetSection("secret-key").ToString();
             var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
 
+            string idString = id.ToString();
+
             var claims = new ClaimsIdentity(
             [
+                new Claim("Id", idString),
                 new Claim(ClaimTypes.Name, username),
                 new Claim(ClaimTypes.Email, email),
                 new Claim(ClaimTypes.Role, role)
