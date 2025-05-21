@@ -23,8 +23,11 @@ namespace HealthManager.Controllers
         }
         public async Task <IActionResult> ReserveAppointment()
         {
+            DateTime today = DateTime.Now;
+            DateOnly day = DateOnly.FromDateTime(today);
+            TimeOnly hours = TimeOnly.FromDateTime(today);
             var appointmentsList = await _dbcontext.Appointments
-                .Where(a => a.Status == "Available")
+                .Where(a => a.Status == "Available" && a.AppointmentDate>= day && a.AppointmentHour>hours)
                 .Select(a => new AppointmentViewModel
                 {
                     AppointmentId = a.AppointmentId,
