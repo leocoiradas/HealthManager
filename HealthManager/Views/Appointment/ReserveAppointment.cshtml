@@ -45,17 +45,17 @@
     <script>
         $(document).ready(function () {
 
-            $("#specialty").change(function () {
+            $("#Specialty").change(function () {
                 var specialtyDoctor = $(this).val();
                 getDoctorsBySpecialty(specialtyDoctor);
             });
-            $("#doctorSelect").change(function () {
+            $("#DoctorId").change(function () {
                 var doctor = $(this).val();
                 getAppointmentsDates(doctor);
             });
-            $("#appointmentSelectDate").change(function(){
+            $("#AppointmentDate").change(function(){
                 var selectedDate = $(this).val();
-                var doctorId = $("#doctorSelect").val()
+                var doctorId = $("#DoctorId").val()
                 getAppointmentsHours(selectedDate, doctorId)
             })
 
@@ -65,7 +65,7 @@
                     url: '@Url.Action("GetDoctorsBySpecialty", "Doctor")',
                     data: { specialty: specialtyDoctor },
                     success: function (response) {
-                        var doctorSelect = $("#doctorSelect");
+                        var doctorSelect = $("#DoctorId");
                         doctorSelect.empty();
                         if(response){
                             $.each(response, function (index, doctor) {
@@ -94,7 +94,7 @@
                     url: '@Url.Action("GetAppointmentDates", "Appointment")',
                     data: { doctorId: doctor },
                     success: function (response) {
-                        var selectDate = $("#appointmentSelectDate");
+                        var selectDate = $("#AppointmentDate");
                         selectDate.empty();
                         if (response.length > 0) {
                             $.each(response, function (index, date) {
@@ -103,7 +103,7 @@
                                     text: date
                                 }))
                             })
-                            cleanOptions("#appointmentSelectHour");
+                            cleanOptions("#AppointmentHour");
                             var firstDateInCollection = selectDate.val();
                             getAppointmentsHours(firstDateInCollection, doctor);
                         }
@@ -116,7 +116,7 @@
                     url: '@Url.Action("GetAppointmentHours", "Appointment")',
                     data: { day: day, doctorId: doctorId },
                     success: function (response) {
-                        var selectHour = $("#appointmentSelectHour");
+                        var selectHour = $("#AppointmentHour");
                         selectHour.empty();
                         if (response.length > 0){
                             $.each(response, function (index, hour) {
