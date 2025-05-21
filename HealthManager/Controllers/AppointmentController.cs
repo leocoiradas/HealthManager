@@ -87,6 +87,7 @@ namespace HealthManager.Controllers
         {
             var currentMonth = DateTime.Now.Month;
             var currentDay = DateTime.Now.Day;
+            var currentHour = TimeOnly.FromDateTime(DateTime.Now);
             var availableAppointments = await _dbcontext.Appointments
                 .Where(a => a.DoctorId == doctorId && a.AppointmentDate.Month == currentMonth && a.AppointmentDate.Day > currentDay && a.Status == "Available")
                 .Select(a => a.AppointmentDate.ToString("dd/MM/yyyy"))
