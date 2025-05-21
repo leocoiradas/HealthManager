@@ -76,7 +76,7 @@ namespace HealthManager.Controllers
                     await _dbcontext.SaveChangesAsync();
 
                 }
-                return View();
+                return RedirectToAction("MyAppointments", "PatientDashboard");
             }
 
             return View(appointmentRequest);
