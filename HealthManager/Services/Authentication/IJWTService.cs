@@ -5,6 +5,6 @@ namespace HealthManager.Services.Authentication
 {
     public interface IJWTService
     {
-        public string GenerateToken(string username, string email, string role);
+        public string GenerateToken(string username, string email, string role, int id);
     }
 }
