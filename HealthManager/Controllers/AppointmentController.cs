@@ -46,6 +46,8 @@ namespace HealthManager.Controllers
         {
             if (ModelState.IsValid)
             {
+                var userId = User.FindFirst("Id")?.Value;
+                int.TryParse(userId, out int userIdInt); 
                 var existingAppointment = await _dbcontext.Appointments
                     .Where(x => x.PatientId == appointmentRequest.PatientId 
                                 && x.DoctorId == appointmentRequest.DoctorId 
