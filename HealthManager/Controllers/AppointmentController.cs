@@ -35,8 +35,8 @@ namespace HealthManager.Controllers
                 .ToListAsync();
             ViewData["AppointmentsAvailable"] = new SelectList(appointmentsList, "AppointmentId", "AppointmentTime");
 
-            var specialties = await _dbcontext.Doctors.Select(d => d.Specialty).Distinct().ToListAsync();
-            ViewData["Specialties"] = new SelectList(specialties, specialties);
+            var specialties = await _dbcontext.Specialties.Distinct().ToListAsync();
+            ViewData["Specialties"] = new SelectList(specialties, "SpecialtyId", "SpecialtyName");
             return View();
         }
         [HttpPost]
