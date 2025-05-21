@@ -62,7 +62,7 @@
 
             function getDoctorsBySpecialty(specialtyDoctor){
                 $.ajax({
-                    url: '@Url.Action("GetDoctorsBySpecialty", "Doctor")',
+                    url: '@Url.Action("GetDoctorsBySpecialty", "Appointment")',
                     data: { specialty: specialtyDoctor },
                     success: function (response) {
                         var doctorSelect = $("#DoctorId");
