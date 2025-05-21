@@ -100,8 +100,9 @@ namespace HealthManager.Controllers
         {
             var dateFromString = DateTime.Parse(day);
             var onlyDateFromDateTime = DateOnly.FromDateTime(dateFromString);
+            var currentHour = TimeOnly.FromDateTime(DateTime.Now);
             var appointmentHours = await _dbcontext.Appointments
-                .Where(a => a.DoctorId == doctorId && a.AppointmentDate.Equals(onlyDateFromDateTime) && a.Status == "Available" )
+                .Where(a => a.DoctorId == doctorId && a.AppointmentDate.Equals(onlyDateFromDateTime) &&a.AppointmentHour > currentHour && a.Status == "Available" )
                 .OrderBy(a => a.AppointmentHour)
                 .Select(a => a.AppointmentHour.ToString("HH:mm"))
                 .ToListAsync();
