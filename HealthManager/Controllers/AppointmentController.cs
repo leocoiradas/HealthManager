@@ -31,7 +31,6 @@ namespace HealthManager.Controllers
                 .Select(a => new AppointmentViewModel
                 {
                     AppointmentId = a.AppointmentId,
-                    AppointmentTime = a.AppointmentDate.ToString("dd/MM/yyyy") + " " + a.AppointmentHour.ToString("HH:mm") + " Hs."
                 })
                 .ToListAsync();
             ViewData["AppointmentsAvailable"] = new SelectList(appointmentsList, "AppointmentId", "AppointmentTime");
