@@ -64,7 +64,10 @@ namespace HealthManager.Controllers
                     return View(appointmentRequest);
                 }
                 
-                Appointment reserveAppointment = await _dbcontext.Appointments.FindAsync(appointmentRequest.AppointmentId);
+                Appointment reserveAppointment = await _dbcontext.Appointments.Where(x => x.DoctorId == appointmentRequest.DoctorId
+                                && x.AppointmentDate == appointmentRequest.AppointmentDate
+                                && x.AppointmentHour == appointmentRequest.AppointmentHour
+                                && x.Status == "Available").FirstOrDefaultAsync();
                 if (reserveAppointment != null)
                 {
                     reserveAppointment.Status = "Reserved";
