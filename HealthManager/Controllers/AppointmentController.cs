@@ -39,7 +39,9 @@ namespace HealthManager.Controllers
             ViewData["Specialties"] = new SelectList(specialties, "SpecialtyId", "SpecialtyName");
             return View();
         }
+
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> ReserveAppointment(AppointmentViewModel appointmentRequest)
         {
             if (ModelState.IsValid)
