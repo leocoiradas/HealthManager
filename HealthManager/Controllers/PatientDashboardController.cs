@@ -1,4 +1,5 @@
 ﻿using HealthManager.Models;
+using HealthManager.Models.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -36,12 +37,25 @@ namespace HealthManager.Controllers
              var patientAppointments = await _dbcontext.Appointments
                  .Where(p => p.PatientId == patientId && p.Status=="Reserved")
                  .ToListAsync();*/
+            DateOnly today = DateOnly.FromDateTime(DateTime.Now);
+            TimeOnly currentHour = TimeOnly.FromDateTime(DateTime.Now);
+            var userIdString = User.FindFirst("Id")?.Value;
+            int.TryParse(userIdString, out int userIdInt);
             var patientAppointments = await _dbcontext.Appointments
-                 .Where(p => p.Status == "Reserved")
-                 .Where(p => p.PatientId == 123)
+                 .Where(p => p.Status == "Reserved" && p.PatientId == userIdInt && p.AppointmentDate >= today && p.AppointmentHour > currentHour)
+                 .Include(a => a.Doctor)
+                 .ThenInclude(d => d.SpecialtyNavigation)
                  .ToListAsync();
+            List<PatientAppointmentsViewModel> appointmentsVm = patientAppointments.Select(x => new PatientAppointmentsViewModel
+            {
+                AppointmentId = x.AppointmentId,
+                DoctorName = x.Doctor.Name + " " + x.Doctor.Surname,
+                DoctorSpecialty = x.Doctor.SpecialtyNavigation.SpecialtyName,
+                AppointmentDate = x.AppointmentDate,
+                AppointmentHour = x.AppointmentHour
+            }).ToList();
 
-            return View(patientAppointments);
+            return View(appointmentsVm);
         }
         
         [HttpPut]

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<HealthManager.Models.Appointment>
+﻿@model IEnumerable<HealthManager.Models.DTO.PatientAppointmentsViewModel>
 @{
     ViewData["Title"] = "My Appointments";
     Layout = "_PatientDashboard";
@@ -30,8 +30,8 @@
                 @foreach (var appointment in Model)
                 {
                    <tr>
-                       <td>@appointment.Doctor.Specialty</td>
-                        <td>@appointment.Doctor.Name @appointment.Doctor.Surname</td>
+                       <td>@appointment.DoctorSpecialty</td>
+                        <td>@appointment.DoctorName</td>
                         <td>@appointment.AppointmentDate</td>
                         <td>@appointment.AppointmentHour</td>
                         <td><button data-id=@appointment.AppointmentId data-bs-toggle="modal" data-bs-target="#cancel-modal"></button></td>
