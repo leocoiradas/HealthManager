@@ -37,6 +37,9 @@ namespace HealthManager.Controllers
              var patientAppointments = await _dbcontext.Appointments
                  .Where(p => p.PatientId == patientId && p.Status=="Reserved")
                  .ToListAsync();*/
+            DateOnly today = DateOnly.FromDateTime(DateTime.Now);
+            var userIdString = User.FindFirst("Id")?.Value;
+            int.TryParse(userIdString, out int userIdInt);
             var patientAppointments = await _dbcontext.Appointments
                  .Where(p => p.Status == "Reserved")
                  .Where(p => p.PatientId == 123)
