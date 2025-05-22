@@ -81,21 +81,32 @@
     {
         <script>
             $(document).ready(function(){
-                $("cancel-appointment-button").click(function(){
-                    let appointmentId = $(this).data("id");
+
+                var appointmentId;
+
+                $('#cancel-modal').on('show.bs.modal', function (e) {
+
+                    var triggerButton = $(e.relatedTarget);
+                    appointmentId = triggerButton.data('id');
+                    $('#cancel-appointment-button').data('id', appointmentId);
+                });
+                
+                $("#cancel-appointment-button").click(function(){
+
+                    let appointmentguid = appointmentId;
+
                     $.ajax({
-                    url: "@Url.Action("CancelAppointment", "PatientDashboard")",
-                        type: "POST",
-                        dataType: {appointmentId: appointmentId},
-                        success: function(response){
-                                if (response.success) {
-                                    $("#cancel-modal").modal('hide');
-                                    window.location.reload()
-                                }
+                        url: '@Url.Action("CancelAppointment", "PatientDashboard")',
+                            type: "POST",
+                            data: {appointmentId: appointmentguid},
+                            success: function(response){
+                                    if (response.success) {
+                                        $("#cancel-modal").modal('hide');
+                                        window.location.reload()
+                                    }
                                 
-                        }
+                            }
                     })
-                    
                 })
             })
         </script>
