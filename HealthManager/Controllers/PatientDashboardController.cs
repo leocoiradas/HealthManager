@@ -63,7 +63,7 @@ namespace HealthManager.Controllers
         {
             Appointment databaseAppointment = await _dbcontext.Appointments.FindAsync(appointmentId);
             var requestDate = DateOnly.FromDateTime(DateTime.Now);
-            if (databaseAppointment.AppointmentDate.CompareTo(requestDate) < 0)
+            if (databaseAppointment.AppointmentDate.CompareTo(requestDate) >= 0)
             {
                 databaseAppointment.Status = "Available";
                 databaseAppointment.PatientId = null;
