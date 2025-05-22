@@ -1,4 +1,5 @@
 ﻿using HealthManager.Models;
+using HealthManager.Models.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
