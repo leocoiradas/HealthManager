@@ -34,7 +34,7 @@
                         <td>@appointment.DoctorName</td>
                         <td>@appointment.AppointmentDate</td>
                         <td>@appointment.AppointmentHour</td>
-                        <td><button data-id=@appointment.AppointmentId data-bs-toggle="modal" data-bs-target="#cancel-modal"></button></td>
+                        <td><button type="button" data-id="@appointment.AppointmentId" data-bs-toggle="modal" data-bs-target="#cancel-modal" class="btn btn-danger">Cancel</button></td>
                    </tr> 
                 
                 }
