@@ -46,8 +46,16 @@ namespace HealthManager.Controllers
                  .Include(a => a.Doctor)
                  .ThenInclude(d => d.SpecialtyNavigation)
                  .ToListAsync();
+            List<PatientAppointmentsViewModel> appointmentsVm = patientAppointments.Select(x => new PatientAppointmentsViewModel
+            {
+                AppointmentId = x.AppointmentId,
+                DoctorName = x.Doctor.Name + " " + x.Doctor.Surname,
+                DoctorSpecialty = x.Doctor.SpecialtyNavigation.SpecialtyName,
+                AppointmentDate = x.AppointmentDate,
+                AppointmentHour = x.AppointmentHour
+            }).ToList();
 
-            return View(patientAppointments);
+            return View(appointmentsVm);
         }
         
         [HttpPut]
