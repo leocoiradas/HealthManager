@@ -58,8 +58,8 @@ namespace HealthManager.Controllers
             return View(appointmentsVm);
         }
         
-        [HttpPut]
         public async Task <IActionResult> CancelAppointment(Guid appointmentId)
+        [HttpPost]
         {
             var databaseAppointment = await _dbcontext.Appointments
                 .Where(p => p.AppointmentId == appointmentId)
