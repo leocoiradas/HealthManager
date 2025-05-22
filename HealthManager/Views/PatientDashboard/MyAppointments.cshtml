@@ -40,8 +40,10 @@
                 }
             </tbody>
             </table>
-        <section id="cancel-modal" class="modal fade flex justify-content-center align-items-center" >
-            <article>
+<div id="cancel-modal" class="modal fade" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+           
                 <div class="modal-header">
                     <h3>Cancel Appointment</h3>
                 </div>
@@ -49,22 +51,9 @@
                     <p>¿Do you want to cancel the appointment?</p>
                     <p>You'll have to reserve a new appointment, there's no way to recover this appointment if you cancel it.</p>
                 </div>
-                <div class="d-flex justify-content-center modal-footer">
-                    <button class="btn-close" data-bs-dismiss="modal">Close Modal</button>
-                    <button id="cancel-appointment-button">Cancel Appointment</button>
-                </div>
-            </article>
-        </section>
-        <section id="result-modal" class="modal fade flex justify-content-center align-items-center" >
-            <article>
-                <div class="modal-header">
-                    <h3>Appointment could not be canceled</h3>
-                </div>
-                <div class="modal-body">
-                    <p>@ViewBag["cancel-appointment-error"]</p>
-                </div>
-                <div class="d-flex justify-content-center modal-footer">
-                    <button class="btn-close" data-bs-dismiss="modal">Close Modal</button>
+                <div class="d-flex justify-content-start w-100 modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close Modal</button>
+                <button id="cancel-appointment-button" class="btn btn-primary">Cancel Appointment</button>
                 </div>
             </article>
         </section>
