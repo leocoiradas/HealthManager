@@ -61,9 +61,7 @@ namespace HealthManager.Controllers
         public async Task <IActionResult> CancelAppointment(Guid appointmentId)
         [HttpPost]
         {
-            var databaseAppointment = await _dbcontext.Appointments
-                .Where(p => p.AppointmentId == appointmentId)
-                .FirstOrDefaultAsync();
+            Appointment databaseAppointment = await _dbcontext.Appointments.FindAsync(appointmentId);
             var requestDate = DateOnly.FromDateTime(DateTime.Now);
             if (databaseAppointment.AppointmentDate.CompareTo(requestDate) < 0)
             {
