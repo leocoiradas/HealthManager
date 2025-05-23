@@ -30,10 +30,7 @@ namespace HealthManager.Controllers
             {
                 return RedirectToAction("ReserveAppointment", "Appointment");
             }*/
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("MyAppointments", "PatientDashboard");
-            }
+           
             return View();
         }
 
@@ -41,15 +38,15 @@ namespace HealthManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task <IActionResult> Login(AuthorizeRequest request)
         {
-           /* if (ModelState.IsValid)
-            {
-                Patient patientSearch = _dbcontext.Patients.FirstOrDefault(p => p.Email == request.email);
-                if (patientSearch == null || !BCrypt.Net.BCrypt.Verify(request.password, patientSearch.Password))
+           if (ModelState.IsValid)
+           {
+                Patient patientSearch = await _dbcontext.Patients.Where(p => p.Email == request.Email).FirstOrDefaultAsync();
+                if (patientSearch == null || !BCrypt.Net.BCrypt.Verify(request.Password, patientSearch.Password))
                 {
                     ModelState.AddModelError("Email", "Cannot find an account with the provided email.");
                     return View(request);
                 }
-                string createdToken = _jwtservice.GenerateToken(patientSearch.Name, patientSearch.Email);
+                string createdToken = _jwtservice.GenerateToken(patientSearch.Name, patientSearch.Email, patientSearch.Role, patientSearch.PatientId);
                 HttpContext.Response.Cookies.Append("Token", createdToken,
                     new CookieOptions
                     {
@@ -60,65 +57,19 @@ namespace HealthManager.Controllers
                         IsEssential = true,
                         SameSite = SameSiteMode.None,
                     });
-                return RedirectToAction("Appointments", "Index");
-            }
-                return View(request);*/
-                
-            if (ModelState.IsValid)
-            {
-                Patient patientAccount = await _dbcontext.Patients.FirstOrDefaultAsync(x => x.Email.Equals(request.Email));
-
-                if (patientAccount == null)
-                {
-                    ViewData["AuthorizeResult"] = "* There's no account associated to the provided email.";
-                    return View(request);
-                }
-                if (!BCrypt.Net.BCrypt.Verify(request.Password, patientAccount.Password))
-                {
-                    ViewData["AuthorizeResult"] = "* Invalid credentials.";
-                    return View(request);
-                }
-                List <Claim> claims = new List<Claim>()
-                {
-                    new Claim(ClaimTypes.NameIdentifier, patientAccount.PatientId.ToString()),
-                    new Claim(ClaimTypes.Name, patientAccount.Name),
-                    new Claim(ClaimTypes.Surname, patientAccount.Surname),
-                    new Claim(ClaimTypes.Email, patientAccount.Email),
-                    new Claim(ClaimTypes.Role, patientAccount.Role)
-                };
-                ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                AuthenticationProperties properties = new AuthenticationProperties()
-                {
-                    AllowRefresh = true,
-                    IsPersistent = true,
-
-                };
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity), properties);
                 return RedirectToAction("MyAppointments", "PatientDashboard");
-            }
-            else
-            {
+           }  
+           else
+           {
                 ViewData["AuthorizeResult"] = "* There was an error during the process of authentication. We suggest you try again later.";
                 return View(request);
-            }
-
-            
-            
+           }
         }
 
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Register() 
         {
-            /*var existingCookie = ControllerContext.HttpContext.Request.Cookies["Token"];
-            if (existingCookie != null)
-            {
-                return RedirectToAction("Appointment", "Index");
-            }*/
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("MyAppointments", "PatientDashboard");
-            }
             return View();
         }
 
@@ -190,7 +141,7 @@ namespace HealthManager.Controllers
             {
                 if (BCrypt.Net.BCrypt.Verify(request.Password, admin.Password))
                 {
-                    string adminToken = _jwtservice.GenerateToken(admin.Name, admin.Email, admin.Role);
+                    string adminToken = _jwtservice.GenerateToken(admin.Name, admin.Email, admin.Role, admin.Id);
                     HttpContext.Response.Cookies.Append("Token", adminToken,
                         new CookieOptions
                         {
@@ -208,7 +159,7 @@ namespace HealthManager.Controllers
             {
                 if (BCrypt.Net.BCrypt.Verify(request.Password, employee.Password))
                 {
-                    string employeeToken = _jwtservice.GenerateToken(employee.Name, employee.Email, employee.Role);
+                    string employeeToken = _jwtservice.GenerateToken(employee.Name, employee.Email, employee.Role, employee.DoctorId);
                     HttpContext.Response.Cookies.Append("Token", employeeToken,
                         new CookieOptions
                         {
