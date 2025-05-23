@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewData["Title"] = "Medical Records";
+    Layout = "_DoctorDashboard";
+}
+
+<section class="d-flex flex-column justify-content-center align-items-center w-100 p-0">
+    <article class="input-container d-flex flex-column justify-content-center align-items-center text-center p-0">
+        <h3>Medical Records</h3>
+        <p>Type in the input to search medical records of the patient based on his name</p>
+        <input type="text" name="record-search" id="record-search" class="form-control" />
+    </article>
+
+
+    <article id="results-container" class="d-flex flex-column justify-content-center align-content-center gap-3 h-100 w-50">
+               
+        </article>
+    
+</section>
+
+
+
+<style>
+    section>.input-container{
+        width: 50% !important;
+
+    };
+    #results-container{
+        overflow-y: scroll !important;
+        max-height: 480px !important;
+    }
+</style>
+
+@section Scripts{
+    <script>
+        $(document).ready(function(){
+                let timeout;
+            $("#record-search").on("input", function(){
+                
+                clearTimeout(timeout);
+                const query = $(this).val().trim();
+                timeout = setTimeout(function(){recordSearch(query)}, 1000);
+                
+
+            });
+
+            function recordSearch(query){
+                console.log("The query is: " + query)
+                if(query.length > 2){
+                    $.ajax({
+                    url:'@Url.Action("GetMedicalRegisters", "Doctor")',
+                    data: {query: query},
+                    success: function(response){
+                        $("#results-container").html(response);
+                    },
+                    error: function () {
+                                $("#results-container").html("<p>There was an error in the searching process. Please try again later</p>");
+                    }
+                    });
+                } else {
+                        $("#results-container").empty();
+                }
+                
+            }
+        })
+    </script>
+}
