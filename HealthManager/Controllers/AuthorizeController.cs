@@ -30,10 +30,7 @@ namespace HealthManager.Controllers
             {
                 return RedirectToAction("ReserveAppointment", "Appointment");
             }*/
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("MyAppointments", "PatientDashboard");
-            }
+           
             return View();
         }
 
