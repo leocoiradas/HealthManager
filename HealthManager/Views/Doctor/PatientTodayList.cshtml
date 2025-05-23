@@ -15,8 +15,9 @@
         {
             <h2 class="fs-5 fw-bold">
                 Patients for @{
-                    DateOnly.FromDateTime(DateTime.Now).ToString("dd/MM/yyyy");
+                    string date = DateOnly.FromDateTime(DateTime.Now).ToString("dd/MM/yyyy");
                 }
+                @date
             </h2>
             <table class="table table-hover h-100">
                 <thead>
