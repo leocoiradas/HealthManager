@@ -7,13 +7,13 @@
 
 
 
-    <section class="d-flex w-100 h-auto justify-content-center align-items-center">
-        @if (!Model.Any())
-        {
-            <article class="w-100 p-4">
-                <h4 class="text-center">You don't have any appointments</h4>
-            </article>
-        }
+<section class="d-flex w-100 h-auto justify-content-center align-items-center">
+    @if (!Model.Any())
+    {
+        <article class="w-100 p-4">
+            <h4 class="text-center">You don't have any appointments</h4>
+        </article>
+    }
     else 
     {
         <table class="table table-hover">
@@ -29,19 +29,25 @@
             <tbody>
                 @foreach (var appointment in Model)
                 {
-                   <tr>
-                       <td>@appointment.DoctorSpecialty</td>
+                    <tr>
+                        <td>@appointment.DoctorSpecialty</td>
                         <td>@appointment.DoctorName</td>
                         <td>@appointment.AppointmentDate</td>
                         <td>@appointment.AppointmentHour</td>
-                        <td><button data-id=@appointment.AppointmentId data-bs-toggle="modal" data-bs-target="#cancel-modal"></button></td>
-                   </tr> 
+                        <td><button type="button" data-id="@appointment.AppointmentId" data-bs-toggle="modal" data-bs-target="#cancel-modal" class="btn btn-danger">Cancel</button></td>
+                    </tr> 
                 
                 }
             </tbody>
-            </table>
-        <section id="cancel-modal" class="modal fade flex justify-content-center align-items-center" >
-            <article>
+        </table>
+           
+    }     
+</section>
+
+<div id="cancel-modal" class="modal fade" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+           
                 <div class="modal-header">
                     <h3>Cancel Appointment</h3>
                 </div>
@@ -49,47 +55,58 @@
                     <p>¿Do you want to cancel the appointment?</p>
                     <p>You'll have to reserve a new appointment, there's no way to recover this appointment if you cancel it.</p>
                 </div>
-                <div class="d-flex justify-content-center modal-footer">
-                    <button class="btn-close" data-bs-dismiss="modal">Close Modal</button>
-                    <button id="cancel-appointment-button">Cancel Appointment</button>
+                <div class="d-flex justify-content-start w-100 modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close Modal</button>
+                <button id="cancel-appointment-button" class="btn btn-primary">Cancel Appointment</button>
                 </div>
-            </article>
-        </section>
-        <section id="result-modal" class="modal fade flex justify-content-center align-items-center" >
-            <article>
-                <div class="modal-header">
-                    <h3>Appointment could not be canceled</h3>
-                </div>
-                <div class="modal-body">
-                    <p>@ViewBag["cancel-appointment-error"]</p>
-                </div>
-                <div class="d-flex justify-content-center modal-footer">
-                    <button class="btn-close" data-bs-dismiss="modal">Close Modal</button>
-                </div>
-            </article>
-        </section>
-        }     
-    </section>
+            
+        </div>
+    </div>
+</div>
+<div id="result-modal" class="modal fade" tabindex="-1">
+    <article class=" flex flex-column justify-content-center align-items-center">
+        <div class="modal-header">
+            <h3>Appointment could not be canceled</h3>
+        </div>
+        <div class="modal-body">
+            <p>@ViewBag.cancel-appointment-error</p>
+        </div>
+        <div class="d-flex justify-content-center modal-footer">
+            <button class="btn-close" data-bs-dismiss="modal">Close Modal</button>
+        </div>
+    </article>
+</div>
 
     @section Scripts
     {
         <script>
             $(document).ready(function(){
-                $("cancel-appointment-button").click(function(){
-                    let appointmentId = $(this).data("id");
+
+                var appointmentId;
+
+                $('#cancel-modal').on('show.bs.modal', function (e) {
+
+                    var triggerButton = $(e.relatedTarget);
+                    appointmentId = triggerButton.data('id');
+                    $('#cancel-appointment-button').data('id', appointmentId);
+                });
+                
+                $("#cancel-appointment-button").click(function(){
+
+                    let appointmentguid = appointmentId;
+
                     $.ajax({
-                    url: "@Url.Action("CancelAppointment", "PatientDashboard")",
-                        type: "POST",
-                        dataType: {appointmentId: appointmentId},
-                        success: function(response){
-                                if (response.success) {
-                                    $("#cancel-modal").modal('hide');
-                                    window.location.reload()
-                                }
+                        url: '@Url.Action("CancelAppointment", "PatientDashboard")',
+                            type: "POST",
+                            data: {appointmentId: appointmentguid},
+                            success: function(response){
+                                    if (response.success) {
+                                        $("#cancel-modal").modal('hide');
+                                        window.location.reload()
+                                    }
                                 
-                        }
+                            }
                     })
-                    
                 })
             })
         </script>

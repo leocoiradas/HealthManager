@@ -58,25 +58,23 @@ namespace HealthManager.Controllers
             return View(appointmentsVm);
         }
         
-        [HttpPut]
-        public async Task <IActionResult> CancelAppointment(Guid appointmentId)
+        [HttpPost]
+        public async Task<JsonResult> CancelAppointment(Guid appointmentId)
         {
-            var databaseAppointment = await _dbcontext.Appointments
-                .Where(p => p.AppointmentId == appointmentId)
-                .FirstOrDefaultAsync();
+            Appointment databaseAppointment = await _dbcontext.Appointments.FindAsync(appointmentId);
             var requestDate = DateOnly.FromDateTime(DateTime.Now);
-            if (databaseAppointment.AppointmentDate.CompareTo(requestDate) < 0)
+            if (databaseAppointment.AppointmentDate.CompareTo(requestDate) >= 0)
             {
                 databaseAppointment.Status = "Available";
                 databaseAppointment.PatientId = null;
                 _dbcontext.Appointments.Update(databaseAppointment);
                 await _dbcontext.SaveChangesAsync();
-                return RedirectToAction("MyAppointments" , "PatientDashboard");
+                return Json(new { success = true });
             }
             else
             {
                 ModelState.AddModelError("CancelError", "The appoinment has to be cancelled before the appointment date.");
-                return RedirectToAction("MyAppointments" , "PatientDashboard");
+                return Json(new { success = false, message = "No existe el turno" });
             }
         }
     }
