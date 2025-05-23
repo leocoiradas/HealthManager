@@ -99,9 +99,53 @@ namespace HealthManager.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult MedicalRecords()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> PatientNotAttended(MedicalRecordViewModel recordViewModel)
+        {
+            try
+            {
+                Guid appointmentId = recordViewModel.AppointmentId;
+                await _dbcontext.Appointments
+                        .Where(x => x.AppointmentId == appointmentId)
+                        .ExecuteUpdateAsync(setters => setters.SetProperty(b => b.Attended, false));
+
+                await _dbcontext.SaveChangesAsync();
+
+                return RedirectToAction("PatientTodayList");
+            }
+            catch (Exception)
+            {
+
+                return RedirectToAction("PatientTodayList", "Doctor");
+            }
+        }
+
+        public async Task<IActionResult> GetMedicalRegisters(string query)
+        {
+            var doctorId = User.FindFirst("Id")?.Value;
+            int.TryParse(doctorId, out int doctorIdInt);
+            List<MedicalRecordViewModel> recordsList = await _dbcontext.MedicalRecords
+                .Where(x => x.DoctorId == doctorIdInt && x.Patient.Name.Contains(query) )
+                .OrderBy(x => x.Date)
+                .Select(x => new MedicalRecordViewModel
                 {
+                    AppointmentId = (Guid)x.AppointmentId,
+                    DoctorId = x.DoctorId,
+                    PatientId = x.PatientId,
+                    PatientName = x.Patient.Name + " " + x.Patient.Surname,
+                    Treatment = x.Treatment,
+                    Diagnosis = x.Diagnosis,
+                    Observations = x.Observations,
+                    RecordDate = (DateTime)x.Date,
                 })
+                
                 .ToListAsync();
+            return PartialView("_RecordSearchResults", recordsList);
         }
 
     }
