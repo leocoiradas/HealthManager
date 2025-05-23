@@ -30,7 +30,7 @@ public partial class Patient
     [MinLength(12)]
     [RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{12,}$")]
     public string Password { get; set; } = null!;
-    public int? PhoneNumber { get; set; }
+    public long? PhoneNumber { get; set; }
 
     public string? Role { get; set; } = "Patient";
 
