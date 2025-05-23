@@ -33,16 +33,10 @@ namespace HealthManager.Controllers
             return View(patientList);
         }
 
-        public async Task<JsonResult> GetDoctorsBySpecialty(int specialty)
         {
-            var doctorsBySpecialty = await _dbcontext.Doctors.Where(d => d.Specialty == specialty)
-                .Select(a => new
                 {
-                    DoctorId = a.DoctorId,
-                    Name = a.Name + " " + a.Surname,
                 })
                 .ToListAsync();
-            return Json(doctorsBySpecialty);
         }
 
     }
