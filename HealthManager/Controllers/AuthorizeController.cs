@@ -57,50 +57,13 @@ namespace HealthManager.Controllers
                         IsEssential = true,
                         SameSite = SameSiteMode.None,
                     });
-                return RedirectToAction("Appointments", "Index");
-            }
-                return View(request);*/
-                
-            if (ModelState.IsValid)
-            {
-                Patient patientAccount = await _dbcontext.Patients.FirstOrDefaultAsync(x => x.Email.Equals(request.Email));
-
-                if (patientAccount == null)
-                {
-                    ViewData["AuthorizeResult"] = "* There's no account associated to the provided email.";
-                    return View(request);
-                }
-                if (!BCrypt.Net.BCrypt.Verify(request.Password, patientAccount.Password))
-                {
-                    ViewData["AuthorizeResult"] = "* Invalid credentials.";
-                    return View(request);
-                }
-                List <Claim> claims = new List<Claim>()
-                {
-                    new Claim(ClaimTypes.NameIdentifier, patientAccount.PatientId.ToString()),
-                    new Claim(ClaimTypes.Name, patientAccount.Name),
-                    new Claim(ClaimTypes.Surname, patientAccount.Surname),
-                    new Claim(ClaimTypes.Email, patientAccount.Email),
-                    new Claim(ClaimTypes.Role, patientAccount.Role)
-                };
-                ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                AuthenticationProperties properties = new AuthenticationProperties()
-                {
-                    AllowRefresh = true,
-                    IsPersistent = true,
-
-                };
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity), properties);
                 return RedirectToAction("MyAppointments", "PatientDashboard");
-            }
-            else
-            {
+           }  
+           else
+           {
                 ViewData["AuthorizeResult"] = "* There was an error during the process of authentication. We suggest you try again later.";
                 return View(request);
-            }
-
-            
-            
+           }
         }
 
         [HttpGet]
