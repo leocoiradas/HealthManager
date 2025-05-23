@@ -33,9 +33,15 @@
                     {
                         <tr>
                             <td>@appointment.AppointmentHour</td>
-                            <td>{@appointment.Patient.Name + @appointment.Patient.Surname}</td>
-                            <td>{@appointment.Patient.BirthDate.Year - @DateTime.Now.Year}</td>
-                            <td><a asp-controller="Doctor" asp-action="">Medical Record</a></td>
+                            <td>@appointment.Patient.Name @appointment.Patient.Surname</td>
+                            <td>@{ int patientYear = @DateTime.Now.Year - @appointment.Patient.BirthDate.Year;
+                                }@patientYear
+                            </td>
+                            <td>
+                                <a asp-controller="Doctor" asp-action="CreateRecord" asp-route-appointmentId="@appointment.AppointmentId" class="btn btn-primary">
+                                    Medical Record
+                                </a>
+                            </td>
                         </tr>
                     }
                 </tbody>
