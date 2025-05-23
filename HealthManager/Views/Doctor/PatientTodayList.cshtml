@@ -6,19 +6,20 @@
 }
 
 
-    <section class="d-flex flex-column justify-content-center align-items-center w-100 h-100">
+    <section class="d-flex flex-column justify-content-start align-items-center w-100 h-100">
         @if (!Model.Any())
         {
            <p>There's no patients for today.</p>
         }
         else
         {
-            <h2>
+            <h2 class="fs-5 fw-bold">
                 Patients for @{
-                    DateOnly.FromDateTime(DateTime.Now).ToString("dd/MM/yyyy");
+                    string date = DateOnly.FromDateTime(DateTime.Now).ToString("dd/MM/yyyy");
                 }
+                @date
             </h2>
-            <table class="table table-hover">
+            <table class="table table-hover h-100">
                 <thead>
                     <tr>
                         <th>Hour</th>
@@ -32,9 +33,15 @@
                     {
                         <tr>
                             <td>@appointment.AppointmentHour</td>
-                            <td>{@appointment.Patient.Name + @appointment.Patient.Surname}</td>
-                            <td>{@appointment.Patient.BirthDate.Year - @DateTime.Now.Year}</td>
-                            <td><a asp-controller="Doctor" asp-action="">Medical Record</a></td>
+                            <td>@appointment.Patient.Name @appointment.Patient.Surname</td>
+                            <td>@{ int patientYear = @DateTime.Now.Year - @appointment.Patient.BirthDate.Year;
+                                }@patientYear
+                            </td>
+                            <td>
+                                <a asp-controller="Doctor" asp-action="CreateRecord" asp-route-appointmentId="@appointment.AppointmentId" class="btn btn-primary">
+                                    Medical Record
+                                </a>
+                            </td>
                         </tr>
                     }
                 </tbody>

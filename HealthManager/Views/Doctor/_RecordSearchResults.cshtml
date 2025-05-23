@@ -1,0 +1,34 @@
+﻿@model System.Collections.Generic.List<HealthManager.Models.DTO.MedicalRecordViewModel>
+
+@{
+    var counter = 0;
+}
+@if(Model.Any())
+{
+    <section >
+        <div class="accordion" id="accordionExample">
+        @foreach(var record in Model)
+        {
+            counter++;
+
+            
+                <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading-@{counter.ToString();}@counter">
+                          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse@{counter.ToString();}@counter" aria-expanded="false" aria-controls="collapse@{counter.ToString();}@counter">
+                                @record.PatientName | @{string recordDate = @record.RecordDate.ToString();} @recordDate
+                          </button>
+                        </h2>
+                        <div id="collapse@{counter.ToString();}@counter" class="accordion-collapse collapse" aria-labelledby="heading@{counter.ToString();}@counter" data-bs-parent="#accordionExample">
+                              <div class="accordion-body">
+                                    <p><b>Diagnosis: </b>@record.Diagnosis</p>
+                                    <p><b>Observations: </b>@record.Observations</p>
+                                    <p><b>Treatment: </b>@record.Treatment</p>
+                              </div>
+                        </div>
+                </div>
+            
+  
+        }
+        </div>
+    </section>
+}
