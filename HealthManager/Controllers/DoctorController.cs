@@ -52,6 +52,53 @@ namespace HealthManager.Controllers
             return View(record);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateRecord(MedicalRecordViewModel recordViewModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Guid appointmentId = recordViewModel.AppointmentId;
+                    MedicalRecord existingRecord = await _dbcontext.MedicalRecords.Where(x => x.AppointmentId == appointmentId).FirstOrDefaultAsync();
+                    if (existingRecord == null)
+                    {
+                        MedicalRecord newRecord = new MedicalRecord
+                        {
+                            AppointmentId = appointmentId,
+                            DoctorId = recordViewModel.DoctorId,
+                            PatientId = recordViewModel.PatientId,
+                            Date = DateTime.Now,
+                            Diagnosis = recordViewModel.Diagnosis,
+                            Observations = recordViewModel.Observations,
+                            Treatment = recordViewModel.Treatment,
+                        };
+
+                        //EScribir logica para establecer que el paciente asistio a la consulta para que el turno ya no aparezca en la 
+                        //Lista de pacientes para hoy
+                        await _dbcontext.Appointments
+                           .Where(x => x.AppointmentId == newRecord.AppointmentId)
+                           .ExecuteUpdateAsync(setters => setters.SetProperty(b => b.Attended, true));
+
+                        await _dbcontext.MedicalRecords.AddAsync(newRecord);
+
+                        await _dbcontext.SaveChangesAsync();
+                    }
+
+                    return RedirectToAction("PatientTodayList", "Doctor");
+                }
+                else
+                {
+                    return View(recordViewModel);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
                 {
                 })
                 .ToListAsync();
