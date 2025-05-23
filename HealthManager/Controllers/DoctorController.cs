@@ -33,7 +33,25 @@ namespace HealthManager.Controllers
             return View(patientList);
         }
 
+        public async Task <IActionResult> CreateRecord(Guid appointmentId)
         {
+            Appointment appointment = await _dbcontext.Appointments
+                .Where(x => x.AppointmentId == appointmentId)
+                .Include(x => x.Doctor)
+                .Include(x => x.Patient)
+                .FirstOrDefaultAsync();
+
+            MedicalRecordViewModel record = new MedicalRecordViewModel
+            {
+                AppointmentId = appointment.AppointmentId,
+                DoctorId = appointment.DoctorId,
+                PatientId = (int)appointment.PatientId,
+                DoctorName = appointment.Doctor.Name + " " + appointment.Doctor.Surname,
+                PatientName = appointment.Patient.Name + " " + appointment.Patient.Surname,
+            };
+            return View(record);
+        }
+
                 {
                 })
                 .ToListAsync();
