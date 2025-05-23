@@ -38,15 +38,15 @@ namespace HealthManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task <IActionResult> Login(AuthorizeRequest request)
         {
-           /* if (ModelState.IsValid)
-            {
-                Patient patientSearch = _dbcontext.Patients.FirstOrDefault(p => p.Email == request.email);
-                if (patientSearch == null || !BCrypt.Net.BCrypt.Verify(request.password, patientSearch.Password))
+           if (ModelState.IsValid)
+           {
+                Patient patientSearch = await _dbcontext.Patients.Where(p => p.Email == request.Email).FirstOrDefaultAsync();
+                if (patientSearch == null || !BCrypt.Net.BCrypt.Verify(request.Password, patientSearch.Password))
                 {
                     ModelState.AddModelError("Email", "Cannot find an account with the provided email.");
                     return View(request);
                 }
-                string createdToken = _jwtservice.GenerateToken(patientSearch.Name, patientSearch.Email);
+                string createdToken = _jwtservice.GenerateToken(patientSearch.Name, patientSearch.Email, patientSearch.Role, patientSearch.PatientId);
                 HttpContext.Response.Cookies.Append("Token", createdToken,
                     new CookieOptions
                     {
