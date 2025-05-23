@@ -1,0 +1,52 @@
+﻿@model HealthManager.Models.DTO.MedicalRecordViewModel;
+@{
+    ViewData["Title"] = "Create record";
+    Layout = "_DoctorDashboard";
+}
+
+
+<section class="w-100 d-flex justify-content-center align-items-center">
+    <form method="post" asp-controller="Doctor" asp-action="CreateRecord" class="w-50 d-flex flex-column gap-1">
+
+        <fieldset class="form-group">
+                <label asp-for="DoctorId"> Appointment ID </label>
+                <input type="text" asp-for="AppointmentId" class="form-control" readonly />
+        </fieldset>
+
+
+        <fieldset class="form-group">
+            <label asp-for="DoctorId">Doctor: @{
+                    string doctorName = Model.DoctorName.ToString();
+                }@doctorName</label>
+            <input type="number" asp-for="DoctorId" class="form-control" readonly />
+            <input type="text" asp-for="DoctorName" class="form-control" readonly />
+        </fieldset>
+
+        <fieldset class="form-group">
+            <label asp-for="PatientId">Creating medical record for: @{
+                    string patientName = Model.PatientName;
+                } @patientName</label>
+            <input type="number" asp-for="PatientId" class="form-control" readonly />
+            <input type="text" asp-for="PatientName" class="form-control" readonly />
+        </fieldset>
+
+        <fieldset class="form-group">
+            <label asp-for="Diagnosis">Diagnosis</label>
+            <input type="text" asp-for="Diagnosis" class="form-control" />
+        </fieldset>
+
+        <fieldset class="form-group col">
+            <label asp-for="Observations">Observations</label>
+            <textarea asp-for="Observations" class="form-control"></textarea>
+        </fieldset>
+        
+        <fieldset class="form-group col">
+            <label asp-for="Treatment">Treatment</label>
+            <textarea asp-for="Treatment" class="form-control"></textarea>
+        </fieldset>
+
+        <fieldset class="form-group">
+            <input type="submit" value="Create Record" class="btn btn-primary mb-3" />
+        </fieldset>
+    </form>
+</section>
