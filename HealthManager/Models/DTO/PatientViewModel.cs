@@ -13,11 +13,11 @@ namespace HealthManager.Models.DTO
         [Required]
         [EmailAddress]
         public string Email { get; set; } = null!;
-        [Required, MinLength(12), RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{12,}$")]
+        [Required, MinLength(12), RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-+]).{12,}$")]
         public string Password { get; set; } = null!;
         [Required]
         public int Dni { get; set; }
-        [Required, Compare("Password"), MinLength(12), RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{12,}$")]
+        [Required, Compare("Password"), MinLength(12), RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*+-]).{12,}$")]
         public string ConfirmPassword { get; set; } = null!;
         [Required]
         public int? PhoneNumber { get; set; }
