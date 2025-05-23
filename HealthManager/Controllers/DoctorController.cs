@@ -27,7 +27,7 @@ namespace HealthManager.Controllers
         {
             var today = DateOnly.FromDateTime(DateTime.Now);
             List<Appointment> patientList = await _dbcontext.Appointments
-                .Where(x => x.AppointmentDate == today && x.Status == "Reserved")
+                .Where(x => x.AppointmentDate == today && x.Status == "Reserved" && x.Attended == null)
                 .Include(a => a.Patient)
                 .ToListAsync();
             return View(patientList);
