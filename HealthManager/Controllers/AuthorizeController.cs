@@ -70,15 +70,6 @@ namespace HealthManager.Controllers
         [AllowAnonymous]
         public IActionResult Register() 
         {
-            /*var existingCookie = ControllerContext.HttpContext.Request.Cookies["Token"];
-            if (existingCookie != null)
-            {
-                return RedirectToAction("Appointment", "Index");
-            }*/
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("MyAppointments", "PatientDashboard");
-            }
             return View();
         }
 
