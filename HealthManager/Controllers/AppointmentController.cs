@@ -57,7 +57,7 @@ namespace HealthManager.Controllers
                                 && x.Status == "Reserved")
                     .FirstOrDefaultAsync();
 
-                if (existingAppointment != null && existingAppointment.AppointmentDate.CompareTo(appointmentRequest.AppointmentDate) < 28)
+                if (existingAppointment != null && (existingAppointment.AppointmentDate.Day - appointmentRequest.AppointmentDate.Day) < 28)
                 {
                     ViewData.ModelState
                         .AddModelError("Appointment",
@@ -87,11 +87,14 @@ namespace HealthManager.Controllers
         
         public async Task <JsonResult> GetAppointmentDates(int doctorId)
         {
+            var today = DateTime.Now;
             var currentMonth = DateTime.Now.Month;
-            var currentDay = DateTime.Now.Day;
-            var currentHour = TimeOnly.FromDateTime(DateTime.Now);
+            var currentDay = DateOnly.FromDateTime(today);
+            var currentHour = TimeOnly.FromDateTime(DateTime.Now).AddHours(1);
             var availableAppointments = await _dbcontext.Appointments
-                .Where(a => a.DoctorId == doctorId && a.AppointmentDate.Month == currentMonth && a.AppointmentDate.Day >= currentDay && a.AppointmentHour > currentHour && a.Status == "Available")
+                .Where(a => a.DoctorId == doctorId && ((a.AppointmentDate == currentDay && a.AppointmentHour >= currentHour) || a.AppointmentDate > currentDay) && a.Status == "Available")
+                .OrderByDescending(x => x.AppointmentDate)
+                .ThenByDescending(x => x.AppointmentHour)
                 .Select(a => a.AppointmentDate.ToString("dd/MM/yyyy"))
                 .Distinct()
                 .ToListAsync();
@@ -100,15 +103,31 @@ namespace HealthManager.Controllers
 
         public async Task <JsonResult> GetAppointmentHours(string day, int doctorId)
         {
+            var now = DateTime.Now;
             var dateFromString = DateTime.Parse(day);
             var onlyDateFromDateTime = DateOnly.FromDateTime(dateFromString);
-            var currentHour = TimeOnly.FromDateTime(DateTime.Now);
-            var appointmentHours = await _dbcontext.Appointments
-                .Where(a => a.DoctorId == doctorId && a.AppointmentDate.Equals(onlyDateFromDateTime) &&a.AppointmentHour > currentHour && a.Status == "Available" )
-                .OrderBy(a => a.AppointmentHour)
+            var currentHour = TimeOnly.FromDateTime(DateTime.Now).AddHours(1);
+            var today = DateOnly.FromDateTime(now);
+
+            List<string> appointmentHours = new List<string>();
+
+            if (onlyDateFromDateTime.CompareTo(today) > 0)
+            {
+                 appointmentHours = await _dbcontext.Appointments
+                .Where(a => a.DoctorId == doctorId && a.AppointmentDate.Equals(onlyDateFromDateTime) && a.Status == "Available")
+                .OrderByDescending(a => a.AppointmentHour)
                 .Select(a => a.AppointmentHour.ToString("HH:mm"))
                 .ToListAsync();
-            return Json(appointmentHours);
+            }
+            else
+            {
+                 appointmentHours = await _dbcontext.Appointments
+                .Where(a => a.DoctorId == doctorId && a.AppointmentDate.Equals(onlyDateFromDateTime) && a.AppointmentHour >= currentHour && a.Status == "Available")
+                .OrderByDescending(a => a.AppointmentHour)
+                .Select(a => a.AppointmentHour.ToString("HH:mm"))
+                .ToListAsync();
+            }
+                return Json(appointmentHours);
         }
 
         public async Task<JsonResult> GetDoctorsBySpecialty(int specialty)
