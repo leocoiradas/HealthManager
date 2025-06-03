@@ -57,7 +57,7 @@ namespace HealthManager.Controllers
                                 && x.Status == "Reserved")
                     .FirstOrDefaultAsync();
 
-                if (existingAppointment != null && existingAppointment.AppointmentDate.CompareTo(appointmentRequest.AppointmentDate) < 28)
+                if (existingAppointment != null && (existingAppointment.AppointmentDate.Day - appointmentRequest.AppointmentDate.Day) < 28)
                 {
                     ViewData.ModelState
                         .AddModelError("Appointment",
