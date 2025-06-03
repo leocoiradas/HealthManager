@@ -10,10 +10,7 @@ namespace HealthManager.Models.DTO
         [Required]
         public TimeOnly AppointmentHour { get; set; }
         [Required]
-        public string AppointmentTime { get; set; }
-        [Required]
-        [AllowedValues("Available", "Reserved")]
-        public string Status { get; set; } = null!;
+        public string Specialty { get; set; }
         [Required]
         public int PatientId { get; set; }
         [Required]
