@@ -87,11 +87,14 @@ namespace HealthManager.Controllers
         
         public async Task <JsonResult> GetAppointmentDates(int doctorId)
         {
+            var today = DateTime.Now;
             var currentMonth = DateTime.Now.Month;
-            var currentDay = DateTime.Now.Day;
-            var currentHour = TimeOnly.FromDateTime(DateTime.Now);
+            var currentDay = DateOnly.FromDateTime(today);
+            var currentHour = TimeOnly.FromDateTime(DateTime.Now).AddHours(1);
             var availableAppointments = await _dbcontext.Appointments
-                .Where(a => a.DoctorId == doctorId && a.AppointmentDate.Month == currentMonth && a.AppointmentDate.Day >= currentDay && a.AppointmentHour > currentHour && a.Status == "Available")
+                .Where(a => a.DoctorId == doctorId && ((a.AppointmentDate == currentDay && a.AppointmentHour >= currentHour) || a.AppointmentDate > currentDay) && a.Status == "Available")
+                .OrderByDescending(x => x.AppointmentDate)
+                .ThenByDescending(x => x.AppointmentHour)
                 .Select(a => a.AppointmentDate.ToString("dd/MM/yyyy"))
                 .Distinct()
                 .ToListAsync();
