@@ -37,14 +37,17 @@ namespace HealthManager.Controllers
              var patientAppointments = await _dbcontext.Appointments
                  .Where(p => p.PatientId == patientId && p.Status=="Reserved")
                  .ToListAsync();*/
-            DateOnly today = DateOnly.FromDateTime(DateTime.Now);
-            TimeOnly currentHour = TimeOnly.FromDateTime(DateTime.Now);
+            DateTime today = DateTime.Now;
+            DateOnly todayDate = DateOnly.FromDateTime(today);
+            TimeOnly todayhour = TimeOnly.FromDateTime(today);
             var userIdString = User.FindFirst("Id")?.Value;
             int.TryParse(userIdString, out int userIdInt);
             var patientAppointments = await _dbcontext.Appointments
-                 .Where(p => p.Status == "Reserved" && p.PatientId == userIdInt && p.AppointmentDate >= today && p.AppointmentHour > currentHour)
+                 .Where(p => p.Status == "Reserved" && p.PatientId == userIdInt && (p.AppointmentDate > todayDate || (p.AppointmentDate == todayDate && p.AppointmentHour > todayhour)))
                  .Include(a => a.Doctor)
                  .ThenInclude(d => d.SpecialtyNavigation)
+                 .OrderByDescending(x => x.AppointmentDate)
+                 .ThenByDescending(x => x.AppointmentHour)
                  .ToListAsync();
             List<PatientAppointmentsViewModel> appointmentsVm = patientAppointments.Select(x => new PatientAppointmentsViewModel
             {
