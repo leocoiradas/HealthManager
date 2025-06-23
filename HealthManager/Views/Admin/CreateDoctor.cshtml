@@ -7,30 +7,48 @@
 <section class="w-100 h-100 d-flex justify-content-center align-items-center">
     <form method="post" asp-controller="Admin" asp-action="CreateDoctor" class="w-50 h-auto d-flex flex-column gap-1">
         <div class="row">
-                <fieldset class="form-group col">
+            <fieldset class="form-group col">
+                <div class="d-flex justify-content-between">
                     <label asp-for="Name">Name</label>
-                    <input type="text" asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <input type="text" asp-for="Name" class="form-control" />
             </fieldset>
             <fieldset class="form-group col">
-                <label asp-for="Surname">Surname</label>
+                <div class="d-flex justify-content-between">
+                    <label asp-for="Surname">Surname</label>
+                    <span asp-validation-for="Surname" class="text-danger"></span>
+                </div>
                 <input type="text" asp-for="Surname" class="form-control" />
             </fieldset>
         </div>
         <fieldset class="form-group">
-            <label asp-for="Specialty">Specialty</label>
+            <div class="d-flex justify-content-between">
+                <label asp-for="Specialty">Specialty</label>
+                <span asp-validation-for="Specialty" class="text-danger"></span>
+            </div>
             <select asp-for="Specialty" asp-items="ViewBag.Specialties" class="form-control"></select>
         </fieldset>
         <fieldset class="form-group">
-            <label asp-for="Email">Email</label>
+            <div class="d-flex justify-content-between">
+                <label asp-for="Email">Email</label>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
             <input type="email" asp-for="Email" name="email" class="form-control" />
         </fieldset>
         <div class="row">
-                <fieldset class="form-group col">
+            <fieldset class="form-group col">
+                <div class="d-flex justify-content-between">
                     <label asp-for="Password">Password</label>
-                    <input type="password" asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <input type="password" asp-for="Password" class="form-control" />
             </fieldset>
             <fieldset class="form-group col">
-                <label asp-for="ConfirmPassword">Confirm password</label>
+                <div class="d-flex justify-content-between">
+                    <label asp-for="ConfirmPassword">Confirm password</label>
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
                 <input type="password" asp-for="ConfirmPassword" class="form-control" />
             </fieldset>
         </div>
@@ -50,13 +68,16 @@
         </fieldset>
         <div class="d-flex gap-3">
             <fieldset class="d-flex flex-column gap-2 form-group">
-                <label>Consult Start<input type="time" asp-for="WorkingHoursStart" class="form-control" /></label>
+                <label asp-for ="WorkingHoursStart">Consult Start<input type="time" asp-for="WorkingHoursStart" class="form-control" /></label>
+                <span asp-validation-for="WorkingHoursStart" class="text-danger"></span>
             </fieldset>
             <fieldset class="d-flex flex-column gap-2 form-group">
-                <label>Consult End<input type="time" asp-for="WorkingHoursEnd" class="form-control" /></label>
+                <label asp-for="WorkingHoursEnd">Consult End<input type="time" asp-for="WorkingHoursEnd" class="form-control" /></label>
+                <span asp-validation-for="WorkingHoursEnd" class="text-danger"></span>
             </fieldset>
             <fieldset class="d-flex flex-column gap-2 form-group">
-                <label>Consult Duration<input type="number" asp-for="ConsultDuration" min="1" max="60" class="form-control" /></label>
+                <label asp-for="ConsultDuration">Consult Duration<input type="number" asp-for="ConsultDuration" min="1" max="60" class="form-control" /></label>
+                <span asp-validation-for="ConsultDuration" class="text-danger"></span>
             </fieldset>
         </div>
         <fieldset class="form-group">

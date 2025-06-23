@@ -4,23 +4,23 @@ namespace HealthManager.Models.DTO
 {
     public class DoctorRegistrationViewModel
     {
-        [Required, MaxLength(100), MinLength(2)]
+        [Required(ErrorMessage = "This field is required"), MaxLength(100), MinLength(2)]
         public string Name { get; set; }
-        [Required, MaxLength(100), MinLength(2)]
+        [Required(ErrorMessage = "This field is required"), MaxLength(100), MinLength(2)]
         public string? Surname { get; set; }
-        [Required]
+        [Required(ErrorMessage = "This field is required")]
         public int Specialty { get; set; }
-        [Required, EmailAddress]
+        [Required(ErrorMessage = "This field is required"), EmailAddress]
         public string Email { get; set; }
-        [Required]
+        [Required(ErrorMessage = "This field is required"), RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-+]).{12,}$")]
         public string Password { get; set; }
-        [Required, Compare("Password")]
+        [Required(ErrorMessage = "This field is required"), Compare("Password")]
         public string ConfirmPassword {  get; set; }
-        [Required]  
+        [Required(ErrorMessage = "This field is required")]  
         public TimeOnly WorkingHoursStart { get; set; }
-        [Required]
+        [Required(ErrorMessage = "This field is required")]
         public TimeOnly WorkingHoursEnd { get; set; }
-        [Required]
+        [Required(ErrorMessage = "This field is required")]
         public int ConsultDuration { get; set; }
         [Required]
         public bool Monday { get; set; }

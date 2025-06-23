@@ -8,14 +8,14 @@
     <form method="post" asp-controller="Admin" asp-action="CreateAdmin" class="w-50 d-flex flex-column mt-4 gap-1">
         <div class="row">
             <fieldset class="form-group col">
-                <div class="row">
+                <div class="d-flex justify-content-between">
                     <label asp-for="FirstName">Name</label>
                     <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
                 <input type="text" asp-for="FirstName" class="form-control" />
             </fieldset>
             <fieldset class="form-group col">
-                <div class="row">
+                <div class="d-flex justify-content-between">
                     <label asp-for="LastName">Surname</label>
                     <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
@@ -23,7 +23,7 @@
             </fieldset>
         </div>
         <fieldset class="form-group">
-            <div class="row">
+            <div class="d-flex justify-content-between">
                 <label asp-for="Email">Email</label>
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
@@ -31,16 +31,16 @@
         </fieldset>
         <div class="row">
             <fieldset class="form-group col">
-                <div class="row">
+                <div class="d-flex justify-content-between">
                     <label asp-for="Password">Password</label>
-                    <span asp-validation-for="Password"></span>
+                    <span asp-validation-for="Password" class="d-inline text-danger"></span>
                 </div>
                 <input type="password" asp-for="Password" class="form-control" />
             </fieldset>
             <fieldset class="form-group col">
-                <div class="row">
+                <div class="d-flex justify-content-between">
                     <label asp-for="ConfirmPassword">Confirm password</label>
-                    <span asp-validation-for="ConfirmPassword"></span>
+                    <span asp-validation-for="ConfirmPassword" class="d-inline text-danger"></span>
                 </div>
                 <input type="password" asp-for="ConfirmPassword" class="form-control" />
             </fieldset>
