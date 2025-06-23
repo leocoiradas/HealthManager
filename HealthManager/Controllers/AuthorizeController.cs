@@ -41,9 +41,14 @@ namespace HealthManager.Controllers
            if (ModelState.IsValid)
            {
                 Patient patientSearch = await _dbcontext.Patients.Where(p => p.Email == request.Email).FirstOrDefaultAsync();
-                if (patientSearch == null || !BCrypt.Net.BCrypt.Verify(request.Password, patientSearch.Password))
+                if (patientSearch == null)
                 {
                     ModelState.AddModelError("Email", "Cannot find an account with the provided email.");
+                    return View(request);
+                }
+                if (!BCrypt.Net.BCrypt.Verify(request.Password, patientSearch.Password))
+                {
+                    ModelState.AddModelError("Password", "Invalid credentials.");
                     return View(request);
                 }
                 string createdToken = _jwtservice.GenerateToken(patientSearch.Name, patientSearch.Email, patientSearch.Role, patientSearch.PatientId);
