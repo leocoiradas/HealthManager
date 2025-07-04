@@ -12,5 +12,7 @@ namespace HealthManager.Services.Appointments
 
         public Task<MethodResponse> CheckAndCreateAppointments();
 
+        public Task<MethodResponse> CreateDoctorAppointments(List<DoctorDTO> doctorList, int dayNumber);
+
     }
 }
