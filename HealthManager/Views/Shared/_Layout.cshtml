@@ -24,11 +24,19 @@
                         </button>
                         <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                             <ul class="navbar-nav flex-grow-1 d-flex gap-2">
+
+                                <li class="nav-item btn-group">
+                                    <button class="btn text-dark border border-2 rounded px-3 register shadow-sm text-center dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Login
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a asp-area="" asp-controller="Authorize" asp-action="Login" class="nav-link text-dark px-1 text-center">Patients</a></li>
+                                        <li><a asp-area="" asp-controller="Authorize" asp-action="AdminLogin" class="nav-link text-dark px-1 text-center">Employees</a></li>
+                                    </ul>
+                                </li>
+
                                 <li class="nav-item">
                                     <a class="nav-link text-dark border border-2 rounded px-3 register shadow-sm text-center" asp-area="" asp-controller="Authorize" asp-action="Register">Register</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark border border-2 rounded px-3 login shadow-sm text-center" asp-area="" asp-controller="Authorize" asp-action="Login">Login</a>
                                 </li>
                             </ul>
                         </div>
@@ -44,10 +52,20 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            <p>Developed by Alan Coiradas</p>
-            <p>All rights reserved.</p>
+        <div class="d-flex justify-content-start align-items-center gap-2 flex-row w-100">
+            <div>
+                🔗 <a href="https://github.com/tuUsuario/healthmanager" target="_blank">View code on GitHub</a> &nbsp;|&nbsp;
+                
+            </div>
+            <div>
+                💼 <a href="https://linkedin.com/in/tuUsuario" target="_blank">Connect on LinkedIn</a> &nbsp;|&nbsp
+            </div>
+            <div>
+                ✉️ <a href="mailto:alan.coiradas.dev@gmail.com">alan.coiradas.dev@gmail.com</a> &nbsp;|&nbsp;
+                ▶️ <em>Want a live walkthrough? Send me a DM!</em>
+            </div>
         </div>
+        <small>© 2025 Developed by Alan Coiradas</small>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -78,5 +96,12 @@
             background-color: #37ABDB;
             border-color: #37ABDB !important;
     }
+
+    .dropdown-menu>li>a:hover{
+        background-color: aquamarine !important;
+    }
     
+    footer>div>div>a{
+        text-decoration: none;
+    }
 </style>
