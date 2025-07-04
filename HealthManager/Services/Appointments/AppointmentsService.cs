@@ -98,6 +98,29 @@ namespace HealthManager.Services.Appointments
             }
         }
 
+        public async Task<MethodResponse> CheckAndCreateAppointments()
+        {
+            try
+            {
+                var existingRegisters = await CheckForExistingAppointments();
+
+                if (existingRegisters.Success.Equals(true))
+                {
+                    return new MethodResponse { Success = false, Message = "There are already appointments for this month" };
+                }
+                else
+                {
+                    await CreateAppointmentsForAllDoctors();
+                    return new MethodResponse { Success = true, Message = "Appointments were successfully created." };
+                }
+            }
+            catch (Exception error)
+            {
+                return new MethodResponse { Success = false, Message = error.ToString() };
+            }
+
+        }
+
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
