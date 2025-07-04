@@ -24,11 +24,19 @@
                         </button>
                         <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                             <ul class="navbar-nav flex-grow-1 d-flex gap-2">
+
+                                <li class="nav-item btn-group">
+                                    <button class="btn text-dark border border-2 rounded px-3 register shadow-sm text-center dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Login
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a asp-area="" asp-controller="Authorize" asp-action="Login" class="nav-link text-dark px-1 text-center">Patients</a></li>
+                                        <li><a asp-area="" asp-controller="Authorize" asp-action="AdminLogin" class="nav-link text-dark px-1 text-center">Employees</a></li>
+                                    </ul>
+                                </li>
+
                                 <li class="nav-item">
                                     <a class="nav-link text-dark border border-2 rounded px-3 register shadow-sm text-center" asp-area="" asp-controller="Authorize" asp-action="Register">Register</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark border border-2 rounded px-3 login shadow-sm text-center" asp-area="" asp-controller="Authorize" asp-action="Login">Login</a>
                                 </li>
                             </ul>
                         </div>
@@ -77,6 +85,10 @@
     .register:hover, .login:hover{
             background-color: #37ABDB;
             border-color: #37ABDB !important;
+    }
+
+    .dropdown-menu>li>a:hover{
+        background-color: aquamarine !important;
     }
     
 </style>
