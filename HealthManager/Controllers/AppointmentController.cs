@@ -93,12 +93,11 @@ namespace HealthManager.Controllers
             var currentHour = TimeOnly.FromDateTime(DateTime.Now).AddHours(1);
             var availableAppointments = await _dbcontext.Appointments
                 .Where(a => a.DoctorId == doctorId && ((a.AppointmentDate == currentDay && a.AppointmentHour >= currentHour) || a.AppointmentDate > currentDay) && a.Status == "Available")
-                .OrderByDescending(x => x.AppointmentDate)
-                .ThenByDescending(x => x.AppointmentHour)
                 .Select(a => a.AppointmentDate.ToString("dd/MM/yyyy"))
                 .Distinct()
                 .ToListAsync();
-            return Json(availableAppointments);
+            var orderedList = availableAppointments.OrderBy(x => DateTime.ParseExact(x, "dd/MM/yyyy", null)).ToList();
+            return Json(orderedList);
         }
 
         public async Task <JsonResult> GetAppointmentHours(string day, int doctorId)
@@ -110,24 +109,25 @@ namespace HealthManager.Controllers
             var today = DateOnly.FromDateTime(now);
 
             List<string> appointmentHours = new List<string>();
+            List<string> orderedList = new List<string>();
 
             if (onlyDateFromDateTime.CompareTo(today) > 0)
             {
                  appointmentHours = await _dbcontext.Appointments
                 .Where(a => a.DoctorId == doctorId && a.AppointmentDate.Equals(onlyDateFromDateTime) && a.Status == "Available")
-                .OrderByDescending(a => a.AppointmentHour)
                 .Select(a => a.AppointmentHour.ToString("HH:mm"))
                 .ToListAsync();
+                orderedList = appointmentHours.OrderBy(x => TimeOnly.ParseExact(x, "HH:mm", null)).ToList();
             }
             else
             {
                  appointmentHours = await _dbcontext.Appointments
                 .Where(a => a.DoctorId == doctorId && a.AppointmentDate.Equals(onlyDateFromDateTime) && a.AppointmentHour >= currentHour && a.Status == "Available")
-                .OrderByDescending(a => a.AppointmentHour)
                 .Select(a => a.AppointmentHour.ToString("HH:mm"))
                 .ToListAsync();
+                orderedList = appointmentHours.OrderBy(x => TimeOnly.ParseExact(x, "HH:mm", null)).ToList();
             }
-                return Json(appointmentHours);
+                return Json(orderedList);
         }
 
         public async Task<JsonResult> GetDoctorsBySpecialty(int specialty)
