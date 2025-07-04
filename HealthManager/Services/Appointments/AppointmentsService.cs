@@ -84,6 +84,20 @@ namespace HealthManager.Services.Appointments
 
         }
 
+        public async Task<MethodResponse> CheckForExistingAppointments()
+        {
+            int currentMonth = DateTime.Now.Month;
+            var existingRegisters = await _context.Appointments.Where(a => a.AppointmentDate.Month == currentMonth).ToListAsync();
+            if (existingRegisters.Count > 0)
+            {
+                return new MethodResponse{Success = true, Message="There are registers corresponding to the present month in the database"};
+            }
+            else
+            {
+                return new MethodResponse { Success = false, Message="There are no registers corresponding to actual month in the database. It is recommended to create new appointments in the database"};
+            }
+        }
+
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
