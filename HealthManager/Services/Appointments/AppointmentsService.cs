@@ -20,8 +20,34 @@ namespace HealthManager.Services.Appointments
             _context = context;
         }
 
-        public async Task<MethodResponse> CreateAppointments()
-        { 
+        public async Task<MethodResponse> CreateAppointmentsForAllDoctors()
+        {
+            var query = from Doctor in _context.Doctors
+                        join DoctorShift in _context.DoctorShifts
+                        on Doctor.DoctorId equals DoctorShift.DoctorId
+                        join workingDay in _context.WorkingDays
+                        on Doctor.DoctorId equals workingDay.DoctorId
+                        select new
+                        {
+                            Doctor,
+                            DoctorShift = DoctorShift,
+                            WorkingDay = workingDay
+                        };
+
+            List<DoctorDTO> doctorsList = await query.Select(x => new DoctorDTO
+            {
+                Doctor = x.Doctor,
+                DoctorShift = x.DoctorShift,
+                WorkingDay = x.WorkingDay
+            })
+            .ToListAsync();
+
+            await CreateDoctorAppointments(doctorsList, 1);
+
+            return new MethodResponse { Success = true, Message = "Appointments created successfully" };
+
+        }
+
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
