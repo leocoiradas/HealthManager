@@ -6,9 +6,9 @@ namespace HealthManager.Services.Appointments
 {
     public interface IAppointments
     {
-        public Task<MethodResponse> CheckForExistingRegisters();
+        public Task<MethodResponse> CheckForExistingAppointments();
 
-        public Task<MethodResponse> CreateAppointments();
+        public Task<MethodResponse> CreateAppointmentsForAllDoctors();
 
         public Task<MethodResponse> CheckAndCreateAppointments();
 
