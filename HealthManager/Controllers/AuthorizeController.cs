@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Security.Claims;
 
@@ -126,8 +127,24 @@ namespace HealthManager.Controllers
         }
         public async Task <IActionResult> Logout()
         {
+            var token = Request.Cookies["Token"];
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+
+            var claims = jwtToken.Claims.Select(c => new { c.Type, c.Value }).ToList();
+            var role = jwtToken.Claims.FirstOrDefault(c => c.Type == "role")?.Value;
+
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login");
+
+            if(role == "Admin" || role == "Doctor")
+            {
+                return RedirectToAction("AdminLogin");
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+                
         }
 
         [AllowAnonymous]
