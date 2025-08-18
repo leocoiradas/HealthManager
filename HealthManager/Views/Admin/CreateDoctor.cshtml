@@ -5,7 +5,7 @@
 }
 
 <section class="w-100 h-100 d-flex justify-content-center align-items-center">
-    <form method="post" asp-controller="Admin" asp-action="CreateDoctor" class="w-50 h-auto d-flex flex-column gap-1">
+    <form method="post" asp-controller="Admin" asp-action="CreateDoctor" class="h-auto d-flex flex-column gap-1">
         <div class="row">
             <fieldset class="form-group col">
                 <div class="d-flex justify-content-between">
@@ -85,3 +85,26 @@
         </fieldset>
     </form>
 </section>
+
+<style>
+    form {
+        width: 50% !important;
+    }
+
+
+
+    @@media (max-width: 540px) {
+        section > form {
+            font-size: large !important;
+            margin-top: 2rem !important;
+        }
+
+        form {
+            width: 75% !important;
+        }
+
+            form > div {
+                flex-direction: column !important;
+            }
+    }
+</style>
