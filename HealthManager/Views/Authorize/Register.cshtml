@@ -16,11 +16,11 @@
 }
 
 <section class="w-100 h-100 d-flex flex-column justify-content-center align-items-center gap-2">
-   <form method="post" asp-controller="Authorize" asp-action="Register" class="w-100 d-flex flex-column justify-content-center align-items-center gap-2 p-3">
+   <form method="post" asp-controller="Authorize" asp-action="Register" class="d-flex flex-column justify-content-center align-items-center gap-2 p-3">
         <h2>Register</h2>
 
         <!--Name & Surname-->
-        <fieldset class="w-75 d-flex gap-1">
+        <fieldset class="w-100 d-flex gap-1">
            <div class="w-100 d-flex flex-column gap-1">
                 <div class="w-100 d-flex">
                     <label asp-for="Name" class="flex-grow-1"></label>
@@ -38,7 +38,7 @@
         </fieldset>
 
         <!--DNI-->
-        <fieldset class="w-75 d-flex flex-column gap-1">
+        <fieldset class="w-100 d-flex flex-column gap-1">
             <div class="w-100 d-flex">
                 <label asp-for="Dni" class="flex-grow-1">DNI</label>
                 <span asp-validation-for="Dni" class="text-danger"></span>
@@ -47,7 +47,7 @@
         </fieldset>
 
         <!--Birthdate-->
-        <fieldset class="w-75 d-flex flex-column gap-1">
+        <fieldset class="w-100 d-flex flex-column gap-1">
             <div class="w-100 d-flex">
                 <label asp-for="Birthdate" class="flex-grow-1">Birth Date</label>
                 <span asp-validation-for="Birthdate" class="text-danger"></span>
@@ -56,7 +56,7 @@
         </fieldset>
 
         <!--Email-->
-        <fieldset class="w-75 d-flex flex-column gap-1">
+        <fieldset class="w-100 d-flex flex-column gap-1">
             <div class="w-100 d-flex">
                 <label asp-for="Email" class="flex-grow-1"></label>
                 <span asp-validation-for="Email" class="text-danger"></span>
@@ -65,7 +65,7 @@
         </fieldset>
 
         <!--Password & ConfirmPassword-->
-        <fieldset class="w-75 d-flex gap-1">
+        <fieldset class="w-100 d-flex gap-1">
             <div class="w-100 d-flex flex-column gap-1">
                 <div class="w-100 d-flex">
                     <label asp-for="Password" class="flex-grow-1"></label>
@@ -82,7 +82,7 @@
             </div>
         </fieldset>
 
-        <fieldset class="w-75 d-flex gap-1">
+        <fieldset class="w-100 d-flex gap-1">
             <div class="d-flex flex-column gap-1 w-100">
                 <div class="d-flex">
                     <label asp-for="Gender" class="flex-grow-1">Gender</label>
@@ -105,12 +105,12 @@
             </div>
         </fieldset>
 
-        <fieldset class="w-75 d-flex flex-column gap-1">
+        <fieldset class="w-100 d-flex flex-column gap-1">
             
         </fieldset>
 
         <!--Submit-->
-        <fieldset class="w-75 d-flex align-items-baseline gap-2">
+        <fieldset class="w-100 d-flex align-items-baseline gap-2">
             <div class="w-25 d-flex flex-grow-1">
                 <button type="submit" class=" btn btn-primary">Submit</button>
             </div>
@@ -119,3 +119,25 @@
    </form>
     
 </section>
+
+<style>
+    form {
+        width: 50% !important;
+    }
+
+    
+
+    @@media (max-width: 540px) {
+        section > form {
+            font-size: large !important;
+        }
+
+        form {
+            width: 75% !important;
+        }
+
+            form > fieldset {
+                flex-direction: column !important;
+            }
+    }
+</style>
