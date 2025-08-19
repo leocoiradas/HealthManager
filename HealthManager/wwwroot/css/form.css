@@ -1,0 +1,29 @@
+﻿
+form {
+	width: 50% !important;
+}
+
+
+
+@media (max-width: 540px) {
+	section > form{
+		font-size: large !important;
+		padding-top: 3rem !important;
+	}
+
+	form{
+		width: 75% !important;
+	}
+
+	form > div, form > fieldset{
+		flex-direction: column !important;
+	}
+
+	header{
+		margin-bottom: 2rem !important;
+	}
+
+	#form-container{
+		align-items: flex-start !important;
+	}
+}
