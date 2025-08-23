@@ -12,18 +12,19 @@
 </head>
 <body class="d-flex flex-column vh-100 mb-0">
     <header class="shadow d-flex flex-column justify-content-center">
-        
-        @if ((string)@ViewData["Title"] == "Home")
-        {
-            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light">
-                <div class="container-fluid d-flex justify-content-between align-items-baseline">
-                    <a class="navbar-brand w-50" asp-area="" asp-controller="Home" asp-action="Index">HealthManager</a>
-                    <div class="flex-grow-1 flex-lg-grow-0">
-                        <!--<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button> -->
-                        <!--navbar-collapse collapse-->
+
+
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light">
+            <div class="container-fluid d-flex justify-content-between align-items-baseline">
+                <a class="navbar-brand w-50" asp-area="" asp-controller="Home" asp-action="Index">HealthManager</a>
+                <div class="flex-grow-1 flex-lg-grow-0">
+                    <!--<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    </button> -->
+                    <!--navbar-collapse collapse-->
+                    @if ((string)@ViewData["Title"] == "Home")
+                    {
                         <div class=" d-flex justify-content-between w-100">
                             <!--d-sm-inline-flex  flex-grow-1-->
                             <ul class="navbar-nav d-flex gap-2 w-100 flex-row">
@@ -43,10 +44,11 @@
                                 </li>
                             </ul>
                         </div>
-                    </div>
+                    }
                 </div>
-            </nav>
-        }
+            </div>
+        </nav>
+        
     </header>
     <div class="flex-grow-1 d-flex justify-content-center align-items-center">
         <main role="main" class="pb-3 h-75 w-75">
