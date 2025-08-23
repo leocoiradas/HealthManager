@@ -15,7 +15,7 @@ form {
 		width: 75% !important;
 	}
 
-	form > div, form > fieldset{
+	form > div, form > fieldset {
 		flex-direction: column !important;
 	}
 
@@ -25,5 +25,16 @@ form {
 
 	#form-container{
 		align-items: flex-start !important;
+	}
+
+	.date-container{
+		flex-direction: row !important;
+	}
+
+	span{
+		font-size: medium !important;
+	}
+	form>fieldset>div, form>fieldset>div>div{
+		flex-direction: column !important;
 	}
 }
