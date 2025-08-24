@@ -11,6 +11,10 @@
                 <div class="d-flex justify-content-between w-100">
                     <label asp-for="Email" class="flex-grow-1">Email</label>
                     <span asp-validation-for="Email" class="text-danger"></span>
+                    @if (ViewBag.Credentials != null)
+                    {
+                        <p class="justify-content-end text-danger">@ViewBag.Credentials</p>
+                    }
                 </div>
                 <input asp-for="Email" id="email" type="email" class="form-control" />
             </fieldset>

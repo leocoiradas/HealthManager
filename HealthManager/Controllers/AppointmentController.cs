@@ -59,10 +59,10 @@ namespace HealthManager.Controllers
 
                 if (existingAppointment != null && (existingAppointment.AppointmentDate.Day - appointmentRequest.AppointmentDate.Day) < 28)
                 {
-                    ViewData.ModelState
-                        .AddModelError("Appointment",
-                            "There's already an existing appointment for this patient. " +
-                            "If you want to set another appointment, please cancel the existing one first");
+                    ViewData["Appointment"] = "There's already an existing appointment for this patient. " +
+                            "If you want to set another appointment, please cancel the existing one first";
+                        
+                            
                     return View(appointmentRequest);
                 }
                 
