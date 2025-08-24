@@ -6,6 +6,7 @@ form {
 
 
 @media (max-width: 540px) {
+
 	section > form{
 		font-size: large !important;
 		padding-top: 3rem !important;
@@ -36,5 +37,11 @@ form {
 	}
 	form>fieldset>div, form>fieldset>div>div{
 		flex-direction: column !important;
+	}
+	.form-control, button[type="submit"]{
+		padding: 0.75rem  1.25rem;
+	}
+	#submit-container{
+		width: 100% !important;
 	}
 }
