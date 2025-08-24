@@ -39,7 +39,7 @@ form {
 		flex-direction: column !important;
 	}
 	.form-control, button[type="submit"]{
-		padding: 0.75rem  1.25rem;
+		padding: 0.5rem  1rem;
 	}
 	#submit-container{
 		width: 100% !important;
