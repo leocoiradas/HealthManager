@@ -5,7 +5,7 @@
 }
 
 <section class="w-100 d-flex justify-content-center align-items-center mt-5">
-    <form method="post" asp-controller="Appointment" asp-action="ReserveAppointment" class="w-50 d-flex flex-column gap-3">
+    <form method="post" asp-controller="Appointment" asp-action="ReserveAppointment" class="d-flex flex-column gap-3">
         <fieldset class="form-group">
             <label asp-for="Specialty">Specialty</label>
             <select asp-for="Specialty" class="form-control" asp-items="ViewBag.Specialties">
@@ -18,7 +18,7 @@
             <select asp-for="DoctorId" class="form-control"></select>
         </fieldset>
 
-        <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center justify-content-between date-container">
             <fieldset class="form-group">
                 <label asp-for="AppointmentDate">Date</label>
                 <select asp-for="AppointmentDate" class="form-control">

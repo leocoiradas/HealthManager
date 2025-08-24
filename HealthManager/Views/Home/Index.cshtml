@@ -3,7 +3,7 @@
 }
 
 <section class="w-100 h-100 d-flex justify-content-center align-items-center p-4">
-    <div class="w-75 d-flex flex-column justify-content-center align-items-start">
+    <div class="w-75 d-flex flex-column justify-content-center align-items-start" id="text-container">
         <h2 class="mb-4">The platform that helps you to organize your medical appointments.</h2>
         <p>
             Welcome to Healthmanager, the digital platform that puts health at your fingertips. With our solution, managing and booking medical appointments becomes a fast, simple, and secure experience. Designed with your well-being in mind, our intuitive interface guides you step by step to connect with trusted health professionals, adapting to your lifestyle.
@@ -17,7 +17,7 @@
        
     </div>
     <div class="image-container rounded-circle shadow-sm">
-        <img src="~/Media/Images/reserve-appointment.jpg" class="w-100 h-100 object-fit-cover rounded-circle" />
+        <img src="~/Media/Images/reserve-appointment.jpg" class="w-100 h-100 object-fit-cover rounded-circle" id="image" />
     </div>
 </section>
 
@@ -25,5 +25,28 @@
     .image-container{
         width: 350px;
         height: 350px;
+    }
+
+    @@media(max-width: 540px){
+        section{
+            flex-direction: column-reverse !important;
+            gap: 2rem;
+        }
+
+        .image-container{
+            width: 350px;
+            height: 233px;
+            border-radius:2rem !important;
+        }
+
+        #image{
+            object-fit: fill;
+            border-radius: 10% !important;
+        }
+
+        #text-container{
+            text-align: center;
+            width: 100% !important;
+        }
     }
 </style>

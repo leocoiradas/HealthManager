@@ -7,29 +7,33 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/HealthManager.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/form.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body class="d-flex flex-column vh-100 mb-0">
     <header class="shadow d-flex flex-column justify-content-center">
-        
-        @if ((string)@ViewData["Title"] == "Home")
-        {
-            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light">
-                <div class="container-fluid d-flex justify-content-between align-items-baseline">
-                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">HealthManager</a>
-                    <div>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                            <ul class="navbar-nav flex-grow-1 d-flex gap-2">
+
+
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light">
+            <div class="container-fluid d-flex justify-content-between align-items-baseline">
+                <a class="navbar-brand w-50" asp-area="" asp-controller="Home" asp-action="Index">HealthManager</a>
+                <div class="flex-grow-1 flex-lg-grow-0">
+                    <!--<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    </button> -->
+                    <!--navbar-collapse collapse-->
+                    @if ((string)@ViewData["Title"] == "Home")
+                    {
+                        <div class=" d-flex justify-content-between w-100">
+                            <!--d-sm-inline-flex  flex-grow-1-->
+                            <ul class="navbar-nav d-flex gap-2 w-100 flex-row">
 
                                 <li class="nav-item btn-group">
                                     <button class="btn text-dark border border-2 rounded px-3 register shadow-sm text-center dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         Login
                                     </button>
-                                    <ul class="dropdown-menu">
+                                    <ul class="dropdown-menu z-1 position-absolute">
                                         <li><a asp-area="" asp-controller="Authorize" asp-action="Login" class="nav-link text-dark px-1 text-center">Patients</a></li>
                                         <li><a asp-area="" asp-controller="Authorize" asp-action="AdminLogin" class="nav-link text-dark px-1 text-center">Employees</a></li>
                                     </ul>
@@ -40,10 +44,11 @@
                                 </li>
                             </ul>
                         </div>
-                    </div>
+                    }
                 </div>
-            </nav>
-        }
+            </div>
+        </nav>
+        
     </header>
     <div class="flex-grow-1 d-flex justify-content-center align-items-center">
         <main role="main" class="pb-3 h-75 w-75">
@@ -52,7 +57,7 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="d-flex justify-content-start align-items-center gap-2 flex-row w-100">
+        <div class="d-flex flex-column justify-content-start align-items-center gap-1 gap-lg-2 flex-lg-row w-100">
             <div>
                 🔗 <a href="https://github.com/tuUsuario/healthmanager" target="_blank">View code on GitHub</a> &nbsp;|&nbsp;
                 
@@ -61,7 +66,9 @@
                 💼 <a href="https://linkedin.com/in/tuUsuario" target="_blank">Connect on LinkedIn</a> &nbsp;|&nbsp
             </div>
             <div>
-                ✉️ <a href="mailto:alan.coiradas.dev@gmail.com">Contact me via e-mail</a> &nbsp;|&nbsp;
+                ✉️ <a href="mailto:tumail.com">Contact me via e-mail</a> &nbsp;|&nbsp;
+            </div>
+            <div>
                 ▶️ <em>Want a live walkthrough? Send me a DM!</em>
             </div>
         </div>

@@ -1,0 +1,47 @@
+﻿
+form {
+	width: 50% !important;
+}
+
+
+
+@media (max-width: 540px) {
+
+	section > form{
+		font-size: large !important;
+		padding-top: 3rem !important;
+	}
+
+	form{
+		width: 75% !important;
+	}
+
+	form > div, form > fieldset {
+		flex-direction: column !important;
+	}
+
+	header{
+		margin-bottom: 2rem !important;
+	}
+
+	#form-container{
+		align-items: flex-start !important;
+	}
+
+	.date-container{
+		flex-direction: row !important;
+	}
+
+	span{
+		font-size: medium !important;
+	}
+	form>fieldset>div, form>fieldset>div>div{
+		flex-direction: column !important;
+	}
+	.form-control, button[type="submit"]{
+		padding: 0.5rem  1rem;
+	}
+	#submit-container{
+		width: 100% !important;
+	}
+}

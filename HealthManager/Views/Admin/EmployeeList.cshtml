@@ -9,7 +9,7 @@
     @if (!Model.DoctorList.Any())
     {
         <article class="w-100 p-4">
-            <h4 class="text-center">You don't have any appointments</h4>
+            <h4 class="text-center">There's no doctors in the database</h4>
         </article>
     }
     else
@@ -78,5 +78,11 @@
 <style>
     table{
         overflow-y: scroll;
+    }
+
+    @@media (max-width: 540px) {
+       section>table{
+           max-width: 75dvw !important;
+       }
     }
 </style>

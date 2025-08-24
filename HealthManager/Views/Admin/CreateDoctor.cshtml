@@ -4,8 +4,8 @@
     Layout = "_AdminDashboard";
 }
 
-<section class="w-100 h-100 d-flex justify-content-center align-items-center">
-    <form method="post" asp-controller="Admin" asp-action="CreateDoctor" class="w-50 h-auto d-flex flex-column gap-1">
+<section class="w-100 h-100 d-flex justify-content-center align-items-center gap-2">
+    <form method="post" asp-controller="Admin" asp-action="CreateDoctor" class="w-50 d-flex flex-column gap-2s">
         <div class="row">
             <fieldset class="form-group col">
                 <div class="d-flex justify-content-between">
@@ -66,16 +66,16 @@
                 <label class="form-check-label"><input type="checkbox" asp-for="Sunday" class="form-check-input" />Sunday</label>
             </div>
         </fieldset>
-        <div class="d-flex gap-3">
-            <fieldset class="d-flex flex-column gap-2 form-group">
+        <div class="row">
+            <fieldset class="form-group col">
                 <label asp-for ="WorkingHoursStart">Consult Start<input type="time" asp-for="WorkingHoursStart" class="form-control" /></label>
                 <span asp-validation-for="WorkingHoursStart" class="text-danger"></span>
             </fieldset>
-            <fieldset class="d-flex flex-column gap-2 form-group">
+            <fieldset class="form-group col">
                 <label asp-for="WorkingHoursEnd">Consult End<input type="time" asp-for="WorkingHoursEnd" class="form-control" /></label>
                 <span asp-validation-for="WorkingHoursEnd" class="text-danger"></span>
             </fieldset>
-            <fieldset class="d-flex flex-column gap-2 form-group">
+            <fieldset class="form-group col">
                 <label asp-for="ConsultDuration">Consult Duration (Minutes)<input type="number" asp-for="ConsultDuration" min="1" max="60" class="form-control" /></label>
                 <span asp-validation-for="ConsultDuration" class="text-danger"></span>
             </fieldset>
