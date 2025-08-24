@@ -49,7 +49,7 @@ namespace HealthManager.Controllers
                 }
                 if (!BCrypt.Net.BCrypt.Verify(request.Password, patientSearch.Password))
                 {
-                    ModelState.AddModelError("Password", "Invalid credentials.");
+                    ViewData["Credentials"] = "The credentials are invalid. Please try again.";
                     return View(request);
                 }
                 string createdToken = _jwtservice.GenerateToken(patientSearch.Name, patientSearch.Email, patientSearch.Role, patientSearch.PatientId);
@@ -161,6 +161,7 @@ namespace HealthManager.Controllers
             
            if (employee == null && admin != null)
             {
+               
                 if (BCrypt.Net.BCrypt.Verify(request.Password, admin.Password))
                 {
                     string adminToken = _jwtservice.GenerateToken(admin.Name, admin.Email, admin.Role, admin.Id);
@@ -177,8 +178,14 @@ namespace HealthManager.Controllers
                     return RedirectToAction("CreateAdmin", "Admin");
                     
                 }
+                else
+                {
+                    ViewData["Credentials"] = "The credentials are invalid. Please try again.";
+                    return View(request);
+                }
             } else if (employee != null && admin == null)
             {
+                
                 if (BCrypt.Net.BCrypt.Verify(request.Password, employee.Password))
                 {
                     string employeeToken = _jwtservice.GenerateToken(employee.Name, employee.Email, employee.Role, employee.DoctorId);
@@ -194,9 +201,13 @@ namespace HealthManager.Controllers
                         });
                     return RedirectToAction("PatientTodayList", "Doctor");
                 }
+                else
+                {
+                    ViewData["Credentials"] = "The credentials are invalid. Please try again.";
+                    return View(request);
+                }
             }
-            
-            ModelState.AddModelError("Credentials", "The credentials are invalid. Please try again.");
+            ModelState.AddModelError("Email", "* We couldn't find an employee account with the provided email.");
             return View(request);
             
            
