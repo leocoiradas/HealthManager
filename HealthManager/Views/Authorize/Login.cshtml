@@ -15,6 +15,10 @@
                     {
                         <p class="justify-content-end text-danger">@ViewBag.AuthorizeResult</p>
                     }
+                    @if (ViewBag.Credentials != null)
+                    {
+                        <p class="justify-content-end text-danger">@ViewBag.Credentials</p>
+                    }
                 </div>
 
                 <input asp-for="Email" id="email" type="email" class="form-control" />
