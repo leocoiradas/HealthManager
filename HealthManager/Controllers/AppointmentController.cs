@@ -51,21 +51,27 @@ namespace HealthManager.Controllers
             if (ModelState.IsValid)
             {
                 var userId = User.FindFirst("Id")?.Value;
-                int.TryParse(userId, out int userIdInt); 
+                int.TryParse(userId, out int userIdInt);
+                DateOnly today = DateOnly.FromDateTime(DateTime.Now);
+                int todayInt = today.Day;
+                TimeOnly currentHour = TimeOnly.FromDateTime(DateTime.Now);
                 var existingAppointment = await _dbcontext.Appointments
                     .Where(x =>  x.DoctorId == appointmentRequest.DoctorId 
-                                && x.AppointmentDate.Month == appointmentRequest.AppointmentDate.Month
-                                && x.AppointmentHour == appointmentRequest.AppointmentHour
+                                && x.PatientId == userIdInt
+                                && (x.AppointmentDate.Month == appointmentRequest.AppointmentDate.Month 
+                                    || x.AppointmentDate.Month == appointmentRequest.AppointmentDate.AddMonths(1).Month)
+                                    && (x.AppointmentDate.Day > todayInt || (x.AppointmentDate == today && x.AppointmentHour > currentHour))
                                 && x.Status == "Reserved")
                     .FirstOrDefaultAsync();
 
-                if (existingAppointment != null && (existingAppointment.AppointmentDate.Day - appointmentRequest.AppointmentDate.Day) < 28)
+
+                if (existingAppointment != null)
                 {
                     ViewData["Appointment"] = "There's already an existing appointment for this patient. " +
                             "If you want to set another appointment, please cancel the existing one first";
                         
                             
-                    return View(appointmentRequest);
+                    return View();
                 }
                 
                 Appointment reserveAppointment = await _dbcontext.Appointments.Where(x => x.DoctorId == appointmentRequest.DoctorId
