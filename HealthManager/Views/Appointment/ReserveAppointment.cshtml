@@ -66,6 +66,11 @@
     <script>
         $(document).ready(function () {
 
+            var errorMessage = '@ViewBag.Appointment';
+            if (errorMessage && errorMessage.length > 0) {
+                $('#exampleModal').modal('show');
+            }
+
             $("#Specialty").change(function () {
                 var specialtyDoctor = $(this).val();
                 getDoctorsBySpecialty(specialtyDoctor);
