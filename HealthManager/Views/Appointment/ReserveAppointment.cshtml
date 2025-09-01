@@ -14,7 +14,7 @@
         </fieldset>
 
         <fieldset class="form-group">
-            <label asp-for="DoctorId">Seleccionar Médico</label>
+            <label asp-for="DoctorId">Select doctor</label>
             <select asp-for="DoctorId" class="form-control"></select>
         </fieldset>
 
@@ -36,14 +36,40 @@
         </div>
         <!-- Otros campos del formulario -->
 
-        <button type="submit" class="btn btn-primary">Crear Turno</button>
+        <button type="submit" class="btn btn-primary">Reserve Appointment</button>
     </form>
 </section>
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Reservation Error</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>@ViewBag.Appointment</p>
+                </div>
+                <div class="modal-footer">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
 @section Scripts {
     <script>
         $(document).ready(function () {
+
+            var errorMessage = '@ViewBag.Appointment';
+            if (errorMessage && errorMessage.length > 0) {
+                $('#exampleModal').modal('show');
+            }
 
             $("#Specialty").change(function () {
                 var specialtyDoctor = $(this).val();
