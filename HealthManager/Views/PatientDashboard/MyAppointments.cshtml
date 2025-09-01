@@ -19,22 +19,22 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th>Specialty</th>
-                    <th>Doctor</th>
-                    <th>Day</th>
-                    <th>Hour</th>
-                    <th></th>
+                    <th class="col-2">Specialty</th>
+                    <th class="col-4">Doctor</th>
+                    <th class="col-4">Day</th>
+                    <th class="col-1">Hour</th>
+                    <th class="col-1"></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var appointment in Model)
                 {
                     <tr>
-                        <td>@appointment.DoctorSpecialty</td>
-                        <td>@appointment.DoctorName</td>
-                        <td>@appointment.AppointmentDate</td>
-                        <td>@appointment.AppointmentHour</td>
-                        <td><button type="button" data-id="@appointment.AppointmentId" data-bs-toggle="modal" data-bs-target="#cancel-modal" class="btn btn-danger">Cancel</button></td>
+                        <td class="col-2">@appointment.DoctorSpecialty</td>
+                        <td class="col-4">@appointment.DoctorName</td>
+                        <td class="col-4">@appointment.AppointmentDate</td>
+                        <td class="col-1">@appointment.AppointmentHour</td>
+                        <td class="col-1"><button type="button" data-id="@appointment.AppointmentId" data-bs-toggle="modal" data-bs-target="#cancel-modal" class="btn btn-danger">Cancel</button></td>
                     </tr> 
                 
                 }
