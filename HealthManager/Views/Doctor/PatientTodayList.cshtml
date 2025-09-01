@@ -39,7 +39,7 @@
                                 int patientYear = @DateTime.Now.Year - @appointment.Patient.BirthDate.Year;
                                 }@patientYear
                             </td>
-                            <td>
+                        <td class="col-3 d-flex w-100 justify-content-end">
                                 <a asp-controller="Doctor" asp-action="CreateRecord" asp-route-appointmentId="@appointment.AppointmentId" class="btn btn-primary">
                                     Medical Record
                                 </a>
