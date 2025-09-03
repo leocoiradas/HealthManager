@@ -61,7 +61,8 @@ namespace HealthManager.Controllers
                                 && (x.AppointmentDate.Month == appointmentRequest.AppointmentDate.Month 
                                     || x.AppointmentDate.Month == appointmentRequest.AppointmentDate.AddMonths(1).Month)
                                     && (x.AppointmentDate.Day > todayInt || (x.AppointmentDate == today && x.AppointmentHour > currentHour))
-                                && x.Status == "Reserved")
+                                && x.Status == "Reserved"
+                                && x.Attended == null)
                     .FirstOrDefaultAsync();
 
 
