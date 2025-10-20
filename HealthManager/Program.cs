@@ -2,6 +2,8 @@ using HealthManager.Models;
 using HealthManager.Services.Appointments;
 using HealthManager.Services.Authentication;
 using HealthManager.Services.JWTService;
+using HealthManager.Services.Mail;
+using HealthManager.Services.PDF.AppointmentReceipt;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +37,8 @@ builder.Services.AddDbContext<HealthManagerContext>(options =>
 
 builder.Services.AddScoped<IJWTService, JWTService>();
 builder.Services.AddScoped<IAppointments, AppointmentsService>();
+builder.Services.AddScoped<IMailService, MailService>();
+builder.Services.AddScoped<IAppointmentReceipt, AppointmentReceiptService>();
 
 //Configuración de autenticación
 
