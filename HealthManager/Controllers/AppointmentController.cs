@@ -14,10 +14,17 @@ namespace HealthManager.Controllers
     {
         private readonly HealthManagerContext _dbcontext;
         private readonly IAppointments _appointmentsService;
-        public AppointmentController(HealthManagerContext context, IAppointments appointmentsService)
+        private readonly IAppointmentReceipt _appointmentReceipt;
+        private readonly IMailService _mailService;
+        public AppointmentController(HealthManagerContext context,
+            IAppointments appointmentsService,
+            IAppointmentReceipt appointmentReceipt,
+            IMailService mailService)
         {
             _dbcontext = context;
             _appointmentsService = appointmentsService;
+            _appointmentReceipt = appointmentReceipt;
+            _mailService = mailService;
         }
         public IActionResult Index()
         {
