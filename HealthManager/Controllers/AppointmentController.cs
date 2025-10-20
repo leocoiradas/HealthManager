@@ -1,12 +1,12 @@
 ﻿using HealthManager.Models;
 using HealthManager.Models.DTO;
 using HealthManager.Services.Appointments;
+using HealthManager.Services.Mail;
+using HealthManager.Services.PDF.AppointmentReceipt;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Security.Claims;
 
 namespace HealthManager.Controllers
 {
@@ -14,10 +14,17 @@ namespace HealthManager.Controllers
     {
         private readonly HealthManagerContext _dbcontext;
         private readonly IAppointments _appointmentsService;
-        public AppointmentController(HealthManagerContext context, IAppointments appointmentsService)
+        private readonly IAppointmentReceipt _appointmentReceipt;
+        private readonly IMailService _mailService;
+        public AppointmentController(HealthManagerContext context,
+            IAppointments appointmentsService,
+            IAppointmentReceipt appointmentReceipt,
+            IMailService mailService)
         {
             _dbcontext = context;
             _appointmentsService = appointmentsService;
+            _appointmentReceipt = appointmentReceipt;
+            _mailService = mailService;
         }
         public IActionResult Index()
         {
@@ -86,7 +93,45 @@ namespace HealthManager.Controllers
                     _dbcontext.Appointments.Update(reserveAppointment);
                     await _dbcontext.SaveChangesAsync();
 
+                    var patientData = _dbcontext.Patients.Where(x => x.PatientId == userIdInt).Select(x => new
+                    {
+                        PatientEmail = x.Email,
+                        PatientName = x.Name + " " + x.Surname,
+                    }).FirstOrDefault();
+
+                    var doctorData = _dbcontext.Doctors.Where(x => x.DoctorId == appointmentRequest.DoctorId).Select(x => new
+                    {
+                        FullName = $"{x.Name} {x.Surname}",
+                        Specialty = x.SpecialtyNavigation.SpecialtyName,
+
+                    }).FirstOrDefault();
+
+                    AppointmentDataPDFDTO appointmentData = new AppointmentDataPDFDTO
+                    {
+                        PatientName = patientData.PatientName,
+                        DoctorName = doctorData.FullName,
+                        AppointmentDate = reserveAppointment.AppointmentDate,
+                        AppointmentHour = reserveAppointment.AppointmentHour,
+                        Specialty = doctorData.Specialty
+
+                    };
+
+                    var pdfByte = _appointmentReceipt.CreateAppointmentReceipt(appointmentData);
+
+                    
+
+                    MailDTO mailSample = new MailDTO
+                    {
+                        DestinataryMail = patientData?.PatientEmail,
+                        DestinataryName = patientData?.PatientName,
+                        MailSubject = $"Medical appointment requested at Healthmanager.",
+                        MailTitle = "Appointment confirmation.",
+                    };
+
+                    _mailService.SendAppointmentConfirmationMail(mailSample, pdfByte);
+
                 }
+
                 return RedirectToAction("MyAppointments", "PatientDashboard");
             }
 
