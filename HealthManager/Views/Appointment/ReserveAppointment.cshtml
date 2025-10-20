@@ -119,6 +119,7 @@
                 $.ajax({
                     url: '@Url.Action("GetAppointmentDates", "Appointment")',
                     data: { doctorId: doctor },
+                    cache: false,
                     success: function (response) {
                         var selectDate = $("#AppointmentDate");
                         selectDate.empty();
