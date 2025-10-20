@@ -29,7 +29,7 @@ namespace HealthManager.Controllers
             DateOnly day = DateOnly.FromDateTime(today);
             TimeOnly hours = TimeOnly.FromDateTime(today);
             var appointmentsList = await _dbcontext.Appointments
-                .Where(a => a.Status == "Available" && a.AppointmentDate>= day && a.AppointmentHour>hours)
+                .Where(a => a.Status == "Available" && a.AppointmentDate> day)
                 .Select(a => new AppointmentViewModel
                 {
                     AppointmentId = a.AppointmentId,
@@ -100,12 +100,17 @@ namespace HealthManager.Controllers
             var currentMonth = DateTime.Now.Month;
             var currentDay = DateOnly.FromDateTime(today);
             var currentHour = TimeOnly.FromDateTime(DateTime.Now).AddHours(1);
-            var availableAppointments = await _dbcontext.Appointments
-                .Where(a => a.DoctorId == doctorId && ((a.AppointmentDate == currentDay && a.AppointmentHour >= currentHour) || a.AppointmentDate > currentDay) && a.Status == "Available")
-                .Select(a => a.AppointmentDate.ToString("dd/MM/yyyy"))
+            var availableAppointments =  _dbcontext.Appointments
+                .Where(a => a.DoctorId == doctorId && a.Status == "Available")
+                .AsEnumerable()
+                .Where(a => a.AppointmentDate.CompareTo(currentDay) > 0 || a.AppointmentDate.ToDateTime(a.AppointmentHour) > today)
+                .Select(a => a.AppointmentDate)
                 .Distinct()
-                .ToListAsync();
-            var orderedList = availableAppointments.OrderBy(x => DateTime.ParseExact(x, "dd/MM/yyyy", null)).ToList();
+                .ToList();
+
+            var orderedList = availableAppointments
+                .Select( a => a.ToString("dd/MM/yyyy"))
+                .OrderBy(x => DateTime.ParseExact(x, "dd/MM/yyyy", null));
             return Json(orderedList);
         }
 
@@ -117,24 +122,24 @@ namespace HealthManager.Controllers
             var currentHour = TimeOnly.FromDateTime(DateTime.Now).AddHours(1);
             var today = DateOnly.FromDateTime(now);
 
-            List<string> appointmentHours = new List<string>();
+            List<TimeOnly> appointmentHours = new List<TimeOnly>();
             List<string> orderedList = new List<string>();
 
             if (onlyDateFromDateTime.CompareTo(today) > 0)
             {
                  appointmentHours = await _dbcontext.Appointments
                 .Where(a => a.DoctorId == doctorId && a.AppointmentDate.Equals(onlyDateFromDateTime) && a.Status == "Available")
-                .Select(a => a.AppointmentHour.ToString("HH:mm"))
+                .Select(a => a.AppointmentHour)
                 .ToListAsync();
-                orderedList = appointmentHours.OrderBy(x => TimeOnly.ParseExact(x, "HH:mm", null)).ToList();
+                orderedList = appointmentHours.Select(a => a.ToString("HH:mm")).OrderBy(x => TimeOnly.ParseExact(x, "HH:mm", null)).ToList();
             }
             else
             {
                  appointmentHours = await _dbcontext.Appointments
                 .Where(a => a.DoctorId == doctorId && a.AppointmentDate.Equals(onlyDateFromDateTime) && a.AppointmentHour >= currentHour && a.Status == "Available")
-                .Select(a => a.AppointmentHour.ToString("HH:mm"))
+                .Select(a => a.AppointmentHour)
                 .ToListAsync();
-                orderedList = appointmentHours.OrderBy(x => TimeOnly.ParseExact(x, "HH:mm", null)).ToList();
+                orderedList = appointmentHours.Select(a => a.ToString("HH:mm")).OrderBy(x => TimeOnly.ParseExact(x, "HH:mm", null)).ToList();
             }
                 return Json(orderedList);
         }
