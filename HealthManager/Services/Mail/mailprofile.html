@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    
+</head>
+<body>
+    <section>
+        <article id="mail-header">
+            <h2>Appointment Confirmation</h2>
+        </article>
+        <article id="mail-body">
+            <p>Hi!! We attatch the information corresponding to your appointment.</p>
+            <p>If you have any doubts, please contact us to the email listed below.</p>
+            <p>Note that if you want to cancel your appointment, we request you to do it with anticipation.</p>
+            <div>
+                <p>Have a great day.</p><p>-HealthManager team.</p>
+            </div>
+            
+        </article>
+        <article id="mail-footer">
+            <p>facebook</p>
+        </article>
+    </section>
+</body>
+</html>
+
+<style>
+    #mail-header {
+        height: 70px !important;
+        background-color: aquamarine !important;
+        justify-content: center;
+        align-items: center;
+    }
+    #mail-body {
+        min-height: 300px !important;
+        flex-direction:column;
+        justify-content: center;
+        align-items: center;
+        padding-top: 2rem;
+    }
+    #mail-footer {
+        height: 60px !important;
+        background-color: mediumaquamarine !important;
+        justify-content: start;
+        align-items: center;
+        padding: 0.5rem;
+    }
+    #mail-header, #mail-body, #mail-footer {
+        display: flex;
+        
+    }
+    article>div{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+</style>
