@@ -26,11 +26,23 @@ namespace HealthManager.Controllers
         [AllowAnonymous]
         public IActionResult Login()
         {
-            /*var existingCookie = ControllerContext.HttpContext.Request.Cookies["Token"];
+            var existingCookie = ControllerContext.HttpContext.Request.Cookies["Token"];
             if (existingCookie != null)
             {
-                return RedirectToAction("ReserveAppointment", "Appointment");
-            }*/
+                string role = User.FindFirst(ClaimTypes.Role).Value;
+                switch (role)
+                {
+                    case "Patient":
+                        return RedirectToAction("MyAppointments", "PatientDashboard");
+                        
+                    case "Doctor":
+                        return RedirectToAction("PatientTodayList", "Doctor");
+                    case "Admin":
+                       return RedirectToAction("EmployeeList", "Admin");
+                    default:
+                        break;
+                }
+            }
            
             return View();
         }
@@ -76,6 +88,23 @@ namespace HealthManager.Controllers
         [AllowAnonymous]
         public IActionResult Register() 
         {
+           var existingCookie = ControllerContext.HttpContext.Request.Cookies["Token"];
+           if (existingCookie != null)
+           {
+                string role = User.FindFirst(ClaimTypes.Role).Value;
+                switch (role)
+                {
+                    case "Patient":
+                        return RedirectToAction("MyAppointments", "PatientDashboard");
+
+                    case "Doctor":
+                        return RedirectToAction("PatientTodayList", "Doctor");
+                    case "Admin":
+                        return RedirectToAction("EmployeeList", "Admin");
+                    default:
+                        break;
+                }
+            }
             return View();
         }
 
@@ -150,7 +179,19 @@ namespace HealthManager.Controllers
         [AllowAnonymous]
         public IActionResult AdminLogin()
         {
-            return View();
+            var Role = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (Role == null)
+            {
+                return View();
+            }
+            else if(Role == "Admin")
+            {
+                return RedirectToAction("EmployeeList", "Admin");
+            }
+            else
+            {
+                return RedirectToAction("PatientTodayList", "Doctor");
+            }
         }
 
         [HttpPost]
