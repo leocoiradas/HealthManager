@@ -29,5 +29,37 @@ namespace HealthManagerIntegrationTests.ControllerTests.AppointmentTests
             _tokenService = scope.ServiceProvider.GetRequiredService<IJWTService>();
         }
 
+        [Fact]
+        public async Task CheckIfAppointmentReservationsIsSuccessful()
+        {
+            //Arrange
+
+            Patient patientTest = _dbContext.Patients.Where(x => x.PatientId == 1).FirstOrDefault();
+            Doctor doctorTest = _dbContext.Doctors.Where(x => x.DoctorId == 1).FirstOrDefault();
+
+            AppointmentViewModel appointment = new AppointmentViewModel
+            {
+                PatientId = patientTest.PatientId,
+                DoctorId = doctorTest.DoctorId,
+                Specialty = "Neurología",
+                AppointmentDate = DateOnly.FromDateTime(DateTime.Now),
+                AppointmentHour = new TimeOnly(15, 30)
+            };
+
+            //Act
+
+            string tokenString = _tokenService.GenerateToken(patientTest.Name, patientTest.Email, "Patient", patientTest.PatientId);
+
+            _httpClient.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", tokenString);
+
+            var response = await _httpClient.PostAsJsonAsync("/Appointment/ReserveAppointment", appointment);
+
+            //Assert
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+
     }
 }
