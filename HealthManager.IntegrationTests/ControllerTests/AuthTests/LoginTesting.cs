@@ -59,5 +59,42 @@ namespace HealthManagerIntegrationTests.ControllerTests.AuthTests
         }
 
 
+        [Fact]
+        public async Task LoginFailWhenAParameterIsMissing()
+        {
+            //Arrange
+            Patient testPatient = new Patient
+            {
+                Name = "Rosalia",
+                Surname = "Benitez",
+                BirthDate = new DateOnly(1999, 03, 30),
+                Dni = 1234567,
+                Email = "Rosalia@gmail.com",
+                Password = "Benitez1234!!",
+                Gender = "F",
+                Sex = "F",
+            };
+
+            await _dbContext.Patients.AddAsync(testPatient);
+            await _dbContext.SaveChangesAsync();
+
+            AuthorizeRequest request = new AuthorizeRequest
+            {
+                Email = "Rosalia@gmail.com",
+                Password = null
+            };
+            //Act
+
+            var requestFormData = AuxMethods.ConvertClassObjectToFormUrlEncoded(request);
+
+            var response = await _httpClient.PostAsync("/Authorize/Login", requestFormData);
+
+            string responseString = await response.Content.ReadAsStringAsync();
+
+            //Assert
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Contains("There was an error during the process of authentication. We suggest you try again later", responseString);
+        }
     }
 }
