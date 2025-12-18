@@ -35,5 +35,29 @@ namespace HealthManagerIntegrationTests.ControllerTests.AuthTests
         }
 
 
+        [Fact]
+        public async Task LoginRequestIsSuccessful()
+        {
+            //Arrange
+
+            AuthorizeRequest request = new AuthorizeRequest
+            {
+                Email = "aliciarodriguez@gmail.com",
+                Password = "Rodriguez02!!"
+            };
+
+            //Act
+
+            var requestFormData = AuxMethods.ConvertClassObjectToFormUrlEncoded(request);
+
+            var response = await _httpClient.PostAsync("/Authorize/Login", requestFormData);
+
+            //Assert
+
+            Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
+
+        }
+
+
     }
 }
