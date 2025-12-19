@@ -62,5 +62,35 @@ namespace HealthManagerIntegrationTests.ControllerTests.AuthTests
 
         }
 
+        [Fact]
+        public async Task CheckThatRegisterFailsIfEmailIsDuplicated()
+        {
+            PatientViewModel testPatient = new PatientViewModel
+            {
+                Name = "Rosalia",
+                Surname = "Benitez",
+                Birthdate = new DateOnly(1999, 03, 30),
+                Dni = 1234567,
+                PhoneNumber = 123456789,
+                Email = "aliciarodriguez@gmail.com",
+                Password = "Benitez1234!!",
+                ConfirmPassword = "Benitez1234!!",
+                Gender = "F",
+                Sex = "F",
+            };
+
+            var formContent = AuxMethods.ConvertClassObjectToFormUrlEncoded(testPatient);
+
+            //Act
+
+            var response = await _httpClient.PostAsync("/Authorize/Register", formContent);
+            var content = await response.Content.ReadAsStringAsync();
+
+            //Assert
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Contains("* The provided email is already in use.", content);
+        }
+
     }
 }
