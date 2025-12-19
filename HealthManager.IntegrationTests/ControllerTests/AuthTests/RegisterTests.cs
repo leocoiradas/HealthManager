@@ -30,5 +30,37 @@ namespace HealthManagerIntegrationTests.ControllerTests.AuthTests
             _tokenService = scope.ServiceProvider.GetRequiredService<IJWTService>();
         }
 
+        [Fact]
+        public async Task CheckIfPatientRegisterCompletesSuccessfully() 
+        {
+            //Arrange
+
+            PatientViewModel testPatient = new PatientViewModel
+            {
+                Name = "Rosalia",
+                Surname = "Benitez",
+                Birthdate = new DateOnly(1999, 03, 30),
+                Dni = 1234567,
+                PhoneNumber = 123456789,
+                Email = "Rosalia@gmail.com",
+                Password = "Benitez1234!!",
+                ConfirmPassword = "Benitez1234!!",
+                Gender = "F",
+                Sex = "F",
+            };
+
+            
+            var content = AuxMethods.ConvertClassObjectToFormUrlEncoded(testPatient);
+
+            //Act
+
+            var response = await _httpClient.PostAsync("/Authorize/Register", content);
+
+            //Assert
+
+            Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
+
+        }
+
     }
 }
