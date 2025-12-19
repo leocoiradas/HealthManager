@@ -70,5 +70,41 @@ namespace HealthManagerIntegrationTests.ControllerTests.PatientTests
             Assert.Equal(HttpStatusCode.Forbidden, request.StatusCode);
         }
 
+        [Fact]
+        public async Task AppointmentCancellationIsSuccessfullyCompleted()
+        {
+            //Arrange
+            Patient patientTest = _dbContext.Patients.Where(x => x.PatientId == 1).FirstOrDefault();
+            string patientToken = _jwtService.GenerateToken(patientTest.Name, patientTest.Email, patientTest.Role, patientTest.PatientId);
+            _httpClient.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", patientToken);
+
+            DateOnly date =  DateOnly.FromDateTime(DateTime.Now.AddDays(1));
+            TimeOnly time = new TimeOnly(12, 00);
+
+            Appointment appointment = await _dbContext.Appointments.Where(x => x.AppointmentDate == date && x.AppointmentHour == time).FirstOrDefaultAsync();
+
+            appointment.Status = "Reserved";
+            appointment.PatientId = patientTest.PatientId;
+
+            _dbContext.Update(appointment);
+
+            await _dbContext.SaveChangesAsync();
+
+
+            //Act
+            var auxiObject = new {appointmentId = appointment.AppointmentId.ToString()};
+            var formDataAppointmentId = AuxMethods.ConvertClassObjectToFormUrlEncoded(auxiObject);
+            var request = await _httpClient.PostAsync("/PatientDashboard/CancelAppointment", formDataAppointmentId);
+
+            //Assert
+
+            MethodResponse responseJson = await request.Content.ReadFromJsonAsync<MethodResponse>();
+
+            //Assert
+
+            Assert.Equal(true, responseJson.Success);
+        }
+
     }
 }
