@@ -37,5 +37,26 @@ namespace HealthManagerIntegrationTests.ControllerTests.DoctorTests
             _jwtService = scope.ServiceProvider.GetRequiredService<IJWTService>();
         }
 
+        [Fact]
+        public async Task AppointmentsForADcotorAreSuccessfullyCreated()
+        {
+            //Arrange
+            Doctor doctorTest = _dbContext.Doctors.Where(x => x.DoctorId == 1).Single();
+            WorkingDay wd = _dbContext.WorkingDays.Where(x => x.DoctorId == 1).Single();
+            DoctorShift ds = _dbContext.DoctorShifts.Where(x => x.DoctorId == 1).Single();
+
+            DoctorDTO dto = new DoctorDTO { Doctor = doctorTest, DoctorShift = ds, WorkingDay = wd};
+            List<DoctorDTO> doctorList = new List<DoctorDTO> {dto};
+
+
+            //Act
+            MethodResponse response = await _appointmentsService.CreateDoctorAppointments(doctorList, 1);
+
+            //Assert
+            Assert.Equal(true, response.Success);
+
+
+        }
+
     }
 }
