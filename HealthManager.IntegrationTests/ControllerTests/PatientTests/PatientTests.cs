@@ -53,5 +53,22 @@ namespace HealthManagerIntegrationTests.ControllerTests.PatientTests
             Assert.Equal(HttpStatusCode.Forbidden, request.StatusCode);
         }
 
+        [Fact]
+        public async Task PatientCannotAccessAdminMethods()
+        {
+            Patient patientTest = _dbContext.Patients.Where(x => x.PatientId == 1).FirstOrDefault();
+            string patientToken = _jwtService.GenerateToken(patientTest.Name, patientTest.Email, patientTest.Role, patientTest.PatientId);
+            _httpClient.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", patientToken);
+
+            //Act
+
+            var request = await _httpClient.GetAsync("/Admin/EmployeeList");
+
+            //Assert
+
+            Assert.Equal(HttpStatusCode.Forbidden, request.StatusCode);
+        }
+
     }
 }
