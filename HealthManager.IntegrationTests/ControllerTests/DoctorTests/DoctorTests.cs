@@ -58,5 +58,57 @@ namespace HealthManagerIntegrationTests.ControllerTests.DoctorTests
 
         }
 
+        [Fact]
+        public async Task MedicalRegisterIsSuccessfullyCreated()
+        {
+            //Arrange
+            DateOnly todayTest = DateOnly.FromDateTime(DateTime.Now);
+            TimeOnly timeTest = new TimeOnly(12,20);
+
+            Patient patientSearch = _dbContext.Patients.Where(x => x.PatientId == 1).Single();
+
+            Appointment appointment = await _dbContext.Appointments
+                .Where(x => x.AppointmentDate == todayTest && x.AppointmentHour == timeTest && x.DoctorId == 1)
+                .FirstOrDefaultAsync();
+
+            Guid appointmentId = appointment.AppointmentId;
+
+            appointment.PatientId = patientSearch.PatientId;
+            appointment.DoctorId = 1;
+            appointment.Status = "Reserved";
+
+            _dbContext.Update(appointment);
+            await _dbContext.SaveChangesAsync();
+
+            Doctor doctorTest = await _dbContext.Doctors.Where(x => x.DoctorId == 1).FirstOrDefaultAsync();
+
+            string token = _jwtService.GenerateToken(doctorTest.Name, doctorTest.Email, "Doctor", doctorTest.DoctorId);
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            //Act
+
+            MedicalRecordViewModel viewModel = new MedicalRecordViewModel
+            {
+                AppointmentId = appointmentId,
+                DoctorId = doctorTest.DoctorId,
+                DoctorName = doctorTest.Name + doctorTest.Surname,
+                PatientId = patientSearch.PatientId,
+                PatientName = patientSearch.Name + patientSearch.Surname,
+                Diagnosis = "Test Diagnosis",
+                Treatment = "Test Treatment",
+                Observations = "Test Observations",
+                RecordDate = DateTime.Now,
+            };
+
+            var requestFormData = AuxMethods.ConvertClassObjectToFormUrlEncoded(viewModel);
+
+            var response = await _httpClient.PostAsync("/Doctor/CreateRecord", requestFormData);
+
+            //Assert
+
+            Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
+        }
+
     }
 }
