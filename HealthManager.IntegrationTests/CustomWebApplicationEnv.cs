@@ -15,6 +15,7 @@ using HealthManager.Services.Authentication;
 using HealthManager.Services.JWTService;
 using HealthManager.Models.DTO;
 using HealthManager.Services.Appointments;
+using HealthManagerIntegrationTests.Helpers;
 
 namespace HealthManagerIntegrationTests
 {
@@ -44,6 +45,7 @@ namespace HealthManagerIntegrationTests
 
             await db.Database.EnsureCreatedAsync();
 
+            await SeedMethods.SeedAsync(db);
 
 
         }
