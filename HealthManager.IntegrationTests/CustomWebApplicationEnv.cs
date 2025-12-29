@@ -30,6 +30,8 @@ namespace HealthManagerIntegrationTests
                 .WithEnvironment("ACCEPT_EULA", "Y")
                 .WithEnvironment("MSSQL_PID", "Express")
                 .WithPortBinding(1433, true)
+                .WithWaitStrategy(
+                    Wait.ForUnixContainer().UntilMessageIsLogged("SQL Server is now ready for client connections"))
                 .Build();
         }
         public async Task InitializeAsync()
