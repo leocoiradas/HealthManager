@@ -40,6 +40,7 @@ namespace HealthManagerIntegrationTests
 
             using var scope = Services.CreateScope();
             var db = scope.ServiceProvider.GetRequiredService<HealthManagerContext>();
+            db.Database.SetCommandTimeout(120);
 
 
 
