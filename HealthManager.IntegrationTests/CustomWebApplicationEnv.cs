@@ -29,6 +29,7 @@ namespace HealthManagerIntegrationTests
                 .WithPassword("YourStrong(!)Password")
                 .WithEnvironment("ACCEPT_EULA", "Y")
                 .WithEnvironment("MSSQL_PID", "Express")
+                .WithPortBinding(1433, true)
                 .Build();
         }
         public async Task InitializeAsync()
