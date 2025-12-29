@@ -42,6 +42,7 @@ namespace HealthManagerIntegrationTests
             var db = scope.ServiceProvider.GetRequiredService<HealthManagerContext>();
             db.Database.SetCommandTimeout(120);
 
+            await db.Database.EnsureCreatedAsync();
 
 
 
