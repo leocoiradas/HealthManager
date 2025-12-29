@@ -39,6 +39,7 @@ namespace HealthManagerIntegrationTests
             await _dbContainer.StartAsync();
 
             using var scope = Services.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<HealthManagerContext>();
 
 
 
