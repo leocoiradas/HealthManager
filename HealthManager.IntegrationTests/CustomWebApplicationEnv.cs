@@ -47,6 +47,8 @@ namespace HealthManagerIntegrationTests
 
             await SeedMethods.SeedAsync(db);
 
+            var appointmentsService = scope.ServiceProvider.GetService<IAppointments>();
+            var response = await appointmentsService.CheckAndCreateAppointments();
 
         }
 
