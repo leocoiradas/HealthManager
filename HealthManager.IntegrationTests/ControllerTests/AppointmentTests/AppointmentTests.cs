@@ -3,6 +3,7 @@ using HealthManager.Models.DTO;
 using HealthManager.Services.Appointments;
 using HealthManager.Services.Authentication;
 using HealthManagerIntegrationTests;
+using HealthManagerIntegrationTests.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -58,6 +59,8 @@ namespace HealthManagerIntegrationTests.ControllerTests.AppointmentTests
             new AuthenticationHeaderValue("Bearer", tokenString);
 
             var response = await _httpClient.PostAsJsonAsync("/Appointment/ReserveAppointment", appointment);
+            var appointmentFormData = AuxMethods.ConvertClassObjectToFormUrlEncoded(appointment);
+
 
             //Assert
 
