@@ -52,7 +52,7 @@ namespace HealthManagerIntegrationTests.ControllerTests.AppointmentTests
 
             //Act
 
-            string tokenString = _tokenService.GenerateToken(patientTest.Name, patientTest.Email, "Patient", patientTest.PatientId);
+            string tokenString = _tokenService.GenerateToken(patientTest.Name, patientTest.Email, patientTest.Role, patientTest.PatientId);
 
             _httpClient.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue("Bearer", tokenString);
