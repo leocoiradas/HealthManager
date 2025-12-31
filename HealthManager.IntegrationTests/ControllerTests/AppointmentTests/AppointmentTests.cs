@@ -1,5 +1,6 @@
 ﻿using HealthManager.Models;
 using HealthManager.Models.DTO;
+using HealthManager.Services.Appointments;
 using HealthManager.Services.Authentication;
 using HealthManagerIntegrationTests;
 using Microsoft.EntityFrameworkCore;
@@ -22,12 +23,14 @@ namespace HealthManagerIntegrationTests.ControllerTests.AppointmentTests
         private HttpClient _httpClient;
         private readonly HealthManagerContext _dbContext;
         private readonly IJWTService _tokenService;
+        private readonly IAppointments _appointmentService;
         public AppointmentTests(CustomWebApplicationEnv custom)
         {
             _httpClient = custom.CreateClient();
             var scope = custom.Services.CreateScope();
             _dbContext = scope.ServiceProvider.GetRequiredService<HealthManagerContext>();
             _tokenService = scope.ServiceProvider.GetRequiredService<IJWTService>();
+            _appointmentService = scope.ServiceProvider.GetRequiredService<IAppointments>();
         }
 
         [Fact]
