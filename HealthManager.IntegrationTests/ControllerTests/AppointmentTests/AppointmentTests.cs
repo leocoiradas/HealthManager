@@ -27,7 +27,10 @@ namespace HealthManagerIntegrationTests.ControllerTests.AppointmentTests
         private readonly IAppointments _appointmentService;
         public AppointmentTests(CustomWebApplicationEnv custom)
         {
-            _httpClient = custom.CreateClient();
+            _httpClient = custom.CreateClient(new Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryClientOptions
+            {
+                AllowAutoRedirect = false
+            });
             var scope = custom.Services.CreateScope();
             _dbContext = scope.ServiceProvider.GetRequiredService<HealthManagerContext>();
             _tokenService = scope.ServiceProvider.GetRequiredService<IJWTService>();
