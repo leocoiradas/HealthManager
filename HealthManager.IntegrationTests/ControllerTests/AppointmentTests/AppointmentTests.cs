@@ -58,9 +58,9 @@ namespace HealthManagerIntegrationTests.ControllerTests.AppointmentTests
             _httpClient.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue("Bearer", tokenString);
 
-            var response = await _httpClient.PostAsJsonAsync("/Appointment/ReserveAppointment", appointment);
             var appointmentFormData = AuxMethods.ConvertClassObjectToFormUrlEncoded(appointment);
 
+            var response = await _httpClient.PostAsync("/Appointment/ReserveAppointment", appointmentFormData);
 
             //Assert
 
