@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace HealthManagerIntegrationTests.ControllerTests.AppointmentTests
 {
+    [Collection("IntegrationTests")]
     public class AppointmentTests : IClassFixture<CustomWebApplicationEnv>
     {
         private HttpClient _httpClient;
