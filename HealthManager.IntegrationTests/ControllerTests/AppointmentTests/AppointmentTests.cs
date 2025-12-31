@@ -64,7 +64,7 @@ namespace HealthManagerIntegrationTests.ControllerTests.AppointmentTests
 
             //Assert
 
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
         }
 
 
