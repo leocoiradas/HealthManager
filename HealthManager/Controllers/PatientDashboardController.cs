@@ -85,7 +85,6 @@ namespace HealthManager.Controllers
             }
             else
             {
-                ModelState.AddModelError("CancelError", "The appoinment has to be cancelled before the appointment date.");
                 ViewData["CancelError"] = "The appoinment has to be cancelled before the appointment date.";
                 MethodResponse response = new MethodResponse
                 {
