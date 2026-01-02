@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 
 namespace HealthManagerIntegrationTests.ControllerTests.DoctorTests
 {
+    [Collection("IntegrationTests")]
     public class DoctorTests : IClassFixture<CustomWebApplicationEnv>
     {
         private HttpClient _httpClient;
@@ -41,6 +42,7 @@ namespace HealthManagerIntegrationTests.ControllerTests.DoctorTests
         public async Task AppointmentsForADcotorAreSuccessfullyCreated()
         {
             //Arrange
+
             Doctor doctorTest = _dbContext.Doctors.Where(x => x.DoctorId == 1).Single();
             WorkingDay wd = _dbContext.WorkingDays.Where(x => x.DoctorId == 1).Single();
             DoctorShift ds = _dbContext.DoctorShifts.Where(x => x.DoctorId == 1).Single();
@@ -62,6 +64,7 @@ namespace HealthManagerIntegrationTests.ControllerTests.DoctorTests
         public async Task MedicalRegisterIsSuccessfullyCreated()
         {
             //Arrange
+
             DateOnly todayTest = DateOnly.FromDateTime(DateTime.Now);
             TimeOnly timeTest = new TimeOnly(12,20);
 
