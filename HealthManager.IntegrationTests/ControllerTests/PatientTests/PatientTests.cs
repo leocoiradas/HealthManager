@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 namespace HealthManagerIntegrationTests.ControllerTests.PatientTests
 
 {
+    [Collection("IntegrationTests")]
     public class PatientTests : IClassFixture<CustomWebApplicationEnv>
     {
         private HttpClient _httpClient;
@@ -56,6 +57,8 @@ namespace HealthManagerIntegrationTests.ControllerTests.PatientTests
         [Fact]
         public async Task PatientCannotAccessAdminMethods()
         {
+            //Arrange
+
             Patient patientTest = _dbContext.Patients.Where(x => x.PatientId == 1).FirstOrDefault();
             string patientToken = _jwtService.GenerateToken(patientTest.Name, patientTest.Email, patientTest.Role, patientTest.PatientId);
             _httpClient.DefaultRequestHeaders.Authorization =
@@ -74,6 +77,7 @@ namespace HealthManagerIntegrationTests.ControllerTests.PatientTests
         public async Task AppointmentCancellationIsSuccessfullyCompleted()
         {
             //Arrange
+
             Patient patientTest = _dbContext.Patients.Where(x => x.PatientId == 1).FirstOrDefault();
             string patientToken = _jwtService.GenerateToken(patientTest.Name, patientTest.Email, patientTest.Role, patientTest.PatientId);
             _httpClient.DefaultRequestHeaders.Authorization =
@@ -110,6 +114,7 @@ namespace HealthManagerIntegrationTests.ControllerTests.PatientTests
         public async Task AppointmentCancellationFailsIfDateAlreadyPassed()
         {
             //Arrange
+
             Patient patientTest = _dbContext.Patients.Where(x => x.PatientId == 1).FirstOrDefault();
             string patientToken = _jwtService.GenerateToken(patientTest.Name, patientTest.Email, patientTest.Role, patientTest.PatientId);
             _httpClient.DefaultRequestHeaders.Authorization =
