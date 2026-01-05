@@ -48,7 +48,6 @@ namespace HealthManager.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task <IActionResult> Login(AuthorizeRequest request)
         {
            if (ModelState.IsValid)
