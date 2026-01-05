@@ -141,7 +141,8 @@ namespace HealthManager.Controllers
                     }
 
                 }
-                
+                //ModelState.AddModelError(string.Empty, "* There are missing or invalid fields on the form.");
+                ViewData["ErrorMessage"] = "* There are missing or invalid fields on the form.";
                 return View(patientData);
             }
             catch (Exception error)
