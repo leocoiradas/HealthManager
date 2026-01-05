@@ -1,6 +1,7 @@
 ﻿using HealthManager.Models;
 using HealthManager.Models.DTO;
 using HealthManager.Services.Authentication;
+using HealthManagerIntegrationTests.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -9,10 +10,10 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
-using HealthManagerIntegrationTests.Helpers;
 
 namespace HealthManagerIntegrationTests.ControllerTests.AuthTests
 {
+    [Collection("IntegrationTests")]
     public class RegisterTests : IClassFixture<CustomWebApplicationEnv>
     {
         private HttpClient _httpClient;
@@ -65,6 +66,8 @@ namespace HealthManagerIntegrationTests.ControllerTests.AuthTests
         [Fact]
         public async Task CheckThatRegisterFailsIfEmailIsDuplicated()
         {
+            //Arrange
+
             PatientViewModel testPatient = new PatientViewModel
             {
                 Name = "Rosalia",
@@ -95,6 +98,8 @@ namespace HealthManagerIntegrationTests.ControllerTests.AuthTests
         [Fact]
         public async Task RegisterFailsIfDataIsIncomplete()
         {
+            //Arrange 
+
             PatientViewModel testPatient = new PatientViewModel
             {
                 Name = "Rosalia",
