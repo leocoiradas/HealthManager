@@ -108,7 +108,6 @@ namespace HealthManager.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task <IActionResult> Register(PatientViewModel patientData)
         {
             try
