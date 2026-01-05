@@ -17,11 +17,13 @@ using System.Threading.Tasks;
 
 namespace HealthManagerIntegrationTests.ControllerTests.AuthTests
 {
+    [Collection("IntegrationTests")]
     public class LoginTesting: IClassFixture<CustomWebApplicationEnv>
     {
         private HttpClient _httpClient;
         private readonly HealthManagerContext _dbContext;
         private readonly IJWTService _tokenService;
+        private readonly IAppointments _appointmentService;
 
         public LoginTesting(CustomWebApplicationEnv custom)
         {
@@ -32,6 +34,7 @@ namespace HealthManagerIntegrationTests.ControllerTests.AuthTests
             var scope = custom.Services.CreateScope();
             _dbContext = scope.ServiceProvider.GetRequiredService<HealthManagerContext>();
             _tokenService = scope.ServiceProvider.GetRequiredService<IJWTService>();
+            _appointmentService = scope.ServiceProvider.GetRequiredService<IAppointments>();
         }
 
 
