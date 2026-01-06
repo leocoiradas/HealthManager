@@ -142,7 +142,7 @@ namespace HealthManagerIntegrationTests.ControllerTests.PatientTests
 
             //Assert
 
-            Assert.Equal(false, responseJson.Success);
+            Assert.False(responseJson.Success);
         }
 
 
