@@ -107,7 +107,7 @@ namespace HealthManagerIntegrationTests.ControllerTests.PatientTests
 
             //Assert
 
-            Assert.Equal(true, responseJson.Success);
+            Assert.True(responseJson.Success);
         }
 
         [Fact]
