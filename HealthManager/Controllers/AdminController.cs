@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using BCrypt.Net;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HealthManager.Controllers
 {
+    [Authorize(Roles ="Admin")]
     public class AdminController : Controller
     {
         private readonly HealthManagerContext _dbcontext;
