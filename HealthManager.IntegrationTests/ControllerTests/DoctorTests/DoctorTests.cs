@@ -55,7 +55,7 @@ namespace HealthManagerIntegrationTests.ControllerTests.DoctorTests
             MethodResponse response = await _appointmentsService.CreateDoctorAppointments(doctorList, 1);
 
             //Assert
-            Assert.Equal(true, response.Success);
+            Assert.True(response.Success);
 
 
         }
