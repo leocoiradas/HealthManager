@@ -62,22 +62,36 @@ namespace HealthManager.Controllers
         }
         
         [HttpPost]
-        public async Task<JsonResult> CancelAppointment(Guid appointmentId)
+        public async Task<MethodResponse> CancelAppointment(Guid appointmentId)
         {
             Appointment databaseAppointment = await _dbcontext.Appointments.FindAsync(appointmentId);
             var requestDate = DateOnly.FromDateTime(DateTime.Now);
-            if (databaseAppointment.AppointmentDate.CompareTo(requestDate) >= 0)
+            TimeOnly requestTime = TimeOnly.FromDateTime(DateTime.Now);
+
+            DateTime date = DateTime.Now;
+
+            if (databaseAppointment.AppointmentDate.CompareTo(requestDate) >= 0 && date < databaseAppointment.AppointmentDate.ToDateTime(databaseAppointment.AppointmentHour))
             {
                 databaseAppointment.Status = "Available";
                 databaseAppointment.PatientId = null;
                 _dbcontext.Appointments.Update(databaseAppointment);
                 await _dbcontext.SaveChangesAsync();
-                return Json(new { success = true });
+                MethodResponse response = new MethodResponse 
+                {
+                    Success = true,
+                    Message = ""
+                };
+                return response;
             }
             else
             {
-                ModelState.AddModelError("CancelError", "The appoinment has to be cancelled before the appointment date.");
-                return Json(new { success = false, message = "No existe el turno" });
+                ViewData["CancelError"] = "The appoinment has to be cancelled before the appointment date.";
+                MethodResponse response = new MethodResponse
+                {
+                    Success = false,
+                    Message = ""
+                };
+                return response;
             }
         }
     }

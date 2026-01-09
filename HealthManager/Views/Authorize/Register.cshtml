@@ -18,7 +18,9 @@
 <section class="w-100 h-100 d-flex flex-column justify-content-center align-items-center gap-2">
    <form method="post" asp-controller="Authorize" asp-action="Register" class="d-flex flex-column justify-content-center align-items-center gap-2">
         <h2>Register</h2>
-
+        @if(ViewData["ErrorMessage"] != null){
+            <span class="text-danger">@ViewData["ErrorMessage"]</span>
+        }
         <!--Name & Surname-->
         <fieldset class="w-100 d-flex gap-1">
            <div class="w-100 d-flex flex-column gap-1">

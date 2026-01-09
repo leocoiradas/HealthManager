@@ -48,7 +48,6 @@ namespace HealthManager.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task <IActionResult> Login(AuthorizeRequest request)
         {
            if (ModelState.IsValid)
@@ -109,7 +108,6 @@ namespace HealthManager.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task <IActionResult> Register(PatientViewModel patientData)
         {
             try
@@ -143,7 +141,8 @@ namespace HealthManager.Controllers
                     }
 
                 }
-                
+                //ModelState.AddModelError(string.Empty, "* There are missing or invalid fields on the form.");
+                ViewData["ErrorMessage"] = "* There are missing or invalid fields on the form.";
                 return View(patientData);
             }
             catch (Exception error)
