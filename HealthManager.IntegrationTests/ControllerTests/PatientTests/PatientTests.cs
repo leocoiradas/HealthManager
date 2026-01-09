@@ -107,7 +107,7 @@ namespace HealthManagerIntegrationTests.ControllerTests.PatientTests
 
             //Assert
 
-            Assert.Equal(true, responseJson.Success);
+            Assert.True(responseJson.Success);
         }
 
         [Fact]
@@ -120,7 +120,7 @@ namespace HealthManagerIntegrationTests.ControllerTests.PatientTests
             _httpClient.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue("Bearer", patientToken);
 
-            DateOnly date = new DateOnly(2025, 12, 1);
+            DateOnly date = DateOnly.FromDateTime(DateTime.Now.AddDays(-1));
             TimeOnly time = new TimeOnly(10, 00);
 
             Appointment appointment = await _dbContext.Appointments.Where(x => x.AppointmentDate == date && x.AppointmentHour == time).FirstOrDefaultAsync();
@@ -142,7 +142,7 @@ namespace HealthManagerIntegrationTests.ControllerTests.PatientTests
 
             //Assert
 
-            Assert.Equal(false, responseJson.Success);
+            Assert.False(responseJson.Success);
         }
 
 
