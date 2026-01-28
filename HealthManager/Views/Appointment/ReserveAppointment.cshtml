@@ -15,7 +15,9 @@
 
         <fieldset class="form-group">
             <label asp-for="DoctorId">Select doctor</label>
-            <select asp-for="DoctorId" class="form-control"></select>
+            <select asp-for="DoctorId" class="form-control">
+                <option disabled selected>Select a doctor</option>
+            </select>
         </fieldset>
 
         <div class="d-flex align-items-center justify-content-between date-container">
