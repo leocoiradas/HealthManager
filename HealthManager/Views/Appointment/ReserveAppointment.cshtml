@@ -95,7 +95,16 @@
                     success: function (response) {
                         var doctorSelect = $("#DoctorId");
                         doctorSelect.empty();
+
+                        
+
                         if(response){
+                            doctorSelect.append($('<option>', {
+                            value: "",
+                            text: "Select a doctor",
+                            disabled: true,
+                            selected: true
+                            }));
                             $.each(response, function (index, doctor) {
                                 doctorSelect.append($('<option>', {
                                     value: doctor.doctorId,
@@ -125,6 +134,14 @@
                     success: function (response) {
                         var selectDate = $("#AppointmentDate");
                         selectDate.empty();
+
+                        selectDate.append($('<option>', {
+                        value: "",
+                        text: "Select a date",
+                        disabled: true,
+                        selected: true
+                    }));
+
                         if (response.length > 0) {
                             $.each(response, function (index, date) {
                                 selectDate.append($('<option>', {
@@ -133,8 +150,15 @@
                                 }))
                             })
                             cleanOptions("#AppointmentHour");
-                            var firstDateInCollection = selectDate.val();
-                            getAppointmentsHours(firstDateInCollection, doctor);
+                           // var firstDateInCollection = response[0];
+                            //getAppointmentsHours(firstDateInCollection, doctor);
+                            var selectHour = $("#AppointmentHour");
+                            selectHour.append($('<option>', {
+                            value: "",
+                            text: "Select an hour",
+                            disabled: true,
+                            selected: true
+                            }));
                         }
                     }
                 })
@@ -147,6 +171,14 @@
                     success: function (response) {
                         var selectHour = $("#AppointmentHour");
                         selectHour.empty();
+
+                        selectHour.append($('<option>', {
+                        value: "",
+                        text: "Select an hour",
+                        disabled: true,
+                        selected: true
+                    }));
+
                         if (response.length > 0){
                             $.each(response, function (index, hour) {
                                 selectHour.append($('<option>', {
