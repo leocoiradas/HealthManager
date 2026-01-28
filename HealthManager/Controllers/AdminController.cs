@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using BCrypt.Net;
 using Microsoft.AspNetCore.Authorization;
+using HealthManager.Services.Appointments;
 
 namespace HealthManager.Controllers
 {
@@ -12,10 +13,12 @@ namespace HealthManager.Controllers
     public class AdminController : Controller
     {
         private readonly HealthManagerContext _dbcontext;
+        private readonly IAppointments _appointmentsService;
 
-        public AdminController(HealthManagerContext context)
+        public AdminController(HealthManagerContext context, IAppointments appointmentsService)
         {
             _dbcontext = context;
+            _appointmentsService = appointmentsService;
         }
         public async Task <IActionResult> EmployeeList()
         {
@@ -85,8 +88,11 @@ namespace HealthManager.Controllers
 
                 await _dbcontext.DoctorShifts.AddAsync(newAppointmentInfo);
                 await _dbcontext.SaveChangesAsync();
-
+                
                 await transaction.CommitAsync();
+
+                var response = await _appointmentsService.CreateSingleDoctorAppointments(newAppointmentInfo.DoctorId);
+
                 return View();
             }
             catch (Exception)
