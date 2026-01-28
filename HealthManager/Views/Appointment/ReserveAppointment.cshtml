@@ -113,7 +113,7 @@
                             });
                             if (response.length == 1){
                                 cleanOptions("#appointmentSelectDate", "#appointmentSelectHour")
-                                var doctor = doctorSelect.val();
+                                var doctor = response[0].doctorId
                                 getAppointmentsDates(doctor);
                             }
                         } else {
