@@ -25,10 +25,13 @@ namespace HealthManager.Controllers
         [HttpGet]
         public async Task<IActionResult> PatientTodayList()
         {
+            var userIdString = User.FindFirst("Id")?.Value;
+            int.TryParse(userIdString, out int userIdInt);
             var today = DateOnly.FromDateTime(DateTime.Now);
             List<Appointment> patientList = await _dbcontext.Appointments
-                .Where(x => x.AppointmentDate == today && x.Status == "Reserved" && x.Attended == null)
+                .Where(x => x.DoctorId == userIdInt && x.AppointmentDate == today && x.Status == "Reserved" && x.Attended == null )
                 .Include(a => a.Patient)
+                .OrderBy(x => x.AppointmentHour)
                 .ToListAsync();
             return View(patientList);
         }
