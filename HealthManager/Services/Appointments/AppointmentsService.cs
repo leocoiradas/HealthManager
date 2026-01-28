@@ -76,9 +76,8 @@ namespace HealthManager.Services.Appointments
             };
             List<DoctorDTO> doctorList = [];
             doctorList.Add(newDoctorProfile);
-            int currentDayNumber = DateTime.Now.Day;
 
-            await CreateDoctorAppointments(doctorList, currentDayNumber);
+            await CreateDoctorAppointments(doctorList, 1);
 
             return new MethodResponse { Success = true, Message = "Appointments created successfully" };
 
