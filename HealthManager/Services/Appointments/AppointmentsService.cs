@@ -48,7 +48,7 @@ namespace HealthManager.Services.Appointments
 
         }
 
-        public async Task <MethodResponse> CreateDoctorAppointments(int doctorId)
+        public async Task <MethodResponse> CreateSingleDoctorAppointments(int doctorId)
         {
             var doctorProfile = await _context.Doctors
                 .Where(x => x.DoctorId == doctorId)
