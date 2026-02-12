@@ -12,7 +12,7 @@ Algunas de las funciones principales son las siguientes:
 
 - Reservas y cancelaciones de turnos
 - Autenticación y autorización basada en roles (Pacientes, Doctores y administradores)
-- Gestión de registros médicos creados por los profesionales.
+- Gestión de registros médicos creados por los profesionales de la salud.
 - Creación de registros de turnos mediante tareas en segundo plano.
 - Pruebas unitarias y de integración.
 
@@ -22,7 +22,7 @@ Backend:
 
 - .NET 10
 - ASP.NET Core MVC
-- Entity framework core
+- Entity Framework Core
 - SQL Server
 - Mailkit
 - QuestPDF
@@ -63,7 +63,7 @@ El sistema se compone de las siguientes entidades principales:
 
 - Turnos: almacenan información referente a una consulta médica.
 - Pacientes: Representan al usuario general de la aplicación.
-- Admin: Perfiles que permiten la creación de nuevos profesionales médicos en la aplicación.
+- Administrador: Perfiles que permiten la creación de nuevos profesionales médicos en la aplicación.
 - Doctor: Profesional encargado de gestionar las consultas y registros médicos.
 - Specialty: información sobre una especialidad médica.
 - DoctorShift: rango horario de atención del médico y duración de cada consulta
@@ -76,7 +76,7 @@ Para la creación y gestión de los turnos durante el proceso de desarrollo, se 
 - La creación de los turnos médicos se hace de manera automatizada mediante tareas en segundo plano.
 - La tarea se ejecuta al iniciar la aplicación y mantiene un rango dinámico de disponibilidad de 30 días hacia adelante. Se comprueba que existan turnos para el mes actual y se creen los turnos si no se cumple la condición.
 - La generación de turnos y reservas está limitada a un periodo de 30 días para no sobrecargar el sistema con más peticiones a la base de datos.
-- Se utilizan transacciones a nivel de base de datos para que, en caso de un error, no haya registros o procesos incompletos en la antes mencionada.
+- Se utilizan transacciones a nivel de base de datos para garantizar la consistencia de los datos ante posibles errores.
 - Cada turno cuenta con propiedades de disponibilidad (reservado o disponible) así como una para expresar la asistencia del usuario a la consulta (expresada por un valor booleano)
 
 ## 💡 Decisiones técnicas tomadas
@@ -98,5 +98,5 @@ El proyecto sigue en estado de desarrollo y espero mejorarlo en futuras actualiz
 
 - Confirmación y verificación de cuenta mediante código e-mail
 - Función de cambio de contraseña
-- Nuevas funciones en el sistema de administradores (gráficos, análisis de diagnósticos en el último mes, qué especialidad fué la más consultada, que enfermedades o síntomas se encontraron el último mes, rango de edad que más consultaron, etc.)
+- Nuevas funciones en el sistema de administradores (gráficos, análisis de diagnósticos en el último mes, qué especialidad fue la más consultada, qué enfermedades o síntomas se encontraron el último mes, rango de edad que más consultaron, etc.)
 - Mejorar la interfaz visual con un diseño más moderno y visualmente agradable.
