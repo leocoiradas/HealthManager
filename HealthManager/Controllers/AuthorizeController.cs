@@ -78,7 +78,6 @@ namespace HealthManager.Controllers
            }  
            else
            {
-                ViewData["AuthorizeResult"] = "* There was an error during the process of authentication. We suggest you try again later.";
                 return View(request);
            }
         }
