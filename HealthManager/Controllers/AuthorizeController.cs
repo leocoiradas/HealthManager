@@ -107,7 +107,7 @@ namespace HealthManager.Controllers
         }
 
         [HttpPost]
-        public async Task <IActionResult> Register(PatientViewModel patientData)
+        public async Task <IActionResult> Register(PatientDTO patientData)
         {
             try
             {
