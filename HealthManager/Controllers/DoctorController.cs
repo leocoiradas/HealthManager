@@ -132,8 +132,9 @@ namespace HealthManager.Controllers
         {
             var doctorId = User.FindFirst("Id")?.Value;
             int.TryParse(doctorId, out int doctorIdInt);
+            int.TryParse(query, out int patientDni);
             List<MedicalRecordViewModel> recordsList = await _dbcontext.MedicalRecords
-                .Where(x => x.DoctorId == doctorIdInt && x.Patient.Name.Contains(query) )
+                .Where(x => x.DoctorId == doctorIdInt && x.Patient.Dni == patientDni)
                 .OrderBy(x => x.Date)
                 .Select(x => new MedicalRecordViewModel
                 {
