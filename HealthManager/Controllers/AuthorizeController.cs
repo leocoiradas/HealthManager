@@ -131,18 +131,18 @@ namespace HealthManager.Controllers
                         await _dbcontext.Patients.AddAsync(newPatient);
                         await _dbcontext.SaveChangesAsync();
                         return RedirectToAction("Login");
-
                     }
                     else
                     {
                         ModelState.AddModelError("Email", "* The provided email is already in use.");
                         return View(patientData);
                     }
-
                 }
-                //ModelState.AddModelError(string.Empty, "* There are missing or invalid fields on the form.");
-                ViewData["ErrorMessage"] = "* There are missing or invalid fields on the form.";
-                return View(patientData);
+                else
+                {
+                    ViewData["ErrorMessage"] = "* There are missing or invalid fields on the form.";
+                    return View(patientData);
+                }
             }
             catch (Exception error)
             {
